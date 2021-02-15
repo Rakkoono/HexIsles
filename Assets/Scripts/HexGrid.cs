@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class HexGrid : MonoBehaviour
 {
@@ -41,15 +42,17 @@ public class HexGrid : MonoBehaviour
     }
 
     // Debugging method
-    [InitializeOnLoadMethod]
+    //[InitializeOnLoadMethod]
     public static void FindAndInitializeInstance()
     {
         Instance = FindObjectOfType<HexGrid>();
-        Instance.Initialize();
+        if (Instance) Instance.Initialize();
     }
     private void Start()
     {
+        if (!GameManager.instance) SceneManager.LoadScene(0);
         Initialize();
+        foreach (Player p in FindObjectsOfType<Player>()) p.position = WorldToGridPos(p.transform.position);
     }
 
     [ContextMenu("Reload")]
@@ -146,8 +149,9 @@ public class HexGrid : MonoBehaviour
     public static HexField GetFieldAt(Vector2Int pos)
         => Instance.GetComponentsInChildren<HexField>().FirstOrDefault(f => f.position == pos);
 
-    public static Player[] GetPlayersAt(Vector2Int pos)
-        => FindObjectsOfType<Player>().Where(p => p.position == pos).ToArray();
+    public static Player[] GetPlayersAt(Vector2Int pos, bool includePetrified = true)
+        => FindObjectsOfType<Player>().Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
+
 
     public static Vector2Int[] GetAdjacentFields(Vector2Int pos, bool OnlyExisting = true)
     {
