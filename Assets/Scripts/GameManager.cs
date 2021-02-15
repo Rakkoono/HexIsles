@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text movesPerTurnDisplay;
     public TMP_Text movesLeftDisplay;
     public TMP_Text turnDisplay;
+    [SerializeField]
+    private TMP_Text dialogueBox;
+    public Transform sun;
 
     // Hidden variables
     [HideInInspector]
@@ -31,6 +35,15 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public bool inMenu = false;
     private bool onStartup = true;
+    [HideInInspector]
+    public string dialogueMSG;
+    [HideInInspector]
+    public float lightRotationAngle;
+    [HideInInspector]
+    public float extra90deg = 0;
+
+    [HideInInspector]
+    public List<Player> movedPlayers;
 
     MouseSelectable selected;
     [HideInInspector]
@@ -64,12 +77,14 @@ public class GameManager : MonoBehaviour
         lvl = FindObjectOfType<LevelData>();
         if (lvl)
         {
+            movedPlayers = new List<Player>();
             movesPerTurnDisplay.text = "";
             for (int i = 0; i < lvl.movesPerTurn; i++) movesPerTurnDisplay.text += "o ";
             movesLeftDisplay.text = "";
             for (int i = 0; i < lvl.MovesLeft; i++) movesLeftDisplay.text += "o ";
             foreach (TMP_Text txt in turnDisplay.GetComponentsInChildren<TMP_Text>())
-                txt.text = lvl.TurnsLeft + " Turn" + (lvl.TurnsLeft == 1 ? "" : "s");
+                txt.text = lvl.TurnsLeft + " Day" + (lvl.TurnsLeft == 1 ? "" : "s");
+            lightRotationAngle = 40;
         }
 
         if (scene.buildIndex > 0 && onStartup)
@@ -90,6 +105,13 @@ public class GameManager : MonoBehaviour
             if (!inMenu) MainMenu(true);
             else if (mainMenuScreen.gameObject.activeSelf) ExitMenu();
         }
+
+        if (sun.rotation == Quaternion.Euler(lightRotationAngle, 45, 0))
+        {
+            if (extra90deg > 0) { extra90deg--; lightRotationAngle += 90; lightRotationAngle %= 360; }
+        }
+        else
+            sun.rotation = Quaternion.RotateTowards(sun.rotation, Quaternion.Euler(lightRotationAngle, 45, 0), (extra90deg == 1 ? 1000 : 300) * Time.deltaTime);
     }
 
     public void PetrifyLonePlayers()
@@ -115,6 +137,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(string msg, bool complete = false)
     {
+        HideDialog();
         if (inMenu) return;
         if (complete)
         {
@@ -126,10 +149,12 @@ public class GameManager : MonoBehaviour
         mainMenuScreen.gameObject.SetActive(false);
         gameOverScreen.gameObject.SetActive(true);
         gameOverScreen.Find("GameOverMSG").GetComponent<TMP_Text>().text = msg;
+        turnDisplay.gameObject.SetActive(false);
     }
 
     public void MainMenu(bool byEsc = false)
     {
+        HideDialog();
         Button button = mainMenuScreen.Find("Continue").GetComponent<Button>();
         if (byEsc)
         {
@@ -139,13 +164,22 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            turnDisplay.gameObject.SetActive(false);
             mainMenuScreen.Find("EscToReturn").gameObject.SetActive(false);
             button.GetComponentInChildren<TMP_Text>().text = "Continue";
             if (completedLevels == 0)
+            {
                 button.interactable = false;
+                mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Start";
+            }
             else
+            {
                 button.interactable = true;
+                mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Restart";
+            }
         }
+        if (completedLevels >= SceneManager.sceneCount)
+            mainMenuScreen.Find("ThxForPlaying").gameObject.SetActive(true);
         inMenu = true;
         mainMenuScreen.gameObject.SetActive(true);
         gameOverScreen.gameObject.SetActive(false);
@@ -156,6 +190,7 @@ public class GameManager : MonoBehaviour
         inMenu = false;
         mainMenuScreen.gameObject.SetActive(false);
         gameOverScreen.gameObject.SetActive(false);
+        turnDisplay.gameObject.SetActive(true);
     }
 
     public void Reload()
@@ -169,9 +204,27 @@ public class GameManager : MonoBehaviour
         else LoadLatestLevel();
     }
 
-    public void LoadLatestLevel() => SceneManager.LoadScene(completedLevels + 1);
+    public void LoadLatestLevel()
+    {
+        if (completedLevels >= SceneManager.sceneCount)
+        {
+            MainMenu();
+        }
+        else SceneManager.LoadScene(completedLevels + 1);
+    }
 
     public void Quit()
         => Application.Quit();
 
+    public void HideDialog()
+    {
+        dialogueMSG = "";
+        dialogueBox.transform.parent.gameObject.SetActive(false);
+    }
+    public void ShowDialog(string msg)
+    {
+        dialogueMSG = msg;
+        dialogueBox.text = msg;
+        dialogueBox.transform.parent.gameObject.SetActive(true);
+    }
 }

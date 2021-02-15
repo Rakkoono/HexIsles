@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -34,9 +35,10 @@ public class LevelData : MonoBehaviour
         {
             turnsLeft = value;
             if (turnsLeft <= 0)
-                GameManager.instance.GameOver("Out of turns!");
+                GameManager.instance.GameOver("Out of time!");
             foreach (TMP_Text txt in GameManager.instance.turnDisplay.GetComponentsInChildren<TMP_Text>())
-                txt.text = TurnsLeft + " Turn" + (TurnsLeft == 1 ? "" : "s");
+                txt.text = TurnsLeft + " Day" + (TurnsLeft == 1 ? "" : "s");
+            GameManager.instance.movedPlayers = new List<Player>();
         }
     }
 

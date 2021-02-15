@@ -49,7 +49,7 @@ public class Player : MouseSelectable
             return;
         }
 
-        if (!enabled || GameManager.instance.inMenu) return;
+        if (!enabled || GameManager.instance.inMenu || GameManager.instance.movedPlayers.Contains(this)) return;
         // find and highlight possible moves
         switch (moveSet)
         {
@@ -108,6 +108,13 @@ public class Player : MouseSelectable
         targetPosition = HexGrid.GridToWorldPos(target.position) + new Vector3(0, (target.height + HexGrid.GetPlayersAt(target.position, true).Length) * .5f, 0);
         position = target.position;
 
+        GameManager.instance.movedPlayers.Add(this);
+
         GameManager.instance.lvl.MovesLeft--;
+
+        GameManager.instance.lightRotationAngle += 180 / GameManager.instance.lvl.movesPerTurn;
+        GameManager.instance.lightRotationAngle %= 360;
+        if (GameManager.instance.lightRotationAngle > 180)
+            GameManager.instance.extra90deg += 2;
     }
 }
