@@ -109,3 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27e628dda9878c4c8aede7e76fb020f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialColor: {r: 0, g: 0, b: 0, a: 0}
+  rend: {fileID: 0}
+  moveSet: 1
+  height: 1
+  position: {x: 0, y: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  validMoves: []

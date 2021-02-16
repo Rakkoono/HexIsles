@@ -22,28 +22,30 @@ public class GameManager : MonoBehaviour
     public TMP_Text movesLeftDisplay;
     public TMP_Text turnDisplay;
     [SerializeField]
-    private TMP_Text dialogueBox;
+    private TMP_Text dialogBox;
     public Transform sun;
+
+    public string[] outOfTurnsMSG;
+    public string[] allPetrifiedMSG;
+    public string[] levelCompleteMSG;
 
     // Hidden variables
     [HideInInspector]
     public LevelData lvl;
-    [HideInInspector]
     public int completedLevels = 0;
     [HideInInspector]
     public HexField[] coloredFields;
     [HideInInspector]
     public bool inMenu = false;
-    private bool onStartup = true;
+    private bool onStartup = true, showUseSigns = true;
     [HideInInspector]
-    public string dialogueMSG;
+    public Sign currentSign;
     [HideInInspector]
-    public float lightRotationAngle;
+    private int dialogPage = 0;
     [HideInInspector]
-    public float extra90deg = 0;
-
+    public Player[] players;
     [HideInInspector]
-    public List<Player> movedPlayers;
+    public List<Player> playersMoved;
 
     MouseSelectable selected;
     [HideInInspector]
@@ -53,7 +55,7 @@ public class GameManager : MonoBehaviour
         get => selected;
         set
         {
-            if (selected && selected.GetComponent<Player>()) selectedPlayer = selected.GetComponent<Player>();
+            if (selected) selectedPlayer = selected.GetComponent<Player>();
             else selectedPlayer = null;
             selected = value;
         }
@@ -77,15 +79,16 @@ public class GameManager : MonoBehaviour
         lvl = FindObjectOfType<LevelData>();
         if (lvl)
         {
-            movedPlayers = new List<Player>();
             movesPerTurnDisplay.text = "";
             for (int i = 0; i < lvl.movesPerTurn; i++) movesPerTurnDisplay.text += "o ";
             movesLeftDisplay.text = "";
             for (int i = 0; i < lvl.MovesLeft; i++) movesLeftDisplay.text += "o ";
             foreach (TMP_Text txt in turnDisplay.GetComponentsInChildren<TMP_Text>())
-                txt.text = lvl.TurnsLeft + " Day" + (lvl.TurnsLeft == 1 ? "" : "s");
-            lightRotationAngle = 40;
+                txt.text = lvl.TurnsLeft + " Turn" + (lvl.TurnsLeft == 1 ? "" : "s");
+            playersMoved = new List<Player>();
+            players = FindObjectsOfType<Player>();
         }
+
 
         if (scene.buildIndex > 0 && onStartup)
         { 
@@ -106,17 +109,11 @@ public class GameManager : MonoBehaviour
             else if (mainMenuScreen.gameObject.activeSelf) ExitMenu();
         }
 
-        if (sun.rotation == Quaternion.Euler(lightRotationAngle, 45, 0))
-        {
-            if (extra90deg > 0) { extra90deg--; lightRotationAngle += 90; lightRotationAngle %= 360; }
-        }
-        else
-            sun.rotation = Quaternion.RotateTowards(sun.rotation, Quaternion.Euler(lightRotationAngle, 45, 0), (extra90deg == 1 ? 1000 : 300) * Time.deltaTime);
+        sun.RotateAround(transform.position, Vector3.up, 8 * Time.deltaTime);
     }
 
     public void PetrifyLonePlayers()
     {
-        Player[] players = FindObjectsOfType<Player>();
         foreach (Player p in players)
         {
             if (HexGrid.GetPlayersAt(p.position, false).Length > 1) continue;
@@ -139,17 +136,17 @@ public class GameManager : MonoBehaviour
     {
         HideDialog();
         if (inMenu) return;
-        if (complete)
-        {
+        if (complete && completedLevels == SceneManager.GetActiveScene().buildIndex - 1)
             completedLevels++;
+        if (completedLevels >= SceneManager.GetActiveScene().buildIndex)
             gameOverScreen.Find("Continue").GetComponent<Button>().interactable = true;
-        }
         else gameOverScreen.Find("Continue").GetComponent<Button>().interactable = false;
         inMenu = true;
         mainMenuScreen.gameObject.SetActive(false);
         gameOverScreen.gameObject.SetActive(true);
         gameOverScreen.Find("GameOverMSG").GetComponent<TMP_Text>().text = msg;
         turnDisplay.gameObject.SetActive(false);
+        movesPerTurnDisplay.gameObject.SetActive(false);
     }
 
     public void MainMenu(bool byEsc = false)
@@ -165,9 +162,10 @@ public class GameManager : MonoBehaviour
         else
         {
             turnDisplay.gameObject.SetActive(false);
+            movesPerTurnDisplay.gameObject.SetActive(false);
             mainMenuScreen.Find("EscToReturn").gameObject.SetActive(false);
             button.GetComponentInChildren<TMP_Text>().text = "Continue";
-            if (completedLevels == 0)
+            if (completedLevels == 0 || completedLevels == SceneManager.sceneCount - 1)
             {
                 button.interactable = false;
                 mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Start";
@@ -178,7 +176,7 @@ public class GameManager : MonoBehaviour
                 mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Restart";
             }
         }
-        if (completedLevels >= SceneManager.sceneCount)
+        if (SceneManager.sceneCount != 1 && completedLevels >= SceneManager.sceneCount - 1)
             mainMenuScreen.Find("ThxForPlaying").gameObject.SetActive(true);
         inMenu = true;
         mainMenuScreen.gameObject.SetActive(true);
@@ -187,10 +185,18 @@ public class GameManager : MonoBehaviour
 
     public void ExitMenu()
     {
+        if (mainMenuScreen.gameObject.activeSelf && showUseSigns)
+        {
+            showUseSigns = false;
+            ShowDialog("[Click on Signs to read them]");
+        }
+
         inMenu = false;
         mainMenuScreen.gameObject.SetActive(false);
         gameOverScreen.gameObject.SetActive(false);
+        movesPerTurnDisplay.gameObject.SetActive(true);
         turnDisplay.gameObject.SetActive(true);
+
     }
 
     public void Reload()
@@ -199,17 +205,14 @@ public class GameManager : MonoBehaviour
         => SceneManager.LoadScene(1);
     public void LoadNextLevel()
     {
-        if (completedLevels >= SceneManager.GetActiveScene().buildIndex + 1)
+        if (completedLevels >= SceneManager.GetActiveScene().buildIndex && completedLevels < SceneManager.sceneCount - 1)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         else LoadLatestLevel();
     }
 
     public void LoadLatestLevel()
     {
-        if (completedLevels >= SceneManager.sceneCount)
-        {
-            MainMenu();
-        }
+        if (completedLevels >= SceneManager.sceneCount - 1) MainMenu(); 
         else SceneManager.LoadScene(completedLevels + 1);
     }
 
@@ -218,13 +221,33 @@ public class GameManager : MonoBehaviour
 
     public void HideDialog()
     {
-        dialogueMSG = "";
-        dialogueBox.transform.parent.gameObject.SetActive(false);
+        dialogPage = 0;
+        dialogBox.transform.parent.gameObject.SetActive(false);
     }
-    public void ShowDialog(string msg)
+
+    public void ShowDialog(Sign sign)
     {
-        dialogueMSG = msg;
-        dialogueBox.text = msg;
-        dialogueBox.transform.parent.gameObject.SetActive(true);
+        if (sign == null && currentSign == null)
+        {
+            HideDialog();
+            return;
+        }
+        if (sign != null && sign != currentSign)
+            dialogPage = 0;
+        dialogPage++;
+        if (sign) currentSign = sign;
+        if (dialogPage > currentSign.dialog.Length) HideDialog();
+        else
+        {
+            dialogBox.text = currentSign.dialog[dialogPage - 1];
+            dialogBox.transform.parent.gameObject.SetActive(true);
+        }
     }
+    public void ShowDialog(string dialog)
+    {
+        HideDialog();
+        dialogBox.text = dialog;
+        dialogBox.transform.parent.gameObject.SetActive(true);
+    }
+    public void ShowDialog() => ShowDialog(sign: null);
 }

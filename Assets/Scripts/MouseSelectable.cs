@@ -44,6 +44,12 @@ public class MouseSelectable : MonoBehaviour
             rend.material.SetColor("_Color", initialColor + GameManager.instance.selectionTint);
             OnSelect();
         }
+        else
+        {
+            GameManager.instance.Selected = null;
+            ResetColor();
+            OnDeselect();
+        }
     }
 
     private void ResetColor()

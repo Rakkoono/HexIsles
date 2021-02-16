@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelData : MonoBehaviour
 {
@@ -18,12 +19,7 @@ public class LevelData : MonoBehaviour
         set
         {
             movesLeft = value;
-            if (movesLeft <= 0)
-            {
-                TurnsLeft--;
-                movesLeft = movesPerTurn;
-                GameManager.instance.PetrifyLonePlayers();
-            }
+            if (movesLeft <= 0) TurnsLeft--;
             GameManager.instance.movesLeftDisplay.text = "";
             for (int i = 0; i < movesLeft; i++) GameManager.instance.movesLeftDisplay.text += "o ";
         }
@@ -34,11 +30,12 @@ public class LevelData : MonoBehaviour
         set
         {
             turnsLeft = value;
-            if (turnsLeft <= 0)
-                GameManager.instance.GameOver("Out of time!");
+            movesLeft = movesPerTurn;
+            GameManager.instance.playersMoved = new List<Player>();
+            if (SceneManager.GetActiveScene().buildIndex > 2)
+                GameManager.instance.PetrifyLonePlayers();
             foreach (TMP_Text txt in GameManager.instance.turnDisplay.GetComponentsInChildren<TMP_Text>())
-                txt.text = TurnsLeft + " Day" + (TurnsLeft == 1 ? "" : "s");
-            GameManager.instance.movedPlayers = new List<Player>();
+                txt.text = TurnsLeft + " Turn" + (TurnsLeft == 1 ? "" : "s");
         }
     }
 

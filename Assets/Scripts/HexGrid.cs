@@ -42,7 +42,6 @@ public class HexGrid : MonoBehaviour
     }
 
     // Debugging method
-    //[InitializeOnLoadMethod]
     public static void FindAndInitializeInstance()
     {
         Instance = FindObjectOfType<HexGrid>();
@@ -50,9 +49,10 @@ public class HexGrid : MonoBehaviour
     }
     private void Start()
     {
-        if (!GameManager.instance) SceneManager.LoadScene(0);
+        if (!GameManager.instance) { SceneManager.LoadScene(0); return; }
         Initialize();
-        foreach (Player p in FindObjectsOfType<Player>()) p.position = WorldToGridPos(p.transform.position);
+        foreach (Player p in GameManager.instance.players)
+            p.position = WorldToGridPos(p.transform.position);
     }
 
     [ContextMenu("Reload")]
@@ -150,7 +150,13 @@ public class HexGrid : MonoBehaviour
         => Instance.GetComponentsInChildren<HexField>().FirstOrDefault(f => f.position == pos);
 
     public static Player[] GetPlayersAt(Vector2Int pos, bool includePetrified = true)
-        => FindObjectsOfType<Player>().Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
+    {
+        if (GameManager.instance)
+            return GameManager.instance.players.Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
+        else
+            return FindObjectsOfType<Player>().Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
+
+    }
 
 
     public static Vector2Int[] GetAdjacentFields(Vector2Int pos, bool OnlyExisting = true)
