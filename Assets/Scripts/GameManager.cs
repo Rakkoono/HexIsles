@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,12 +19,17 @@ public class GameManager : MonoBehaviour
     private Transform mainMenuScreen;
     [SerializeField]
     private Transform gameOverScreen;
+    [SerializeField]
+    private Transform creditsScreen;
     public TMP_Text movesPerTurnDisplay;
     public TMP_Text movesLeftDisplay;
     public TMP_Text turnDisplay;
     [SerializeField]
-    private TMP_Text dialogBox;
+    private GameObject dialogBox;
+    [SerializeField]
+    private TMP_Text[] dialogBoxLines = new TMP_Text[3];
     public Transform sun;
+    public int levelCount = 10;
 
     public string[] outOfTurnsMSG;
     public string[] allPetrifiedMSG;
@@ -32,6 +38,7 @@ public class GameManager : MonoBehaviour
     // Hidden variables
     [HideInInspector]
     public LevelData lvl;
+    [HideInInspector]
     public int completedLevels = 0;
     [HideInInspector]
     public HexField[] coloredFields;
@@ -105,8 +112,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!inMenu) MainMenu(true);
-            else if (mainMenuScreen.gameObject.activeSelf) ExitMenu();
+            if (!mainMenuScreen.gameObject.activeSelf && !gameOverScreen.gameObject.activeSelf) MainMenu(true, creditsScreen.gameObject.activeSelf);
+            else if (mainMenuScreen.Find("EscToReturn").gameObject.activeSelf) ExitMenu();
         }
 
         sun.RotateAround(transform.position, Vector3.up, 8 * Time.deltaTime);
@@ -119,7 +126,11 @@ public class GameManager : MonoBehaviour
             if (HexGrid.GetPlayersAt(p.position, false).Length > 1) continue;
             bool playersNearby = false;
             foreach (Vector2Int f in HexGrid.GetAdjacentFields(p.position))
-                if (HexGrid.GetPlayersAt(f, false).Length > 0) { playersNearby = true; break; }
+                if (HexGrid.GetPlayersAt(f, false).Length > 0)
+                {
+                    playersNearby = true;
+                    break;
+                }
             if (playersNearby) continue;
             Petrify(p);
         }
@@ -134,6 +145,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(string msg, bool complete = false)
     {
+        if (selected && selected.GetComponent<Player>()) selected.OnMouseDown();
         HideDialog();
         if (inMenu) return;
         if (complete && completedLevels == SceneManager.GetActiveScene().buildIndex - 1)
@@ -149,49 +161,71 @@ public class GameManager : MonoBehaviour
         movesPerTurnDisplay.gameObject.SetActive(false);
     }
 
-    public void MainMenu(bool byEsc = false)
+    public void MainMenu(bool byEsc, bool fromCredits)
     {
+
+        if (selected && selected.GetComponent<Player>()) selected.OnMouseDown();
         HideDialog();
-        Button button = mainMenuScreen.Find("Continue").GetComponent<Button>();
-        if (byEsc)
+        if (!fromCredits)
         {
-            mainMenuScreen.Find("EscToReturn").gameObject.SetActive(true);
-            button.GetComponentInChildren<TMP_Text>().text = "Reset";
-            button.interactable = true;
-        }
-        else
-        {
-            turnDisplay.gameObject.SetActive(false);
-            movesPerTurnDisplay.gameObject.SetActive(false);
-            mainMenuScreen.Find("EscToReturn").gameObject.SetActive(false);
-            button.GetComponentInChildren<TMP_Text>().text = "Continue";
-            if (completedLevels == 0 || completedLevels == SceneManager.sceneCount - 1)
+            Button button = mainMenuScreen.Find("Continue").GetComponent<Button>();
+            if (byEsc)
             {
-                button.interactable = false;
-                mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Start";
+                mainMenuScreen.Find("EscToReturn").gameObject.SetActive(true);
+                mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Restart";
+                button.GetComponentInChildren<TMP_Text>().text = "Reset";
+                button.interactable = true;
             }
             else
             {
-                button.interactable = true;
-                mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Restart";
+                turnDisplay.gameObject.SetActive(false);
+                movesPerTurnDisplay.gameObject.SetActive(false);
+                mainMenuScreen.Find("EscToReturn").gameObject.SetActive(false);
+                button.GetComponentInChildren<TMP_Text>().text = "Continue";
+                if (completedLevels == 0 || completedLevels >= levelCount)
+                {
+                    button.interactable = false;
+                    mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Start";
+                }
+                else
+                {
+                    button.interactable = true;
+                    mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = "Restart";
+                }
             }
+            if (completedLevels >= levelCount) Credits();
         }
-        if (SceneManager.sceneCount != 1 && completedLevels >= SceneManager.sceneCount - 1)
+
+
+        if (completedLevels == levelCount)
             mainMenuScreen.Find("ThxForPlaying").gameObject.SetActive(true);
         inMenu = true;
+        creditsScreen.gameObject.SetActive(false);
         mainMenuScreen.gameObject.SetActive(true);
         gameOverScreen.gameObject.SetActive(false);
+    }
+    public void MainMenu() => MainMenu(false, false);
+
+    public void Credits()
+    {
+        inMenu = true;
+        creditsScreen.gameObject.SetActive(true);
+        mainMenuScreen.gameObject.SetActive(false);
+        gameOverScreen.gameObject.SetActive(false);
+
     }
 
     public void ExitMenu()
     {
-        if (mainMenuScreen.gameObject.activeSelf && showUseSigns)
+        if (SceneManager.GetActiveScene().buildIndex > 0 && mainMenuScreen.gameObject.activeSelf && showUseSigns)
         {
             showUseSigns = false;
-            ShowDialog("[Click on Signs to read them]");
+            HideDialog();
+            ShowDialog("\nClick on Signs to read them");
         }
 
         inMenu = false;
+        creditsScreen.gameObject.SetActive(false);
         mainMenuScreen.gameObject.SetActive(false);
         gameOverScreen.gameObject.SetActive(false);
         movesPerTurnDisplay.gameObject.SetActive(true);
@@ -205,14 +239,14 @@ public class GameManager : MonoBehaviour
         => SceneManager.LoadScene(1);
     public void LoadNextLevel()
     {
-        if (completedLevels >= SceneManager.GetActiveScene().buildIndex && completedLevels < SceneManager.sceneCount - 1)
+        if (completedLevels >= SceneManager.GetActiveScene().buildIndex && completedLevels < levelCount)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         else LoadLatestLevel();
     }
 
     public void LoadLatestLevel()
     {
-        if (completedLevels >= SceneManager.sceneCount - 1) MainMenu(); 
+        if (completedLevels == levelCount) MainMenu(); 
         else SceneManager.LoadScene(completedLevels + 1);
     }
 
@@ -222,7 +256,7 @@ public class GameManager : MonoBehaviour
     public void HideDialog()
     {
         dialogPage = 0;
-        dialogBox.transform.parent.gameObject.SetActive(false);
+        dialogBox.SetActive(false);
     }
 
     public void ShowDialog(Sign sign)
@@ -236,18 +270,15 @@ public class GameManager : MonoBehaviour
             dialogPage = 0;
         dialogPage++;
         if (sign) currentSign = sign;
-        if (dialogPage > currentSign.dialog.Length) HideDialog();
-        else
-        {
-            dialogBox.text = currentSign.dialog[dialogPage - 1];
-            dialogBox.transform.parent.gameObject.SetActive(true);
-        }
+        if (dialogPage >= currentSign.dialog.Length) HideDialog();
+        else ShowDialog(currentSign.dialog[dialogPage]);
     }
     public void ShowDialog(string dialog)
     {
-        HideDialog();
-        dialogBox.text = dialog;
-        dialogBox.transform.parent.gameObject.SetActive(true);
+        string[] lines = dialog.Split('\n');
+        for (int i = 0; i < dialogBoxLines.Length; i++)
+            dialogBoxLines[i].text = lines.Length > i ? lines[i] : "";
+        dialogBox.SetActive(true);
     }
     public void ShowDialog() => ShowDialog(sign: null);
 }

@@ -27,7 +27,8 @@ public class Player : MouseSelectable
     public void AdjustPosition()
     {
         position = HexGrid.WorldToGridPos(transform.position);
-        transform.position = HexGrid.GridToWorldPos(position) + .5f * HexGrid.GetFieldAt(position).height * Vector3.up;
+        transform.position = HexGrid.GridToWorldPos(position) + (.5f * (HexGrid.GetFieldAt(position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
+        transform.localScale = new Vector3(transform.localScale.x, (float)height / 2, transform.localScale.z);
     }
 
     private void Update()
@@ -74,9 +75,9 @@ public class Player : MouseSelectable
         switch (moveSet)
         {
             case MoveSet.AdjacentFields:
-                jumpHeight = HexGrid.GetFieldAt(position).height;
+                jumpHeight = HexGrid.GetFieldAt(position).height + 1;
                 foreach (Player p in HexGrid.GetPlayersAt(position, true))
-                    if (p.transform.position.y <= transform.position.y) jumpHeight += p.height;
+                    if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
                 (validMoves, GameManager.instance.coloredFields) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
                 break;
         }
@@ -93,7 +94,10 @@ public class Player : MouseSelectable
             testedMoves.Add(move);
 
             HexField field = HexGrid.GetFieldAt(move);
-            if (!field || field.height > jumpHeight)
+            int height = field ? field.height : 0;
+            foreach (Player p in HexGrid.GetPlayersAt(move, true))
+                height += p.height;
+            if (!field || height > jumpHeight)
                 continue;
             validMoves.Add(move);
             coloredFields.Add(field);
@@ -112,7 +116,9 @@ public class Player : MouseSelectable
     public void Move(HexField target)
     {
         if (!enabled) return;
-        targetPosition = HexGrid.GridToWorldPos(target.position) + new Vector3(0, (target.height + HexGrid.GetPlayersAt(target.position, true).Length) * .5f, 0);
+        targetPosition = HexGrid.GridToWorldPos(target.position) + (.5f * (HexGrid.GetFieldAt(target.position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
+        foreach (Player p in HexGrid.GetPlayersAt(target.position))
+            targetPosition.y += p.height * .5f;
         foreach (Player p in HexGrid.GetPlayersAt(position))
             if (p != this && p.transform.position.y > transform.position.y)
             {
@@ -125,6 +131,6 @@ public class Player : MouseSelectable
         GameManager.instance.playersMoved.Add(this);
         GameManager.instance.lvl.MovesLeft--;
         justMoved = true;
-        OnMouseDown();
+        //OnMouseDown();
     }
 }
