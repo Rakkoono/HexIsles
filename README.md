@@ -1,7 +1,6 @@
 # HexIsle
 
 This is my Submission to Brackeys Game Jam 2021.1.
-Please leave some feedback in the comments.
 
 ## CONTROLS:
 Zoom: Scroll wheel / Arrow keys<br/>
