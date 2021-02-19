@@ -1,4 +1,4 @@
-# HexIsle
+# HexIsles
 
 This is my Submission to Brackeys Game Jam 2021.1.
 
