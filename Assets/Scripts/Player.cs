@@ -34,25 +34,25 @@ public class Player : MouseSelectable
     private void Update()
     {
         if (transform.position != targetPosition)
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, GameManager.instance.playerMovementSpeed * 10f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Manager.Players.playerMovementSpeed * 10f * Time.deltaTime);
         else 
         {
             if (CompareTag("Petrified") && enabled == true)
             {
                 enabled = false;
-                if (!GameManager.instance.players.Any(p => p.enabled))
-                    GameManager.instance.GameOver(GameManager.instance.allPetrifiedMSG[Random.Range(0, GameManager.instance.allPetrifiedMSG.Length)]);
+                if (!Manager.Players.players.Any(p => p.enabled))
+                    Manager.GUI.GameOver(Manager.GUI.allPetrifiedMSG[Random.Range(0, Manager.GUI.allPetrifiedMSG.Length)]);
             }
             if (justMoved)
             {
-                if (GameManager.instance.players.All(p => GameManager.instance.playersMoved.Contains(p)))
-                    GameManager.instance.lvl.TurnsLeft--;
+                if (Manager.Players.players.All(p => Manager.Players.moved.Contains(p)))
+                    Manager.Levels.current.TurnsLeft--;
 
-                if (GameManager.instance && GameManager.instance.lvl.targetPosition == position && GameManager.instance.lvl.playerType == moveSet && !CompareTag("Petrified"))
-                    GameManager.instance.GameOver(GameManager.instance.levelCompleteMSG[Random.Range(0, GameManager.instance.levelCompleteMSG.Length)], true);
+                if (Manager.Levels.current.targetPosition == position && Manager.Levels.current.playerType == moveSet && !CompareTag("Petrified"))
+                    Manager.GUI.GameOver(Manager.GUI.levelCompleteMSG[Random.Range(0, Manager.GUI.levelCompleteMSG.Length)], true);
 
-                if (GameManager.instance.lvl.turnsLeft <= 0)
-                    GameManager.instance.GameOver(GameManager.instance.outOfTurnsMSG[Random.Range(0, GameManager.instance.outOfTurnsMSG.Length)]);
+                if (Manager.Levels.current.TurnsLeft <= 0)
+                    Manager.GUI.GameOver(Manager.GUI.outOfTurnsMSG[Random.Range(0, Manager.GUI.outOfTurnsMSG.Length)]);
                 justMoved = false;
             }
         }
@@ -60,16 +60,16 @@ public class Player : MouseSelectable
 
     public override void OnSelect()
     {
-        if (GameManager.instance.selectedPlayer && GameManager.instance.selectedPlayer != this && GameManager.instance.selectedPlayer.validMoves.Contains(position) && position != GameManager.instance.selectedPlayer.position)
+        if (Manager.Players.selected && Manager.Players.selected != this && Manager.Players.selected.validMoves.Contains(position) && position != Manager.Players.selected.position)
         {
             HexField field = HexGrid.GetFieldAt(position);
 
-            GameManager.instance.Selected = GameManager.instance.selectedPlayer;
+            Manager.Players.SelectedObject = Manager.Players.selected;
             field.OnMouseDown();
             return;
         }
 
-        if (!enabled || GameManager.instance.inMenu || GameManager.instance.playersMoved.Contains(this)) return;
+        if (!enabled || Manager.GUI.inMenu || Manager.Players.moved.Contains(this)) return;
         // find and highlight possible moves
         int jumpHeight;
         switch (moveSet)
@@ -78,7 +78,7 @@ public class Player : MouseSelectable
                 jumpHeight = HexGrid.GetFieldAt(position).height + 1;
                 foreach (Player p in HexGrid.GetPlayersAt(position, true))
                     if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
-                (validMoves, GameManager.instance.coloredFields) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
+                (validMoves, Manager.Players.coloredFields) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
                 break;
         }
     }
@@ -101,21 +101,27 @@ public class Player : MouseSelectable
                 continue;
             validMoves.Add(move);
             coloredFields.Add(field);
-            field.rend.material.SetColor("_Color", field.initialColor + GameManager.instance.nextMoveTint);
+            field.rend.material.SetColor("_Color", field.initialColor + Manager.Players.nextMoveTint);
         }
         return (validMoves.ToArray(), coloredFields.ToArray());
     }
 
     public override void OnDeselect()
     {
-        if (GameManager.instance.selectedPlayer == this) GameManager.instance.selectedPlayer = null;
-        foreach (HexField field in GameManager.instance.coloredFields)
+        if (Manager.Players.selected == this) Manager.Players.selected = null;
+        foreach (HexField field in Manager.Players.coloredFields)
             field.rend.material.SetColor("_Color", field.initialColor);
     }
 
     public void Move(HexField target)
     {
         if (!enabled) return;
+
+        List<PlayerInfo> undo = new List<PlayerInfo>();
+        foreach (Player player in Manager.Players.players)
+            undo.Add(new PlayerInfo(player, player.transform.position, player.CompareTag("Petrified"), Manager.Players.moved.Contains(player)));
+        Manager.Players.undoList.Add(undo.ToArray());
+
         targetPosition = HexGrid.GridToWorldPos(target.position) + (.5f * (HexGrid.GetFieldAt(target.position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
         foreach (Player p in HexGrid.GetPlayersAt(target.position))
             targetPosition.y += p.height * .5f;
@@ -128,9 +134,9 @@ public class Player : MouseSelectable
 
         position = target.position;
 
-        GameManager.instance.playersMoved.Add(this);
-        GameManager.instance.lvl.MovesLeft--;
+        
+        Manager.Players.moved.Add(this);
+        Manager.Levels.current.MovesLeft--;
         justMoved = true;
-        //OnMouseDown();
     }
 }

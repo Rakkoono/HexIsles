@@ -18,35 +18,35 @@ public class MouseSelectable : MonoBehaviour
     private void OnMouseEnter()
     {
         // highlight object
-        if (GameManager.instance && GameManager.instance.Selected != this && !GameManager.instance.coloredFields.Contains(this))
-            rend.material.SetColor("_Color", initialColor + GameManager.instance.highlightTint);
+        if (Manager.Players && Manager.Players.SelectedObject != this && !Manager.Players.coloredFields.Contains(this))
+            rend.material.SetColor("_Color", initialColor + Manager.Players.highlightTint);
     }
 
     private void OnMouseExit()
     {
         // de-highlight object
-        if (GameManager.instance.Selected != this && !GameManager.instance.coloredFields.Contains(this))
+        if (Manager.Players.SelectedObject != this && !Manager.Players.coloredFields.Contains(this))
             ResetColor();
     }
 
     public void OnMouseDown()
     {
-        if (GameManager.instance.Selected != this)
+        if (Manager.Players.SelectedObject != this)
         {
             // deselect last selected object, select this object
-            if (GameManager.instance.Selected)
+            if (Manager.Players.SelectedObject)
             {
-                GameManager.instance.Selected.ResetColor();
-                GameManager.instance.Selected.OnDeselect();
+                Manager.Players.SelectedObject.ResetColor();
+                Manager.Players.SelectedObject.OnDeselect();
             }
 
-            GameManager.instance.Selected = this;
-            rend.material.SetColor("_Color", initialColor + GameManager.instance.selectionTint);
+            Manager.Players.SelectedObject = this;
+            rend.material.SetColor("_Color", initialColor + Manager.Players.selectionTint);
             OnSelect();
         }
         else
         {
-            GameManager.instance.Selected = null;
+            Manager.Players.SelectedObject = null;
             ResetColor();
             OnDeselect();
         }

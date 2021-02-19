@@ -49,9 +49,9 @@ public class HexGrid : MonoBehaviour
     }
     private void Start()
     {
-        if (!GameManager.instance) { SceneManager.LoadScene(0); return; }
+        if (!FindObjectOfType<Manager>()) { SceneManager.LoadScene(0); return; }
         Initialize();
-        foreach (Player p in GameManager.instance.players)
+        foreach (Player p in Manager.Players.players)
             p.position = WorldToGridPos(p.transform.position);
     }
 
@@ -151,8 +151,8 @@ public class HexGrid : MonoBehaviour
 
     public static Player[] GetPlayersAt(Vector2Int pos, bool includePetrified = true)
     {
-        if (GameManager.instance)
-            return GameManager.instance.players.Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
+        if (Manager.Players)
+            return Manager.Players.players.Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
         else
             return FindObjectsOfType<Player>().Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
 

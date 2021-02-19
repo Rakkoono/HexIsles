@@ -85,8 +85,10 @@ namespace LowPolyWater
             //If there isn't a mesh located under assets, create the mesh
             if (m == null)
             {
-                m = new Mesh();
-                m.name = plane.name;
+                m = new Mesh
+                {
+                    name = plane.name
+                };
 
                 int hCount2 = widthSegments + 1;
                 int vCount2 = heightSegments + 1;

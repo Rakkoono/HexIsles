@@ -14,7 +14,7 @@ public class CameraHandler : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance.inMenu)
+        if (Manager.GUI.inMenu)
         {
             Camera.main.transform.RotateAround(rotationCenter.position, Vector3.up, .1f * Time.deltaTime * rotationSpeed);
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 6, Time.deltaTime);
