@@ -23,6 +23,9 @@ public class Manager : MonoBehaviour
         Players = GetComponent<PlayerManager>();
         Levels = GetComponent<LevelManager>();
 
+        if (PlayerPrefs.HasKey("completedLevels"))
+            Levels.completed = PlayerPrefs.GetInt("completedLevels");
+
         SceneManager.sceneLoaded += OnLoadCallback;
         Levels.Load(1);
     }
@@ -54,4 +57,10 @@ public class Manager : MonoBehaviour
     }
 
     private void Update() => sun.RotateAround(transform.position, Vector3.up, 8 * Time.deltaTime);
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetInt("completedLevels", Levels.completed);
+        PlayerPrefs.Save();
+    }
 }

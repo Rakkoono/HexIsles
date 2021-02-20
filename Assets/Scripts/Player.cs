@@ -10,7 +10,9 @@ public class Player : MouseSelectable
     [SerializeField]
     MoveSet moveSet = MoveSet.AdjacentFields;
     [SerializeField, Range(1, 5)]
-    int height;
+    int height = 1;
+    [SerializeField, Range(1, 3)]
+    int jump = 1;
     public Vector2Int position;
 
     // Hidden variables
@@ -26,6 +28,7 @@ public class Player : MouseSelectable
     [ContextMenu("Adjust Position")]
     public void AdjustPosition()
     {
+        FindObjectOfType<HexGrid>().Initialize();
         position = HexGrid.WorldToGridPos(transform.position);
         transform.position = HexGrid.GridToWorldPos(position) + (.5f * (HexGrid.GetFieldAt(position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
         transform.localScale = new Vector3(transform.localScale.x, (float)height / 2, transform.localScale.z);
@@ -35,7 +38,7 @@ public class Player : MouseSelectable
     {
         if (transform.position != targetPosition)
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Manager.Players.playerMovementSpeed * 10f * Time.deltaTime);
-        else 
+        else
         {
             if (CompareTag("Petrified") && enabled == true)
             {
@@ -60,7 +63,7 @@ public class Player : MouseSelectable
 
     public override void OnSelect()
     {
-        if (Manager.Players.coloredObjects.Contains(this) && position != Manager.Players.selected.position)
+        if (Manager.Players.selected && Manager.Players.coloredObjects.Contains(this) && position != Manager.Players.selected.position)
         {
             HexField field = HexGrid.GetFieldAt(position);
 
@@ -75,7 +78,7 @@ public class Player : MouseSelectable
         switch (moveSet)
         {
             case MoveSet.AdjacentFields:
-                jumpHeight = HexGrid.GetFieldAt(position).height + 1;
+                jumpHeight = HexGrid.GetFieldAt(position).height + jump;
                 foreach (Player p in HexGrid.GetPlayersAt(position, true))
                     if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
                 (validMoves, Manager.Players.coloredObjects) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);

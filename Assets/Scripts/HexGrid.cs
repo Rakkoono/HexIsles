@@ -66,8 +66,9 @@ public class HexGrid : MonoBehaviour
     [ContextMenu("Clear")]
     private void Clear()
     {
+        Initialize();
         // Destroy all fields
-        foreach (HexField field in GetComponentsInChildren<HexField>())//fields.Values)
+        foreach (HexField field in GetComponentsInChildren<HexField>())
         {
             if (field)
             {

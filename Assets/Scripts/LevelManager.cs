@@ -17,11 +17,7 @@ public class LevelManager : MonoBehaviour
         else Manager.GUI.Credits();
     }
 
-    public void LoadNext()
-    {
-        if (completed + 1 >= CurrentIndex)
-            Load(completed + 1);
-    }
+    public void LoadNext() => Load(CurrentIndex + 1);
 
     public void Quit() => Application.Quit();
 }

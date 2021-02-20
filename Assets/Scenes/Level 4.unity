@@ -2195,8 +2195,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909609291}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.886666, y: 0, z: 0.78749996}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: -1.886666, y: 0.25, z: 0.78749996}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1107083395}
   m_RootOrder: 11
@@ -2229,7 +2229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialColor: {r: 0, g: 0, b: 0, a: 0}
   rend: {fileID: 0}
-  height: 1
+  height: 2
   objects: []
   position: {x: 2, y: 5}
 --- !u!23 &909609295
@@ -2250,7 +2250,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b94beb2112bdcc84fadae4ca0dbf082e, type: 2}
+  - {fileID: 2100000, guid: 05c79b728cf6341449a0ca4f8be79264, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3428,8 +3428,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180744500}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.886666, y: 0.25, z: -0.78749996}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.886666, y: 1, z: -0.78749996}
+  m_LocalScale: {x: 1, y: 2.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1107083395}
   m_RootOrder: 9
@@ -3462,7 +3462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialColor: {r: 0, g: 0, b: 0, a: 0}
   rend: {fileID: 0}
-  height: 2
+  height: 5
   objects: []
   position: {x: 2, y: 3}
 --- !u!23 &1180744504
@@ -3483,7 +3483,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b94beb2112bdcc84fadae4ca0dbf082e, type: 2}
+  - {fileID: 2100000, guid: 05c79b728cf6341449a0ca4f8be79264, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5705,17 +5705,33 @@ PrefabInstance:
     - target: {fileID: 5825530068226176198, guid: a837af0478f0f35408e5f8f4b2ac2877,
         type: 3}
       propertyPath: dialog.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5825530068226176198, guid: a837af0478f0f35408e5f8f4b2ac2877,
         type: 3}
       propertyPath: dialog.Array.data[0]
-      value: 'Hint:
+      value: 'It''s funny how complicated they
 
-        As long as the Hexagons are on the same or
+        make these myths, huh?'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5825530068226176198, guid: a837af0478f0f35408e5f8f4b2ac2877,
+        type: 3}
+      propertyPath: dialog.Array.data[1]
+      value: 'For example are these hexes not supposed
 
-        adjacent
-        fields, their height difference doesn''t matter.'
+        to petrify when,
+        there is another Hex next to them,
+
+        but how high up the other Hex
+        is doesn''t matter.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5825530068226176198, guid: a837af0478f0f35408e5f8f4b2ac2877,
+        type: 3}
+      propertyPath: dialog.Array.data[2]
+      value: 'Of course, I don''t believe in this crap.
+
+        What a stupid concept
+        of loneliness is that?'
       objectReference: {fileID: 0}
     - target: {fileID: 7602511109071778054, guid: a837af0478f0f35408e5f8f4b2ac2877,
         type: 3}

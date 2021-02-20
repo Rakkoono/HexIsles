@@ -16,7 +16,7 @@ public class GUIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] lvlPreviews = new Sprite[10];
 
-    public TMP_Text movesPerTurnDisplay, movesLeftDisplay, turnDisplay;
+    public TMP_Text movesPerTurnDisplay, movesLeftDisplay, turnDisplay, turns;
 
     public string[] outOfTurnsMSG = new string[3], allPetrifiedMSG = new string[3], levelCompleteMSG = new string[3];
 
@@ -137,7 +137,7 @@ public class GUIManager : MonoBehaviour
     public void LevelSelect()
     {
         if (!mainMenuScreen.gameObject.activeSelf) MainMenu();
-        else if (creditsScreen.gameObject.activeSelf) mainMenuAnim.Play("CredtisOut");
+        else if (creditsScreen.gameObject.activeSelf) creditsAnim.Play("CreditsOut");
         if (levelSelectScreen.gameObject.activeSelf) levelSelectAnim.Play("LevelSelectOut");
         else
         {

@@ -11,8 +11,8 @@ public class PlayerManager : MonoBehaviour
     public Color highlightTint = new Color(40, 40, 40, 10);
     public Color selectionTint = new Color(80, 80, 80, 10);
     public Color nextMoveTint = new Color(100, 100, 40, 10);
-    public Color defaultColor = new Color(255, 78, 0);
     public Color petrifiedColor = new Color(120, 120, 120);
+    public Color defaultColor = new Color(255, 78, 0);
 
     // Hidden variables
     [HideInInspector]

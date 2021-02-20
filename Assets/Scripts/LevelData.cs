@@ -6,7 +6,6 @@ public class LevelData : MonoBehaviour
 {
     // Serialized variables
     public int turns = 1;
-    [SerializeField]
     private int turnsLeft = 1;
     public int movesPerTurn = 1;
     public Vector2Int targetPosition;
@@ -47,6 +46,8 @@ public class LevelData : MonoBehaviour
 
             foreach (TMP_Text txt in Manager.GUI.turnDisplay.GetComponentsInChildren<TMP_Text>())
                 txt.text = turnsLeft.ToString();
+            foreach (TMP_Text txt in Manager.GUI.turns.GetComponentsInChildren<TMP_Text>())
+                txt.text = turnsLeft == 1 ? "  Turn" : " Turns";
         }
     }
 }
