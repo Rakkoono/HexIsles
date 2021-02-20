@@ -1,6 +1,6 @@
 # HexIsles
 
-This is my Submission to Brackeys Game Jam 2021.1.
+This is my Submission to[Brackeys Game Jam](https://itch.io/jam/brackeys-5) 2021.1.
 
 ## CONTROLS:
 Zoom: Scroll wheel / Arrow keys<br/>
