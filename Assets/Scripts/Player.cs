@@ -60,7 +60,7 @@ public class Player : MouseSelectable
 
     public override void OnSelect()
     {
-        if (Manager.Players.selected && Manager.Players.selected != this && Manager.Players.selected.validMoves.Contains(position) && position != Manager.Players.selected.position)
+        if (Manager.Players.coloredObjects.Contains(this) && position != Manager.Players.selected.position)
         {
             HexField field = HexGrid.GetFieldAt(position);
 
@@ -78,16 +78,16 @@ public class Player : MouseSelectable
                 jumpHeight = HexGrid.GetFieldAt(position).height + 1;
                 foreach (Player p in HexGrid.GetPlayersAt(position, true))
                     if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
-                (validMoves, Manager.Players.coloredFields) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
+                (validMoves, Manager.Players.coloredObjects) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
                 break;
         }
     }
     
-    private static (Vector2Int[], HexField[]) GetAndColorValidMoves(Vector2Int[] moves, int jumpHeight)
+    private static (Vector2Int[], MouseSelectable[]) GetAndColorValidMoves(Vector2Int[] moves, int jumpHeight)
     {
         List<Vector2Int> testedMoves = new List<Vector2Int>();
         List<Vector2Int> validMoves = new List<Vector2Int>();
-        List<HexField> coloredFields = new List<HexField>();
+        List<MouseSelectable> coloredObjects = new List<MouseSelectable>();
         foreach (Vector2Int move in moves)
         {
             if (testedMoves.Contains(move)) continue;
@@ -100,17 +100,22 @@ public class Player : MouseSelectable
             if (!field || height > jumpHeight)
                 continue;
             validMoves.Add(move);
-            coloredFields.Add(field);
+            coloredObjects.Add(field);
             field.rend.material.SetColor("_Color", field.initialColor + Manager.Players.nextMoveTint);
+
+            Player[] players = HexGrid.GetPlayersAt(move);
+            coloredObjects.AddRange(players);
+            foreach (Player p in players)
+                p.rend.material.SetColor("_Color", p.initialColor + Manager.Players.nextMoveTint);
         }
-        return (validMoves.ToArray(), coloredFields.ToArray());
+        return (validMoves.ToArray(), coloredObjects.ToArray());
     }
 
     public override void OnDeselect()
     {
         if (Manager.Players.selected == this) Manager.Players.selected = null;
-        foreach (HexField field in Manager.Players.coloredFields)
-            field.rend.material.SetColor("_Color", field.initialColor);
+        foreach (MouseSelectable obj in Manager.Players.coloredObjects)
+            obj.rend.material.SetColor("_Color", obj.initialColor);
     }
 
     public void Move(HexField target)

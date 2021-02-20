@@ -18,14 +18,14 @@ public class MouseSelectable : MonoBehaviour
     private void OnMouseEnter()
     {
         // highlight object
-        if (Manager.Players && Manager.Players.SelectedObject != this && !Manager.Players.coloredFields.Contains(this))
+        if (Manager.Players && Manager.Players.SelectedObject != this && !Manager.Players.coloredObjects.Contains(this))
             rend.material.SetColor("_Color", initialColor + Manager.Players.highlightTint);
     }
 
     private void OnMouseExit()
     {
         // de-highlight object
-        if (Manager.Players.SelectedObject != this && !Manager.Players.coloredFields.Contains(this))
+        if (Manager.Players.SelectedObject != this && !Manager.Players.coloredObjects.Contains(this))
             ResetColor();
     }
 

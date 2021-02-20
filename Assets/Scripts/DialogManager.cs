@@ -14,7 +14,8 @@ public class DialogManager : MonoBehaviour
     public void Hide()
     {
         page = 0;
-        dialogBox.SetActive(false);
+        if (dialogBox.activeSelf)
+            Manager.GUI.dialogBoxAnim.Play("DialogBoxOut");
     }
 
     public void ShowFromSign(Sign sign)

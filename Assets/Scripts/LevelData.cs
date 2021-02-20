@@ -46,7 +46,7 @@ public class LevelData : MonoBehaviour
                 Manager.Players.PetrifyLonePlayers();
 
             foreach (TMP_Text txt in Manager.GUI.turnDisplay.GetComponentsInChildren<TMP_Text>())
-                txt.text = TurnsLeft + " Turn" + (TurnsLeft == 1 ? "" : "s");
+                txt.text = turnsLeft.ToString();
         }
     }
 }

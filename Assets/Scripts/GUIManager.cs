@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour
@@ -22,6 +21,13 @@ public class GUIManager : MonoBehaviour
     public string[] outOfTurnsMSG = new string[3], allPetrifiedMSG = new string[3], levelCompleteMSG = new string[3];
 
     private readonly int[] displayedLvls = new int[9];
+
+    [SerializeField]
+    private Animator creditsAnim, escToReturnAnim, gameOverAnim, levelSelectAnim, mainMenuAnim, gameUIAnim;
+    public Animator dialogBoxAnim;
+
+    [HideInInspector]
+    public bool zoomAfterMenu;
 
     [HideInInspector]
     private int lvlSelectPage;
@@ -58,7 +64,7 @@ public class GUIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z) && Input.GetKey(KeyCode.LeftControl)) Manager.Players.Undo();
 
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.Q) && Input.GetKey(KeyCode.LeftAlt))
         {
             Manager.Levels.completed = Manager.Levels.count;
             Manager.GUI.LevelSelect();
@@ -68,7 +74,7 @@ public class GUIManager : MonoBehaviour
     public void GameOver(string msg, bool complete = false)
     {
         if (inMenu) return;
-        ExitMenu();
+        Manager.Dialogs.Hide();
 
         if (Manager.Players.SelectedObject && Manager.Players.SelectedObject.GetComponent<Player>())
             Manager.Players.SelectedObject.OnMouseDown();
@@ -79,19 +85,22 @@ public class GUIManager : MonoBehaviour
         gameOverScreen.Find("Continue").GetComponent<Button>().interactable = Manager.Levels.completed >= Manager.Levels.CurrentIndex;
 
         inMenu = true;
-        mainMenuScreen.gameObject.SetActive(false);
+        gameUIAnim.Play("GameUIOut");
         gameOverScreen.gameObject.SetActive(true);
         gameOverScreen.Find("GameOverMSG").GetComponent<TMP_Text>().text = msg;
-        turnDisplay.gameObject.SetActive(false);
-        movesPerTurnDisplay.gameObject.SetActive(false);
     }
 
     public void MainMenu(bool byEsc)
     {
-        ExitMenu();
+        Manager.Dialogs.Hide();
+        if (levelSelectScreen.gameObject.activeSelf) levelSelectAnim.Play("LevelSelectOut");
+        if (creditsScreen.gameObject.activeSelf) creditsAnim.Play("CreditsOut");
+        if (gameOverScreen.gameObject.activeSelf) gameOverAnim.Play("GameOverOut");
+
         inMenu = true;
         mainMenuScreen.gameObject.SetActive(true);
 
+            if (gameUIAnim.gameObject.activeSelf) { gameUIAnim.Play("GameUIOut"); }
         if (Manager.Players.SelectedObject && Manager.Players.SelectedObject.GetComponent<Player>())
             Manager.Players.SelectedObject.OnMouseDown();
         if (byEsc)
@@ -103,10 +112,6 @@ public class GUIManager : MonoBehaviour
         }
         else
         {
-            turnDisplay.gameObject.SetActive(false);
-            movesPerTurnDisplay.gameObject.SetActive(false);
-
-            mainMenuScreen.Find("EscToReturn").gameObject.SetActive(false);
             if (Manager.Levels.completed == 0 || Manager.Levels.completed >= Manager.Levels.count)
                 mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = Manager.Levels.completed == 0 || Manager.Levels.completed >= Manager.Levels.completed ? "Start Game" : "Restart Game";
             mainMenuScreen.Find("Reset").GetComponent<Button>().interactable = false;
@@ -119,23 +124,22 @@ public class GUIManager : MonoBehaviour
 
     public void Credits()
     {
-        bool active = creditsScreen.gameObject.activeSelf;
-        ExitMenu();
-        MainMenu();
-        if (!active)
+        if (!mainMenuScreen.gameObject.activeSelf) MainMenu();
+        else if (levelSelectScreen.gameObject.activeSelf) levelSelectAnim.Play("LevelSelectOut");
+        if (creditsScreen.gameObject.activeSelf) creditsAnim.Play("CreditsOut");
+        else
         {
-            movesPerTurnDisplay.gameObject.SetActive(false);
-            turnDisplay.gameObject.SetActive(false);
+            if (gameUIAnim.gameObject.activeSelf) { gameUIAnim.Play("GameUIOut"); };
             creditsScreen.gameObject.SetActive(true);
         }
     }
 
     public void LevelSelect()
     {
-        bool active = levelSelectScreen.gameObject.activeSelf;
-        ExitMenu();
-        MainMenu();
-        if (!active)
+        if (!mainMenuScreen.gameObject.activeSelf) MainMenu();
+        else if (creditsScreen.gameObject.activeSelf) mainMenuAnim.Play("CredtisOut");
+        if (levelSelectScreen.gameObject.activeSelf) levelSelectAnim.Play("LevelSelectOut");
+        else
         {
             levelSelectScreen.gameObject.SetActive(true);
             if (Manager.GUI.LvlSelectPage == 0)
@@ -145,12 +149,16 @@ public class GUIManager : MonoBehaviour
     public void NextLevelSelectPage()
     {
         if ((LvlSelectPage + 1) * lvlDisplays.Length <= Manager.Levels.count)
+        {
             LvlSelectPage++;
+        }
     }
     public void BackLevelSelectPage()
     {
         if (LvlSelectPage > 0)
+        {
             LvlSelectPage--;
+        }
     }
     public void SelectLevel(int display) => Manager.Levels.Load(displayedLvls[display]);
 
@@ -160,13 +168,18 @@ public class GUIManager : MonoBehaviour
 
         inMenu = false;
 
-        levelSelectScreen.gameObject.SetActive(false);
-        creditsScreen.gameObject.SetActive(false);
+        if (levelSelectScreen.gameObject.activeSelf) levelSelectAnim.Play("LevelSelectOut");
+        if (creditsScreen.gameObject.activeSelf) creditsAnim.Play("CreditsOut");
 
-        mainMenuScreen.gameObject.SetActive(false);
-        gameOverScreen.gameObject.SetActive(false);
+        if (mainMenuScreen.gameObject.activeSelf) mainMenuAnim.Play("MainMenuOut");
+        if (gameOverScreen.gameObject.activeSelf) gameOverAnim.Play("GameOverOut");
+        if (mainMenuScreen.Find("EscToReturn").gameObject.activeSelf) escToReturnAnim.Play("EscToReturnOut");
 
-        movesPerTurnDisplay.gameObject.SetActive(true);
-        turnDisplay.gameObject.SetActive(true);
+        if (Manager.Levels.CurrentIndex > 0)
+        {
+            movesPerTurnDisplay.gameObject.SetActive(true);
+            gameUIAnim.gameObject.SetActive(true);
+        }
+        zoomAfterMenu = true;
     }
 }

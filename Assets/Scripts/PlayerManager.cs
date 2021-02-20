@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
 
     // Hidden variables
     [HideInInspector]
-    public HexField[] coloredFields;
+    public MouseSelectable[] coloredObjects;
     [HideInInspector]
     public Player[] players;
     [HideInInspector]
@@ -71,6 +71,9 @@ public class PlayerManager : MonoBehaviour
 
         Manager.Levels.current.MovesLeft++;
         undoList.Remove(undo);
+
+        if (Manager.Players.SelectedObject)
+            Manager.Players.SelectedObject.OnMouseDown();
 
         foreach (PlayerInfo p in undo)
         {

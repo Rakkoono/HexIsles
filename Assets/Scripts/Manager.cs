@@ -9,7 +9,7 @@ public class Manager : MonoBehaviour
 
     // Hidden variables
     private bool onStartup = true;
-    private bool showUseSigns = true;
+    public static bool showUseSigns = true;
     public static GUIManager GUI { get; private set; }
     public static DialogManager Dialogs { get; private set; }
     public static PlayerManager Players { get; private set; }
@@ -41,15 +41,7 @@ public class Manager : MonoBehaviour
             GUI.MainMenu();
             onStartup = false;
         }
-        else
-        {
-            GUI.ExitMenu();
-            if (showUseSigns && Levels.CurrentIndex == 1)
-            {
-                showUseSigns = false;
-                Dialogs.Show("\nClick on Signs to read them");
-            }
-        }
+        else GUI.ExitMenu();
 
         if (Levels.current)
         {

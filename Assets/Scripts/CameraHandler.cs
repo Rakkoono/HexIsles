@@ -20,6 +20,9 @@ public class CameraHandler : MonoBehaviour
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 6, Time.deltaTime);
             return;
         }
+        else if (Manager.GUI.zoomAfterMenu)
+            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 5, Time.deltaTime);
+
         // Pan on right mouse button
         if (Input.GetMouseButton(1))
         {
@@ -35,6 +38,7 @@ public class CameraHandler : MonoBehaviour
         // Zoom on mouse wheel and Arrow keys
         if (Input.GetAxis("Mouse ScrollWheel") != 0 || Input.GetAxis("Vertical") != 0)
         {
+            Manager.GUI.zoomAfterMenu = false;
             float axis = Input.GetAxis("Mouse ScrollWheel") != 0 ? Input.GetAxis("Mouse ScrollWheel") : Input.GetAxis("Vertical") / 5;
             float size = Camera.main.orthographicSize + -axis * Time.deltaTime * zoomSpeed * 4;
             if (size > 8) size = 8;

@@ -598,11 +598,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Template_3D
   metroPackageVersion: 
-  metroCertificatePath: 
+  metroCertificatePath: C:\Users\samue\OneDrive\Documents\_Projects\Unity\Projects\Hex-Game(LTS)\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: Samuel Birth
+  metroCertificateIssuer: Samuel Birth
+  metroCertificateNotAfter: 80d112ccc525d801
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: 
