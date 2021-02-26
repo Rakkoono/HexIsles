@@ -12,7 +12,9 @@ public class PlayerManager : MonoBehaviour
     public Color selectionTint = new Color(80, 80, 80, 10);
     public Color nextMoveTint = new Color(100, 100, 40, 10);
     public Color petrifiedColor = new Color(120, 120, 120);
-    public Color defaultColor = new Color(255, 78, 0);
+    public AudioClip[] moveSounds;
+    public AudioClip levelCompleteSound;
+    public AudioClip gameOverSound;
 
     // Hidden variables
     [HideInInspector]
@@ -23,6 +25,8 @@ public class PlayerManager : MonoBehaviour
     public List<Player> moved;
     [HideInInspector]
     public List<PlayerInfo[]> undoList = new List<PlayerInfo[]>();
+    [HideInInspector]
+    public AudioSource source;
 
     MouseSelectable selectedObject;
     [HideInInspector]
@@ -32,9 +36,20 @@ public class PlayerManager : MonoBehaviour
         get => selectedObject;
         set
         {
-            if (selectedObject) selected = selectedObject.GetComponent<Player>();
+            if (selectedObject)
+            {
+                selectedObject.ResetColor();
+                selectedObject.OnDeselect();
+                selected = selectedObject.GetComponent<Player>();
+            }
             else selected = null;
+
             selectedObject = value;
+            if (selectedObject)
+            {
+                selectedObject.OnSelect();
+                selectedObject.rend.material.color = selectedObject.color + Manager.Players.selectionTint;
+            }
         }
     }
     public void PetrifyLonePlayers()
@@ -56,14 +71,13 @@ public class PlayerManager : MonoBehaviour
 
     private void Petrify(Player p)
     {
-        p.rend.material.SetColor("_Color", petrifiedColor);
-        p.initialColor = petrifiedColor;
+        p.color = p.rend.material.color = petrifiedColor;
         p.tag = "Petrified";
     }
 
     public void Undo()
     {
-        if (Manager.GUI.inMenu)
+        if (Manager.UI.inMenu)
             return;
         PlayerInfo[] undo = undoList.LastOrDefault();
         if (undo == default(PlayerInfo[]))
@@ -73,15 +87,16 @@ public class PlayerManager : MonoBehaviour
         undoList.Remove(undo);
 
         if (Manager.Players.SelectedObject)
-            Manager.Players.SelectedObject.OnMouseDown();
+            Manager.Players.SelectedObject.ToggleSelect();
+
+        source.PlayOneShot(moveSounds[Random.Range(0, moveSounds.Length)]);
 
         foreach (PlayerInfo p in undo)
         {
             if (!p.IsPetrified)
             {
                 p.Player.enabled = true;
-                p.Player.rend.material.SetColor("_Color", defaultColor);
-                p.Player.initialColor = defaultColor;
+                p.Player.color = p.Player.rend.material.color = p.Player.initialColor;
                 p.Player.tag = "Untagged";
             }
             else Petrify(p.Player);

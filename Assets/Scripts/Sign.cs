@@ -6,9 +6,9 @@ public class Sign : MouseSelectable
     public string[] dialog;
     public override void OnSelect()
     {
-        if (!Manager.GUI.inMenu)
+        if (!Manager.UI.inMenu)
         {
-            HexGrid.GetFieldAt(HexGrid.WorldToGridPos(transform.position)).OnMouseDown();
+            HexGrid.GetFieldAt(HexGrid.WorldToGridPos(transform.position)).ToggleSelect();
             Manager.Dialogs.ShowFromSign(this);
         }
     }

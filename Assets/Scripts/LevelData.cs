@@ -29,9 +29,9 @@ public class LevelData : MonoBehaviour
                 movesLeft += movesPerTurn;
                 TurnsLeft--;
             }
-            Manager.GUI.movesLeftDisplay.text = "";
+            Manager.UI.movesLeftDisplay.text = "";
             for (int i = 0; i < movesLeft; i++)
-                Manager.GUI.movesLeftDisplay.text += "o ";
+                Manager.UI.movesLeftDisplay.text += "o ";
         }
     }
     public int TurnsLeft
@@ -44,10 +44,7 @@ public class LevelData : MonoBehaviour
             if (turns != turnsLeft && Manager.Levels.CurrentIndex > 2)
                 Manager.Players.PetrifyLonePlayers();
 
-            foreach (TMP_Text txt in Manager.GUI.turnDisplay.GetComponentsInChildren<TMP_Text>())
-                txt.text = turnsLeft.ToString();
-            foreach (TMP_Text txt in Manager.GUI.turns.GetComponentsInChildren<TMP_Text>())
-                txt.text = turnsLeft == 1 ? "  Turn" : " Turns";
+            Manager.UI.turnDisplay.SetText(turnsLeft.ToString() + (turnsLeft == 1 ? "  Turn" : " Turns"));
         }
     }
 }

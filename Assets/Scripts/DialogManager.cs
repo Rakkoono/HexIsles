@@ -15,7 +15,7 @@ public class DialogManager : MonoBehaviour
     {
         page = 0;
         if (dialogBox.activeSelf)
-            Manager.GUI.dialogBoxAnim.Play("DialogBoxOut");
+            Manager.UI.dialogBoxAnim.Play("DialogBoxOut");
     }
 
     public void ShowFromSign(Sign sign)

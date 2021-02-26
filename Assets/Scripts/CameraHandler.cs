@@ -14,13 +14,13 @@ public class CameraHandler : MonoBehaviour
 
     void Update()
     {
-        if (Manager.GUI.inMenu)
+        if (Manager.UI.inMenu)
         {
             Camera.main.transform.RotateAround(rotationCenter.position, Vector3.up, .1f * Time.deltaTime * rotationSpeed);
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 6, Time.deltaTime);
             return;
         }
-        else if (Manager.GUI.zoomAfterMenu)
+        else if (Manager.UI.zoomAfterMenu)
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 5, Time.deltaTime);
 
         // Pan on right mouse button
@@ -38,7 +38,7 @@ public class CameraHandler : MonoBehaviour
         // Zoom on mouse wheel and Arrow keys
         if (Input.GetAxis("Mouse ScrollWheel") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            Manager.GUI.zoomAfterMenu = false;
+            Manager.UI.zoomAfterMenu = false;
             float axis = Input.GetAxis("Mouse ScrollWheel") != 0 ? Input.GetAxis("Mouse ScrollWheel") : Input.GetAxis("Vertical") / 5;
             float size = Camera.main.orthographicSize + -axis * Time.deltaTime * zoomSpeed * 4;
             if (size > 8) size = 8;

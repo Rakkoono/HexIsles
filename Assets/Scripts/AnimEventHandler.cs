@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Deactivator : MonoBehaviour
+public class AnimEventHandler : MonoBehaviour
 {
     public void Deactivate()
     {
@@ -11,5 +11,11 @@ public class Deactivator : MonoBehaviour
             Manager.showUseSigns = false;
             Manager.Dialogs.Show("\nClick on Signs to read them");
         }
+    }
+
+    public void SetDisplays()
+    {
+        Manager.Levels.current.TurnsLeft = Manager.Levels.current.TurnsLeft;
+        Manager.Levels.current.MovesLeft = Manager.Levels.current.MovesLeft;
     }
 }

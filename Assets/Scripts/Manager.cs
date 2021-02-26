@@ -10,15 +10,15 @@ public class Manager : MonoBehaviour
     // Hidden variables
     private bool onStartup = true;
     public static bool showUseSigns = true;
-    public static GUIManager GUI { get; private set; }
+    public static UIManager UI { get; private set; }
     public static DialogManager Dialogs { get; private set; }
     public static PlayerManager Players { get; private set; }
     public static LevelManager Levels { get; private set; }
 
     void Awake()
     {
-        DontDestroyOnLoad(this);
-        GUI = GetComponent<GUIManager>();
+        DontDestroyOnLoad(gameObject);
+        UI = GetComponent<UIManager>();
         Dialogs = GetComponent<DialogManager>();
         Players = GetComponent<PlayerManager>();
         Levels = GetComponent<LevelManager>();
@@ -27,7 +27,11 @@ public class Manager : MonoBehaviour
             Levels.completed = PlayerPrefs.GetInt("completedLevels");
 
         SceneManager.sceneLoaded += OnLoadCallback;
-        Levels.Load(1);
+        if (Levels.completed >= Levels.count)
+            Levels.LoadNext();
+        else
+            Levels.LoadLatest();
+        Players.source = GetComponent<AudioSource>();
     }
 
     private void OnLoadCallback(Scene scene, LoadSceneMode sceneMode)
@@ -41,20 +45,23 @@ public class Manager : MonoBehaviour
 
         if (Levels.CurrentIndex > 0 && onStartup)
         {
-            GUI.MainMenu();
+            UI.MainMenu();
             onStartup = false;
         }
-        else GUI.ExitMenu();
+        else UI.ExitMenu();
 
         if (Levels.current)
         {
             Levels.current.TurnsLeft = Levels.current.turns;
             Levels.current.MovesLeft = Levels.current.movesPerTurn;
-            GUI.movesPerTurnDisplay.text = "";
+            UI.movesPerTurnDisplay.text = "";
             for (int i = 0; i < Levels.current.movesPerTurn; i++)
-                GUI.movesPerTurnDisplay.text += "o ";
+                UI.movesPerTurnDisplay.text += "o ";
         }
     }
+
+    [ContextMenu("Reset Player Prefs")]
+    public void ResetPlayerPrefs() => PlayerPrefs.DeleteAll();
 
     private void Update() => sun.RotateAround(transform.position, Vector3.up, 8 * Time.deltaTime);
 

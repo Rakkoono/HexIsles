@@ -5,21 +5,21 @@ public class MouseSelectable : MonoBehaviour
 {
     // Hidden variables
     [HideInInspector]
-    public Color initialColor;
+    public Color color;
     [HideInInspector]
     public Renderer rend;
 
     private void Awake()
     {
         rend = GetComponent<Renderer>();
-        initialColor = rend.material.color;
+        color = rend.material.color;
     }
 
     private void OnMouseEnter()
     {
         // highlight object
         if (Manager.Players && Manager.Players.SelectedObject != this && !Manager.Players.coloredObjects.Contains(this))
-            rend.material.SetColor("_Color", initialColor + Manager.Players.highlightTint);
+            rend.material.color = color + Manager.Players.highlightTint;
     }
 
     private void OnMouseExit()
@@ -29,31 +29,12 @@ public class MouseSelectable : MonoBehaviour
             ResetColor();
     }
 
-    public void OnMouseDown()
-    {
-        if (Manager.Players.SelectedObject != this)
-        {
-            // deselect last selected object, select this object
-            if (Manager.Players.SelectedObject)
-            {
-                Manager.Players.SelectedObject.ResetColor();
-                Manager.Players.SelectedObject.OnDeselect();
-            }
+    private void OnMouseDown() => ToggleSelect();
 
-            Manager.Players.SelectedObject = this;
-            rend.material.SetColor("_Color", initialColor + Manager.Players.selectionTint);
-            OnSelect();
-        }
-        else
-        {
-            Manager.Players.SelectedObject = null;
-            ResetColor();
-            OnDeselect();
-        }
-    }
+    public void ToggleSelect() => Manager.Players.SelectedObject = Manager.Players.SelectedObject == this ? null : this;
 
-    private void ResetColor()
-        => rend.material.SetColor("_Color", initialColor);
+    public void ResetColor()
+        => rend.material.color = color;
 
     public virtual void OnSelect() { }
     public virtual void OnDeselect() { }

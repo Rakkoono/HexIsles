@@ -17,12 +17,18 @@ public class Player : MouseSelectable
 
     // Hidden variables
     [HideInInspector]
+    public Color initialColor;
+    [HideInInspector]
     public Vector3 targetPosition;
     [HideInInspector]
     public Vector2Int[] validMoves = { };
     private bool justMoved = false;
 
-    private void Start() => targetPosition = transform.position;
+    private void Start()
+    {
+        targetPosition = transform.position;
+        initialColor = color;
+    }
 
     // Debugging Method
     [ContextMenu("Adjust Position")]
@@ -44,7 +50,10 @@ public class Player : MouseSelectable
             {
                 enabled = false;
                 if (!Manager.Players.players.Any(p => p.enabled))
-                    Manager.GUI.GameOver(Manager.GUI.allPetrifiedMSG[Random.Range(0, Manager.GUI.allPetrifiedMSG.Length)]);
+                {
+                    Manager.UI.GameOver(Manager.UI.allPetrifiedMSG);
+                    Manager.Players.source.PlayOneShot(Manager.Players.gameOverSound, .7f);
+                }
             }
             if (justMoved)
             {
@@ -52,10 +61,16 @@ public class Player : MouseSelectable
                     Manager.Levels.current.TurnsLeft--;
 
                 if (Manager.Levels.current.targetPosition == position && Manager.Levels.current.playerType == moveSet && !CompareTag("Petrified"))
-                    Manager.GUI.GameOver(Manager.GUI.levelCompleteMSG[Random.Range(0, Manager.GUI.levelCompleteMSG.Length)], true);
+                {
+                    Manager.UI.GameOver(Manager.UI.levelCompleteMSG, true);
+                    Manager.Players.source.PlayOneShot(Manager.Players.levelCompleteSound, .7f);
+                }
 
-                if (Manager.Levels.current.TurnsLeft <= 0)
-                    Manager.GUI.GameOver(Manager.GUI.outOfTurnsMSG[Random.Range(0, Manager.GUI.outOfTurnsMSG.Length)]);
+                else if (Manager.Levels.current.TurnsLeft <= 0)
+                {
+                    Manager.UI.GameOver(Manager.UI.outOfTurnsMSG);
+                    Manager.Players.source.PlayOneShot(Manager.Players.gameOverSound, .7f);
+                }
                 justMoved = false;
             }
         }
@@ -68,11 +83,11 @@ public class Player : MouseSelectable
             HexField field = HexGrid.GetFieldAt(position);
 
             Manager.Players.SelectedObject = Manager.Players.selected;
-            field.OnMouseDown();
+            field.ToggleSelect();
             return;
         }
 
-        if (!enabled || Manager.GUI.inMenu || Manager.Players.moved.Contains(this)) return;
+        if (!enabled || Manager.UI.inMenu || Manager.Players.moved.Contains(this)) return;
         // find and highlight possible moves
         int jumpHeight;
         switch (moveSet)
@@ -104,12 +119,12 @@ public class Player : MouseSelectable
                 continue;
             validMoves.Add(move);
             coloredObjects.Add(field);
-            field.rend.material.SetColor("_Color", field.initialColor + Manager.Players.nextMoveTint);
+            field.rend.material.color = field.color + Manager.Players.nextMoveTint;
 
             Player[] players = HexGrid.GetPlayersAt(move);
             coloredObjects.AddRange(players);
             foreach (Player p in players)
-                p.rend.material.SetColor("_Color", p.initialColor + Manager.Players.nextMoveTint);
+                p.rend.material.color = p.color + Manager.Players.nextMoveTint;
         }
         return (validMoves.ToArray(), coloredObjects.ToArray());
     }
@@ -118,7 +133,7 @@ public class Player : MouseSelectable
     {
         if (Manager.Players.selected == this) Manager.Players.selected = null;
         foreach (MouseSelectable obj in Manager.Players.coloredObjects)
-            obj.rend.material.SetColor("_Color", obj.initialColor);
+            obj.ResetColor();
     }
 
     public void Move(HexField target)
@@ -146,5 +161,7 @@ public class Player : MouseSelectable
         Manager.Players.moved.Add(this);
         Manager.Levels.current.MovesLeft--;
         justMoved = true;
+        Manager.Players.source.PlayOneShot(Manager.Players.moveSounds[Random.Range(0, Manager.Players.moveSounds.Length)]);
+        // Player automatically gets selected after every move // ToggleSelect();
     }
 }
