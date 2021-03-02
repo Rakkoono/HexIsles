@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LevelHandler : MonoBehaviour
 {
-    [HideInInspector] public LevelData current;
+    [HideInInspector] public Level current;
     [HideInInspector] public int completed = 0;
     public int count = 15;
 
@@ -30,6 +30,11 @@ public class LevelManager : MonoBehaviour
     {
         completed = 0;
         LoadLatest();
+    }
+    public void UnlockAll()
+    {
+            Manager.Levels.completed = Manager.Levels.count;
+            if (Manager.UI.currentMenu != UIHandler.Menu.LevelSelect) Manager.UI.LevelSelect();
     }
 
     public void Quit() => Application.Quit();

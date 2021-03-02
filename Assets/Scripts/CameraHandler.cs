@@ -2,48 +2,30 @@
 
 public class CameraHandler : MonoBehaviour
 {
-    // Serialized variables
-    public Transform rotationCenter;
-    [SerializeField, Range(0, 100)]
-    private float rotationSpeed = 50f;
-    [Space, SerializeField, Range(0, 100)]
-    private float zoomSpeed = 50f;
+    [HideInInspector] public bool zoomAfterMenu = false;
+    [HideInInspector] public float zoomAmount = 0;
+    [HideInInspector] public float panAmount = 0;
 
-    // Hidden variables
-    private Vector3? mousePosition = new Vector3();
-
-    void Update()
+    private void Update()
     {
-        if (Manager.UI.inMenu)
+        if (Manager.UI.currentMenu != UIHandler.Menu.None)
         {
-            Camera.main.transform.RotateAround(rotationCenter.position, Vector3.up, .1f * Time.deltaTime * rotationSpeed);
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 6, Time.deltaTime);
+            Camera.main.transform.RotateAround(transform.position, Vector3.up, .1f * Time.deltaTime * Config.Instance.panSpeed);
+            ZoomTo(6);
             return;
         }
-        else if (Manager.UI.zoomAfterMenu)
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 5, Time.deltaTime);
+        else if (zoomAfterMenu)
+            ZoomTo(5);
 
-        // Pan on right mouse button
-        if (Input.GetMouseButton(1))
+        if (zoomAmount != 0)
         {
-            if (mousePosition != null && mousePosition != Input.mousePosition)
-            {
-                float mouseMovement = Input.mousePosition.x - ((Vector3)mousePosition).x;
-                Camera.main.transform.RotateAround(rotationCenter.position, Vector3.up, mouseMovement * Time.deltaTime * rotationSpeed);
-            }
-            mousePosition = Input.mousePosition;
+            zoomAfterMenu = false;
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount * Time.deltaTime * Config.Instance.zoomSpeed, Config.Instance.ZoomRangeMin, Config.Instance.ZoomRangeMax);
         }
-        else mousePosition = null;
 
-        // Zoom on mouse wheel and Arrow keys
-        if (Input.GetAxis("Mouse ScrollWheel") != 0 || Input.GetAxis("Vertical") != 0)
-        {
-            Manager.UI.zoomAfterMenu = false;
-            float axis = Input.GetAxis("Mouse ScrollWheel") != 0 ? Input.GetAxis("Mouse ScrollWheel") : Input.GetAxis("Vertical") / 5;
-            float size = Camera.main.orthographicSize + -axis * Time.deltaTime * zoomSpeed * 4;
-            if (size > 8) size = 8;
-            else if (size < 1) size = 1;
-            Camera.main.orthographicSize = size;
-        }
+        if (panAmount != 0)
+            Camera.main.transform.RotateAround(transform.position, Vector3.up, -panAmount * Time.deltaTime * Config.Instance.panSpeed);
     }
+
+    private void ZoomTo(int size) => Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, size, Time.deltaTime);
 }

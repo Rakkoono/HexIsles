@@ -6,7 +6,7 @@ public class Sign : MouseSelectable
     public string[] dialog;
     public override void OnSelect()
     {
-        if (!Manager.UI.inMenu)
+        if (Manager.UI.currentMenu == UIHandler.Menu.None)
         {
             HexGrid.GetFieldAt(HexGrid.WorldToGridPos(transform.position)).ToggleSelect();
             Manager.Dialogs.ShowFromSign(this);

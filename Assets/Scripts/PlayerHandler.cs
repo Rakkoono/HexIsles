@@ -2,35 +2,34 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerHandler : MonoBehaviour
 {
     // Serialized variables
-    [Range(.1f, 10)]
-    public float playerMovementSpeed = 1;
+    [Space(2), Header("Animation")]
+    [Range(.1f, 10)] public float playerAnimationSpeed = 1;
+
     [Space(2), Header("Colors")]
     public Color highlightTint = new Color(40, 40, 40, 10);
-    public Color selectionTint = new Color(80, 80, 80, 10);
     public Color nextMoveTint = new Color(100, 100, 40, 10);
-    public Color petrifiedColor = new Color(120, 120, 120);
+    [SerializeField] private Color selectionTint = new Color(80, 80, 80, 10);
+    [SerializeField] private Color petrifiedColor = new Color(120, 120, 120);
+
+    [Space(2), Header("Audio")]
+    public AudioSource sfxSource;
     public AudioClip[] moveSounds;
     public AudioClip levelCompleteSound;
     public AudioClip gameOverSound;
 
     // Hidden variables
-    [HideInInspector]
-    public MouseSelectable[] coloredObjects;
-    [HideInInspector]
-    public Player[] players;
-    [HideInInspector]
-    public List<Player> moved;
-    [HideInInspector]
-    public List<PlayerInfo[]> undoList = new List<PlayerInfo[]>();
-    [HideInInspector]
-    public AudioSource source;
+    [HideInInspector] public MouseSelectable[] possibleMoves;
+    [HideInInspector] public Player[] players;
 
-    MouseSelectable selectedObject;
-    [HideInInspector]
-    public Player selected;
+    // Undo list
+    [HideInInspector] public List<PlayerInfo[]> undoList = new List<PlayerInfo[]>();
+
+    // Selected object and player
+    [HideInInspector] public Player selected;
+    private MouseSelectable selectedObject;
     public MouseSelectable SelectedObject
     {
         get => selectedObject;
@@ -38,7 +37,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (selectedObject)
             {
-                selectedObject.ResetColor();
+                selectedObject.ResetMaterial();
                 selectedObject.OnDeselect();
                 selected = selectedObject.GetComponent<Player>();
             }
@@ -48,7 +47,7 @@ public class PlayerManager : MonoBehaviour
             if (selectedObject)
             {
                 selectedObject.OnSelect();
-                selectedObject.rend.material.color = selectedObject.color + Manager.Players.selectionTint;
+                selectedObject.Renderer.material.color = selectedObject.InitialColor + Manager.Players.selectionTint;
             }
         }
     }
@@ -71,43 +70,34 @@ public class PlayerManager : MonoBehaviour
 
     private void Petrify(Player p)
     {
-        p.color = p.rend.material.color = petrifiedColor;
+        p.currentColor = p.Renderer.material.color = petrifiedColor;
         p.tag = "Petrified";
     }
 
     public void Undo()
     {
-        if (Manager.UI.inMenu)
+        if (Manager.UI.currentMenu != UIHandler.Menu.None)
             return;
         PlayerInfo[] undo = undoList.LastOrDefault();
         if (undo == default(PlayerInfo[]))
             return;
 
-        Manager.Levels.current.MovesLeft++;
         undoList.Remove(undo);
 
         if (Manager.Players.SelectedObject)
             Manager.Players.SelectedObject.ToggleSelect();
 
-        source.PlayOneShot(moveSounds[Random.Range(0, moveSounds.Length)]);
+        sfxSource.PlayOneShot(moveSounds[Random.Range(0, moveSounds.Length)]);
 
         foreach (PlayerInfo p in undo)
         {
             if (!p.IsPetrified)
             {
                 p.Player.enabled = true;
-                p.Player.color = p.Player.rend.material.color = p.Player.initialColor;
+                p.Player.currentColor = p.Player.Renderer.material.color = p.Player.InitialColor;
                 p.Player.tag = "Untagged";
             }
             else Petrify(p.Player);
-
-            if (p.HasMoved)
-            {
-                if (!Manager.Players.moved.Contains(p.Player))
-                    Manager.Players.moved.Add(p.Player);
-            }
-            else if (Manager.Players.moved.Contains(p.Player))
-                Manager.Players.moved.Remove(p.Player);
 
             if (p.Position == p.Player.transform.position)
                     continue;
@@ -118,16 +108,14 @@ public class PlayerManager : MonoBehaviour
 }
 public struct PlayerInfo
 {
-    public PlayerInfo(Player player, Vector3 position, bool isPetrified, bool hasMoved)
+    public PlayerInfo(Player player, Vector3 position, bool isPetrified)
     {
         Player = player;
         Position = position;
         IsPetrified = isPetrified;
-        HasMoved = hasMoved;
     }
 
     public Player Player { get; }
     public Vector3 Position { get; }
     public bool IsPetrified { get; }
-    public bool HasMoved { get; }
 }

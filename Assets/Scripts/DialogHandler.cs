@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class DialogManager : MonoBehaviour
+public class DialogHandler : MonoBehaviour
 {
     [SerializeField]
     private GameObject dialogBox;
@@ -15,7 +15,7 @@ public class DialogManager : MonoBehaviour
     {
         page = 0;
         if (dialogBox.activeSelf)
-            Manager.UI.dialogBoxAnim.Play("DialogBoxOut");
+            Manager.UI.dialogBoxAnimator.Play("DialogBoxOut");
     }
 
     public void ShowFromSign(Sign sign)

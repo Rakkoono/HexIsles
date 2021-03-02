@@ -181,8 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 7
   objects: []
   position: {x: 8, y: 6}
@@ -293,8 +291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 3, y: 5}
@@ -405,8 +401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 4, y: 7}
@@ -517,8 +511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 3, y: 2}
@@ -629,8 +621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 5, y: 2}
@@ -741,8 +731,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 3, y: 3}
@@ -853,8 +841,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 7, y: 6}
@@ -965,8 +951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 8, y: 5}
@@ -1077,8 +1061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 7, y: 1}
@@ -1189,8 +1171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 8, y: 4}
@@ -1301,8 +1281,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 7
   objects: []
   position: {x: 7, y: 7}
@@ -1413,8 +1391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 7, y: 2}
@@ -1525,8 +1501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 3, y: 4}
@@ -1716,8 +1690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 4, y: 5}
@@ -1828,8 +1800,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 5, y: 6}
@@ -1940,8 +1910,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 2
   objects: []
   position: {x: 1, y: 7}
@@ -2052,8 +2020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 5, y: 3}
@@ -2164,8 +2130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 7, y: 3}
@@ -2276,8 +2240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 5
   objects: []
   position: {x: 8, y: 7}
@@ -2388,8 +2350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 6, y: 6}
@@ -2563,8 +2523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 0, y: 5}
@@ -2675,8 +2633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 2, y: 4}
@@ -2787,8 +2743,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 4, y: 6}
@@ -2899,8 +2853,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 1, y: 3}
@@ -3011,8 +2963,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 4, y: 3}
@@ -3123,8 +3073,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 7, y: 0}
@@ -3235,8 +3183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 1, y: 4}
@@ -3347,8 +3293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 2
   objects: []
   position: {x: 8, y: 8}
@@ -3459,8 +3403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 2, y: 5}
@@ -3571,8 +3513,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 5, y: 4}
@@ -3683,8 +3623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 7, y: 4}
@@ -3795,8 +3733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 2, y: 3}
@@ -3907,8 +3843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 6, y: 5}
@@ -4019,8 +3953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 1, y: 5}
@@ -4081,7 +4013,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1107083395}
   - component: {fileID: 1107083394}
-  - component: {fileID: 1107083396}
   m_Layer: 0
   m_Name: Hexagon Grid LVL6
   m_TagString: Untagged
@@ -4177,23 +4108,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1107083396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1107083393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d93f272909f08b94ebbc0d2f849b2710, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turns: 12
-  turnsLeft: 12
-  movesPerTurn: 1
-  targetPosition: {x: 8, y: 6}
-  playerType: 1
 --- !u!1 &1135062052
 GameObject:
   m_ObjectHideFlags: 0
@@ -4254,8 +4168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 0, y: 4}
@@ -4366,8 +4278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 2, y: 2}
@@ -4478,8 +4388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 3, y: 6}
@@ -4590,8 +4498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 2, y: 8}
@@ -4702,8 +4608,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 6, y: 4}
@@ -4814,8 +4718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 2
   objects: []
   position: {x: 4, y: 8}
@@ -4926,8 +4828,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 6, y: 7}
@@ -5038,8 +4938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 5, y: 7}
@@ -5229,8 +5127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 3, y: 8}
@@ -5341,8 +5237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 7, y: 5}
@@ -5453,8 +5347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 2
   objects: []
   position: {x: 4, y: 4}
@@ -5565,8 +5457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 5, y: 5}
@@ -5677,8 +5567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 2, y: 6}
@@ -5789,8 +5677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 5, y: 1}
@@ -5901,8 +5787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 2, y: 7}
@@ -6013,8 +5897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 4, y: 2}
@@ -6125,8 +6007,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 8, y: 3}
@@ -6237,8 +6117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 6, y: 2}
@@ -6349,8 +6227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 3
   objects: []
   position: {x: 3, y: 7}
@@ -6461,8 +6337,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 6, y: 3}
@@ -6573,8 +6447,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 6, y: 0}
@@ -6685,8 +6557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 8, y: 2}
@@ -6876,8 +6746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 6, y: 1}
@@ -6988,8 +6856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 0, y: 3}
@@ -7100,8 +6966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f595a0b47be044ab493eb1ee367f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialColor: {r: 0, g: 0, b: 0, a: 0}
-  rend: {fileID: 0}
   height: 1
   objects: []
   position: {x: 1, y: 6}

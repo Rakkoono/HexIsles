@@ -4,43 +4,56 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    // Serialized variables
-    public Transform sun;
+    private Transform sun;
 
-    // Hidden variables
     private bool onStartup = true;
-    public static bool showUseSigns = true;
-    public static UIManager UI { get; private set; }
-    public static DialogManager Dialogs { get; private set; }
-    public static PlayerManager Players { get; private set; }
-    public static LevelManager Levels { get; private set; }
+
+    public static int TurnsLeft { get; set; }
+    public static CameraHandler Camera { get; private set; }
+    public static UIHandler UI { get; private set; }
+    public static DialogHandler Dialogs { get; private set; }
+    public static PlayerHandler Players { get; private set; }
+    public static LevelHandler Levels { get; private set; }
+
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        UI = GetComponent<UIManager>();
-        Dialogs = GetComponent<DialogManager>();
-        Players = GetComponent<PlayerManager>();
-        Levels = GetComponent<LevelManager>();
+        // Find sun transform
+        sun = GetComponentInChildren<Light>().transform;
 
+        // Keep manager loaded during scene change
+        DontDestroyOnLoad(gameObject);
+        // Execute OnLoadCallback() on scene change
+        SceneManager.sceneLoaded += OnLoadCallback;
+
+        // Get Handlers
+        Camera = GetComponent<CameraHandler>();
+        UI = GetComponent<UIHandler>();
+        Dialogs = GetComponent<DialogHandler>();
+        Players = GetComponent<PlayerHandler>();
+        Levels = GetComponent<LevelHandler>();
+
+        // Get saved data
         if (PlayerPrefs.HasKey("completedLevels"))
             Levels.completed = PlayerPrefs.GetInt("completedLevels");
 
-        SceneManager.sceneLoaded += OnLoadCallback;
+        // Load next or latest level
         if (Levels.completed >= Levels.count)
             Levels.LoadNext();
         else
             Levels.LoadLatest();
-        Players.source = GetComponent<AudioSource>();
     }
 
     private void OnLoadCallback(Scene scene, LoadSceneMode sceneMode)
     {
         Levels.CurrentIndex = scene.buildIndex;
-        Levels.current = FindObjectOfType<LevelData>();
+        if (Levels.CurrentIndex != 0)
+        {
+            Levels.current = Config.Instance.Levels[Levels.CurrentIndex - 1];
+            TurnsLeft = Levels.current.Turns;
+        }
 
         Players.players = FindObjectsOfType<Player>();
-        Players.moved = new List<Player>();
         Players.undoList = new List<PlayerInfo[]>();
 
         if (Levels.CurrentIndex > 0 && onStartup)
@@ -50,14 +63,6 @@ public class Manager : MonoBehaviour
         }
         else UI.ExitMenu();
 
-        if (Levels.current)
-        {
-            Levels.current.TurnsLeft = Levels.current.turns;
-            Levels.current.MovesLeft = Levels.current.movesPerTurn;
-            UI.movesPerTurnDisplay.text = "";
-            for (int i = 0; i < Levels.current.movesPerTurn; i++)
-                UI.movesPerTurnDisplay.text += "o ";
-        }
     }
 
     [ContextMenu("Reset Player Prefs")]
