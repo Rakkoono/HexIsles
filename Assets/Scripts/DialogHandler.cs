@@ -1,45 +1,53 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class DialogHandler : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject dialogBox;
-    [SerializeField]
-    private TMP_Text[] lines = new TMP_Text[3];
+    [SerializeField] private TMP_Text dialogBox;
+    public Dialog startUpDialog;
 
-    private Sign currentSign;
-    private int page = 0;
+    private Dialog currentDialog;
+    private int currentPage = 0;
+    private Coroutine showTextCoroutine = null;
 
     public void Hide()
     {
-        page = 0;
-        if (dialogBox.activeSelf)
+        currentPage = 0;
+        if (dialogBox.transform.parent.gameObject.activeSelf)
             Manager.UI.dialogBoxAnimator.Play("DialogBoxOut");
     }
 
-    public void ShowFromSign(Sign sign)
+    public void Show(Dialog dialog)
     {
-        if (sign == null && currentSign == null)
+        if (currentDialog && currentPage >= currentDialog.Pages.Length)
         {
             Hide();
             return;
         }
-        if (sign != null && sign != currentSign)
-            page = 0;
-        page++;
-        if (sign) currentSign = sign;
-        if (page - 1 >= currentSign.dialog.Length) Hide();
-        else Show(currentSign.dialog[page - 1]);
+
+        if (dialog != currentDialog)
+        {
+            currentPage = 0;
+            currentDialog = dialog;
+        }
+        
+        if (showTextCoroutine != null) StopCoroutine(showTextCoroutine);
+        showTextCoroutine =  StartCoroutine(ShowText(currentDialog.Pages[currentPage]));
+        
+        currentPage++;
     }
 
-    public void Show(string dialog)
+    private IEnumerator ShowText(string text)
     {
-        string[] lines = dialog.Split('\n');
-        for (int i = 0; i < this.lines.Length; i++)
-            this.lines[i].text = lines.Length > i ? lines[i] : "";
-        dialogBox.SetActive(true);
+        dialogBox.transform.parent.gameObject.SetActive(true);
+        dialogBox.text = "";
+        foreach (char c in text.ToCharArray())
+        {
+            dialogBox.text += c;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
 
-    public void NextPage() => ShowFromSign(null);
+    public void NextPage() => Show(currentDialog);
 }

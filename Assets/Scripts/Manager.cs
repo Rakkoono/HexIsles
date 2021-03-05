@@ -9,7 +9,16 @@ public class Manager : MonoBehaviour
     private bool onStartup = true;
     private Transform sun;
 
-    public static int TurnsLeft { get; set; }
+    private static int turnsLeft = 0;
+    public static int TurnsLeft
+    {
+        get => turnsLeft;
+        set
+        {
+            turnsLeft = value;
+            UI.turnDisplay.text = turnsLeft + (turnsLeft == 1 ? " Turn" : " Turns");
+        }
+    }
     public static CameraHandler Camera { get; private set; }
     public static UIHandler UI { get; private set; }
     public static DialogHandler Dialogs { get; private set; }

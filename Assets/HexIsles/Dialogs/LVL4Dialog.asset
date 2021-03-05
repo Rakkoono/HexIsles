@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce7cbe278f54e7419402b1c9013a275, type: 3}
+  m_Name: LVL4Dialog
+  m_EditorClassIdentifier: 
+  pages:
+  - 'It''s funny how complicated they make these
+
+    myths, huh?'
+  - 'For example are these hexes not supposed
+
+    to petrify when, there is another
+    Hex next to them, but how high up the other Hex is doesn''t matter.'
+  - 'Of course, I don''t believe in this crap.
+
+    What a stupid concept of loneliness
+    is that?'
