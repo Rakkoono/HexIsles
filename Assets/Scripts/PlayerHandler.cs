@@ -37,7 +37,7 @@ public class PlayerHandler : MonoBehaviour
         {
             if (selectedObject)
             {
-                selectedObject.ResetMaterial();
+                selectedObject.ResetColor();
                 selectedObject.OnDeselect();
                 selected = selectedObject.GetComponent<Player>();
             }
@@ -76,7 +76,9 @@ public class PlayerHandler : MonoBehaviour
 
     public void Undo()
     {
-        if (Manager.UI.currentMenu != UIHandler.Menu.None)
+        if (Manager.UI.currentMenu == UIHandler.Menu.GameOver)
+            Manager.UI.ExitMenu();
+        else if (Manager.UI.currentMenu != UIHandler.Menu.None)
             return;
         PlayerInfo[] undo = undoList.LastOrDefault();
         if (undo == default(PlayerInfo[]))

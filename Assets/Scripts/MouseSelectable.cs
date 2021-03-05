@@ -1,7 +1,12 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MouseSelectable : MonoBehaviour
+public class MouseSelectable : MonoBehaviour, IPointerClickHandler
+#if !UNITY_ANDROID && !UNITY_IOS
+    // Exclude unused Interfaces on mobile
+    , IPointerEnterHandler, IPointerExitHandler
+#endif
 {
     public Renderer Renderer {get; private set; }
     public Color InitialColor { get; private set; }
@@ -12,28 +17,29 @@ public class MouseSelectable : MonoBehaviour
         InitialColor = Renderer.material.color;
     }
 
-    private void OnMouseEnter()
+#if !UNITY_ANDROID && !UNITY_IOS
+    // Exclude highlighting on mobile
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData data)
     {
         // highlight object
         if (Manager.Players && Manager.Players.SelectedObject != this && !Manager.Players.possibleMoves.Contains(this))
             Renderer.material.color = InitialColor + Manager.Players.highlightTint;
     }
 
-    private void OnMouseExit()
+    void IPointerExitHandler.OnPointerExit(PointerEventData data)
     {
         // de-highlight object
         if (Manager.Players.SelectedObject != this && !Manager.Players.possibleMoves.Contains(this))
-            ResetMaterial();
+            ResetColor();
     }
 
-    private void OnMouseDown() => ToggleSelect();
-
+#endif
+    void IPointerClickHandler.OnPointerClick(PointerEventData data) => ToggleSelect();
+    
     public void ToggleSelect() => Manager.Players.SelectedObject = Manager.Players.SelectedObject == this ? null : this;
 
-    public void ResetMaterial()
-        => Renderer.material.color = InitialColor;
+    public void ResetColor() => Renderer.material.color = InitialColor;
 
     public virtual void OnSelect() { }
     public virtual void OnDeselect() { }
-
 }

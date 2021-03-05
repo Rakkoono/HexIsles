@@ -4,8 +4,8 @@ using UnityEngine;
 public class GameOver : ScriptableObject
 {
     [SerializeField] private string[] messages;
-    public string[] Messages { get => messages; }
+    public string[] Messages => messages;
 
     [SerializeField] private bool unlockNextLevel;
-    public bool UnlockNextLevel { get => unlockNextLevel; }
+    public bool UnlockNextLevel => unlockNextLevel;
 }

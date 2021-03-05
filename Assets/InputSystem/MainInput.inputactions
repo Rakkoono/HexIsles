@@ -137,6 +137,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Pinch",
+                    "type": "Button",
+                    "id": "98c8b55b-87e0-4daa-b952-80ceb20e9584",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -255,9 +263,20 @@
                     "id": "239a1ebf-aa09-49fb-89f7-6bf01e9e65f6",
                     "path": "<Touchscreen>/delta/x",
                     "interactions": "",
-                    "processors": "Invert",
+                    "processors": "Invert,Scale(factor=0.1)",
                     "groups": "Touch",
                     "action": "Pan",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9296c09b-3f43-4dd6-b16b-886f531fff07",
+                    "path": "<Touchscreen>/touch1/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Pinch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

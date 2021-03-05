@@ -41,21 +41,21 @@ public class Player : MouseSelectable
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Manager.Players.playerAnimationSpeed * 10f * Time.deltaTime);
         else if (justMoved)
             {
+                // When finished moving...
                 justMoved = false;
-
-                // Check if petrified or game over
+                
+                // Check if petrified
                 foreach(Player player in Manager.Players.players)
-                {
-                    if (player.CompareTag("Petrified") && enabled)
-                    {
-                        enabled = false;
-                        if (Manager.Players.players.All(p => !p.enabled))
-                            Manager.UI.GameOver(Config.Instance.AllPetrified);
-                    }
-                }
+                    if (player.CompareTag("Petrified") && player.enabled)
+                    player.enabled = false;
 
-                if (Manager.Levels.current.TargetPosition == position && !CompareTag("Petrified"))
+                // Check for game over
+                if (Manager.Players.players.All(p => !p.enabled))
+                    Manager.UI.GameOver(Config.Instance.AllPetrified);
+
+                else if (Manager.Levels.current.TargetPosition == position)
                     Manager.UI.GameOver(Config.Instance.LevelComplete);
+
                 else if (Manager.TurnsLeft <= 0)
                     Manager.UI.GameOver(Config.Instance.OutOfTurns);
             }
@@ -120,7 +120,7 @@ public class Player : MouseSelectable
     {
         if (Manager.Players.selected == this) Manager.Players.selected = null;
         foreach (MouseSelectable obj in Manager.Players.possibleMoves)
-            obj.ResetMaterial();
+            obj.ResetColor();
     }
 
     public void Move(HexField target)
@@ -142,7 +142,11 @@ public class Player : MouseSelectable
                 p.position = target.position;
             }
 
+
         position = target.position;
+
+        if (Manager.Levels.current.Petrify)
+            Manager.Players.PetrifyLonePlayers();
 
         Manager.TurnsLeft--;
         justMoved = true;

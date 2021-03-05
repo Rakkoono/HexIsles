@@ -4,9 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    private Transform sun;
+    [SerializeField] private Config config;
 
     private bool onStartup = true;
+    private Transform sun;
 
     public static int TurnsLeft { get; set; }
     public static CameraHandler Camera { get; private set; }
@@ -18,6 +19,12 @@ public class Manager : MonoBehaviour
 
     void Awake()
     {
+#if !UNITY_ANDROID && !UNITY_IOS
+        // if not on mobile, deactivate mobile only objects
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("MobileOnly"))
+            obj.SetActive(false);
+
+#endif
         // Find sun transform
         sun = GetComponentInChildren<Light>().transform;
 

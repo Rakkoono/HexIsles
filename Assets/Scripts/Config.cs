@@ -4,18 +4,18 @@ using UnityEngine;
 public class Config : SingletonScriptableObject<Config>
 {
     [SerializeField] private Level[] levels = new Level[15];
-    public Level[] Levels { get => levels; }
+    public Level[] Levels => levels;
 
     [Space, Header("Game Over Types")]
 
     [SerializeField] private GameOver levelComplete;
-    public GameOver LevelComplete { get => levelComplete; }
+    public GameOver LevelComplete => levelComplete;
 
     [SerializeField] private GameOver outOfTurns;
-    public GameOver OutOfTurns { get => outOfTurns; }
+    public GameOver OutOfTurns => outOfTurns;
 
     [SerializeField] private GameOver allPetrified;
-    public GameOver AllPetrified { get => allPetrified; }
+    public GameOver AllPetrified => allPetrified;
 
     [Space, Header("Camera Settings")]
 
@@ -25,9 +25,9 @@ public class Config : SingletonScriptableObject<Config>
     [Space]
 
     [SerializeField] private float zoomRangeMin = 1f;
-    public float ZoomRangeMin { get => zoomRangeMin; }
+    public float ZoomRangeMin => zoomRangeMin;
 
     [SerializeField] private float zoomRangeMax = 8f;
-    public float ZoomRangeMax { get => zoomRangeMax; }
+    public float ZoomRangeMax => zoomRangeMax;
 
 }

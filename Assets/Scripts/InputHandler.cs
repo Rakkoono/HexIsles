@@ -21,5 +21,8 @@ public class InputHandler : MonoBehaviour
 
         input.Camera.Pan.performed += ctx => Manager.Camera.panAmount = ctx.ReadValue<float>();
         input.Camera.Pan.canceled += _ => Manager.Camera.panAmount = 0f;
+
+        input.Camera.Pinch.started += _ => Manager.Camera.startPinch = true;
+        input.Camera.Pinch.canceled += _ => Manager.Camera.pinch = false;
     }
 }

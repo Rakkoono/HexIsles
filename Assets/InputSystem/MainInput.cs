@@ -150,6 +150,14 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pinch"",
+                    ""type"": ""Button"",
+                    ""id"": ""98c8b55b-87e0-4daa-b952-80ceb20e9584"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -268,9 +276,20 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""id"": ""239a1ebf-aa09-49fb-89f7-6bf01e9e65f6"",
                     ""path"": ""<Touchscreen>/delta/x"",
                     ""interactions"": """",
-                    ""processors"": ""Invert"",
+                    ""processors"": ""Invert,Scale(factor=0.1)"",
                     ""groups"": ""Touch"",
                     ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9296c09b-3f43-4dd6-b16b-886f531fff07"",
+                    ""path"": ""<Touchscreen>/touch1/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""Pinch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -366,6 +385,7 @@ public class @MainInput : IInputActionCollection, IDisposable
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
         m_Camera_Pan = m_Camera.FindAction("Pan", throwIfNotFound: true);
+        m_Camera_Pinch = m_Camera.FindAction("Pinch", throwIfNotFound: true);
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Select = m_Movement.FindAction("Select", throwIfNotFound: true);
@@ -477,12 +497,14 @@ public class @MainInput : IInputActionCollection, IDisposable
     private ICameraActions m_CameraActionsCallbackInterface;
     private readonly InputAction m_Camera_Zoom;
     private readonly InputAction m_Camera_Pan;
+    private readonly InputAction m_Camera_Pinch;
     public struct CameraActions
     {
         private @MainInput m_Wrapper;
         public CameraActions(@MainInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Zoom => m_Wrapper.m_Camera_Zoom;
         public InputAction @Pan => m_Wrapper.m_Camera_Pan;
+        public InputAction @Pinch => m_Wrapper.m_Camera_Pinch;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -498,6 +520,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @Pan.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnPan;
                 @Pan.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnPan;
                 @Pan.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnPan;
+                @Pinch.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnPinch;
+                @Pinch.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnPinch;
+                @Pinch.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnPinch;
             }
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -508,6 +533,9 @@ public class @MainInput : IInputActionCollection, IDisposable
                 @Pan.started += instance.OnPan;
                 @Pan.performed += instance.OnPan;
                 @Pan.canceled += instance.OnPan;
+                @Pinch.started += instance.OnPinch;
+                @Pinch.performed += instance.OnPinch;
+                @Pinch.canceled += instance.OnPinch;
             }
         }
     }
@@ -574,6 +602,7 @@ public class @MainInput : IInputActionCollection, IDisposable
     {
         void OnZoom(InputAction.CallbackContext context);
         void OnPan(InputAction.CallbackContext context);
+        void OnPinch(InputAction.CallbackContext context);
     }
     public interface IMovementActions
     {

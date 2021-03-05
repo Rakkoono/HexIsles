@@ -22,15 +22,11 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private Animator mainMenuScreenAnimator;
     [SerializeField] private Animator levelSelectScreenAnimator;
     [SerializeField] private Animator creditsScreenAnimator;
-    [SerializeField] private Animator escToReturnAnimator;
     public Animator dialogBoxAnimator;
 
     [HideInInspector] public Menu currentMenu = Menu.MainMenu;
     [HideInInspector] public bool inEscapeMenu;
-    public bool InMainOrSubMenu
-    {
-        get => currentMenu == Menu.MainMenu || currentMenu == Menu.Credits || currentMenu == Menu.LevelSelect || currentMenu == Menu.Options; 
-    }
+    public bool InMainOrSubMenu => currentMenu == Menu.MainMenu || currentMenu == Menu.Credits || currentMenu == Menu.LevelSelect || currentMenu == Menu.Options;
 
     [HideInInspector]
     private int lvlSelectPage;
@@ -60,7 +56,6 @@ public class UIHandler : MonoBehaviour
     public void GameOver(GameOver gameOver)
     {
         if (currentMenu != Menu.None) return;
-        Manager.Dialogs.Hide();
 
         if (Manager.Players.SelectedObject && Manager.Players.SelectedObject.GetComponent<Player>())
             Manager.Players.SelectedObject.ToggleSelect();
@@ -71,7 +66,7 @@ public class UIHandler : MonoBehaviour
         gameOverScreen.Find("Continue").GetComponent<Button>().interactable = Manager.Levels.completed >= Manager.Levels.CurrentIndex;
 
         currentMenu = Menu.GameOver;
-        overlayAnimator.Play("OverlayOut");
+        overlayAnimator.gameObject.SetActive(true);
         gameOverScreen.gameObject.SetActive(true);
         gameOverScreen.Find("GameOverMSG").GetComponent<TMP_Text>().text = gameOver.Messages[Random.Range(0, gameOver.Messages.Length)];
 
@@ -89,13 +84,12 @@ public class UIHandler : MonoBehaviour
     {
         inEscapeMenu = byEsc;
 
-        Manager.Dialogs.Hide();
         switch (currentMenu)
         {
             case Menu.None:
                 if (overlayAnimator.gameObject.activeSelf) overlayAnimator.Play("OverlayOut");
                 break;
-                
+
             case Menu.LevelSelect:
                 levelSelectScreenAnimator.Play("LevelSelectOut");
                 break;
@@ -105,6 +99,7 @@ public class UIHandler : MonoBehaviour
                 break;
 
             case Menu.GameOver:
+                overlayAnimator.Play("OverlayOut");
                 gameOverScreenAnimator.Play("GameOverOut");
                 break;
         }
@@ -117,7 +112,6 @@ public class UIHandler : MonoBehaviour
 
         mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = (Manager.Levels.completed == 0 || Manager.Levels.completed >= Manager.Levels.count) && !inEscapeMenu ? "New Game" : "Continue";
         mainMenuScreen.Find("Reset").GetComponent<Button>().interactable = inEscapeMenu;
-        mainMenuScreen.Find("EscToReturn").gameObject.SetActive(inEscapeMenu);
         mainMenuScreen.Find("ThxForPlaying").gameObject.SetActive(Manager.Levels.completed >= Manager.Levels.count);
     }
     public void MainMenu() => MainMenu(false);
@@ -131,7 +125,7 @@ public class UIHandler : MonoBehaviour
         }
         else
         {
-            if (currentMenu == Menu.None || currentMenu == Menu.GameOver) MainMenu();
+            if (!InMainOrSubMenu) MainMenu();
             else if (currentMenu == Menu.LevelSelect) levelSelectScreenAnimator.Play("LevelSelectOut");
 
             currentMenu = Menu.Credits;
@@ -148,7 +142,7 @@ public class UIHandler : MonoBehaviour
         }
         else
         {
-            if (currentMenu == Menu.None || currentMenu == Menu.GameOver) MainMenu();
+            if (!InMainOrSubMenu) MainMenu();
             else if (currentMenu == Menu.Credits) creditsScreenAnimator.Play("CreditsOut");
 
             currentMenu = Menu.LevelSelect;
@@ -159,52 +153,31 @@ public class UIHandler : MonoBehaviour
     }
     public void NextLevelSelectPage()
     {
-        if ((LvlSelectPage + 1) * lvlDisplays.Length <= Manager.Levels.count)
-        {
-            LvlSelectPage++;
-        }
+        if ((LvlSelectPage + 1) * lvlDisplays.Length <= Manager.Levels.count) LvlSelectPage++;
     }
     public void BackLevelSelectPage()
     {
-        if (LvlSelectPage > 0)
-        {
-            LvlSelectPage--;
-        }
+        if (LvlSelectPage > 0) LvlSelectPage--;
     }
     public void SelectLevel(int display) => Manager.Levels.Load(displayedLvls[display]);
 
     public void ExitMenu()
     {
-        Manager.Dialogs.Hide();
-        
-
-        switch (currentMenu)
+        if (InMainOrSubMenu)
         {
-            case Menu.LevelSelect:
+            mainMenuScreenAnimator.Play("MainMenuOut");
+            if (currentMenu == Menu.LevelSelect)
                 levelSelectScreenAnimator.Play("LevelSelectOut");
-                mainMenuScreenAnimator.Play("MainMenuOut");
-                break;
-
-            case Menu.Credits:
+            else if (currentMenu == Menu.Credits)
                 creditsScreenAnimator.Play("CreditsOut");
-                mainMenuScreenAnimator.Play("MainMenuOut");
-                break;
-
-            case Menu.MainMenu:
-                mainMenuScreenAnimator.Play("MainMenuOut");
-                break;
-
-            case Menu.GameOver:
-                gameOverScreenAnimator.Play("GameOverOut");
-                break;
         }
-
+        else if (currentMenu == Menu.GameOver)
+            gameOverScreenAnimator.Play("GameOverOut");
+        
         currentMenu = Menu.None;
+
         GameObject thx = mainMenuScreen.Find("ThxForPlaying").gameObject;
-        if (thx.activeSelf)
-            thx.GetComponent<Animator>().Play("ThxForPlayingOut");
-        if (mainMenuScreen.Find("EscToReturn").gameObject.activeSelf)
-            escToReturnAnimator.Play("EscToReturnOut");
+        if (thx.activeSelf) thx.GetComponent<Animator>().Play("ThxForPlayingOut");
 
         if (Manager.Levels.CurrentIndex > 0)
             overlayAnimator.gameObject.SetActive(true);

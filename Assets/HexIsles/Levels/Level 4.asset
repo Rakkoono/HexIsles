@@ -15,5 +15,4 @@ MonoBehaviour:
   displayName: 
   previewImage: {fileID: 21300000, guid: 896e0c4568433574ea234ce577b70c3e, type: 3}
   turns: 8
-  targetPosition: {x: 9, y: 9}
-  playerType: 1
+  targetPosition: {x: 2, y: 4}
