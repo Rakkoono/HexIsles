@@ -46,7 +46,7 @@ public class DialogHandler : MonoBehaviour
         foreach (char c in text.ToCharArray())
         {
             dialogBox.text += c;
-            yield return new WaitForSeconds(Time.deltaTime * .1f);
+            yield return null;
         }
     }
 

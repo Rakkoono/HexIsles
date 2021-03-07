@@ -75,6 +75,7 @@ public class UIHandler : MonoBehaviour
     {
         if (currentMenu != Menu.None) return;
 
+        Manager.Dialogs.Hide();
         if (Manager.Players.SelectedObject && Manager.Players.SelectedObject.GetComponent<Player>())
             Manager.Players.SelectedObject.ToggleSelect();
 
@@ -165,8 +166,7 @@ public class UIHandler : MonoBehaviour
 
             currentMenu = Menu.LevelSelect;
             levelSelect.gameObject.SetActive(true);
-            if (Manager.UI.LevelSelectPage == 0)
-                Manager.UI.LevelSelectPage = 0;
+            Manager.UI.LevelSelectPage = Manager.UI.LevelSelectPage;
         }
     }
     public void NextLevelSelectPage()

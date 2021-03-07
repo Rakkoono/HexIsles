@@ -94,10 +94,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 106.9
-  m_fontSizeBase: 36
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 2000
   m_fontStyle: 32
@@ -1750,10 +1750,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 106.9
-  m_fontSizeBase: 36
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 2000
   m_fontStyle: 32
@@ -4965,9 +4965,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Mouse Wheel / Arrow keys
+  m_text: 'Mouse wheel / Arrow keys / Pinch
 
-    Right Mouse + Drag'
+    Right Mouse + Drag / Touch'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fb47dc24f9fa2a4eb4b8cf8fcc21f34, type: 2}
   m_sharedMaterial: {fileID: -7571778674299607091, guid: 0fb47dc24f9fa2a4eb4b8cf8fcc21f34,
@@ -4995,10 +4995,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 106.9
-  m_fontSizeBase: 36
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 2000
   m_fontStyle: 0
@@ -5592,9 +5592,9 @@ GameObject:
   - component: {fileID: 525186569556026995}
   - component: {fileID: 2901275240708891584}
   - component: {fileID: 3199079532325595960}
-  - component: {fileID: 2078198697608093522}
   - component: {fileID: 7249283619649473598}
   - component: {fileID: 2242412151084094120}
+  - component: {fileID: 2078198697608093522}
   m_Layer: 0
   m_Name: Manager
   m_TagString: GameController
@@ -5888,21 +5888,6 @@ MonoBehaviour:
   dialogBox: {fileID: 7110563469653605174}
   dialogBoxAnimator: {fileID: 3779411763951494624}
   startUpDialog: {fileID: 11400000, guid: c8e658d2833a08e4d8293fa4c833e0b0, type: 2}
---- !u!114 &2078198697608093522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5441220689279335963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fe4d890fcf4730458ca52204394a8e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  current: {fileID: 0}
-  completed: 0
-  count: 15
 --- !u!114 &7249283619649473598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5931,6 +5916,7 @@ MonoBehaviour:
   possibleMoves: []
   players: []
   selected: {fileID: 0}
+  lastSelected: {fileID: 0}
 --- !u!114 &2242412151084094120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5943,6 +5929,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1516a958d0a7f498e0166646d5fc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2078198697608093522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441220689279335963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fe4d890fcf4730458ca52204394a8e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  current: {fileID: 0}
+  completed: 0
 --- !u!1 &5710319341780051613
 GameObject:
   m_ObjectHideFlags: 0
@@ -6305,7 +6305,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.9343173, b: 0.8254717, a: 1}
+  m_Color: {r: 1, g: 0.90555555, b: 0.75, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -9848,7 +9848,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Left Mouse
+  m_text: 'Left Mouse / Touch
 
     Escape / Space'
   m_isRightToLeft: 0
@@ -9878,10 +9878,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 106.9
-  m_fontSizeBase: 36
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 2000
   m_fontStyle: 0

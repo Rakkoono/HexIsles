@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: _Level 14
   m_EditorClassIdentifier: 
   displayName: 
-  previewImage: {fileID: 21300000, guid: 538185b4a709fbd44a6966b2ab5577e8, type: 3}
+  previewImage: {fileID: 21300000, guid: bda5787aead649740be613ece9b71fc7, type: 3}
   petrify: 1
   turns: 7
   targetPosition: {x: 5, y: 3}
