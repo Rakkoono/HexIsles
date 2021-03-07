@@ -1,7 +1,7 @@
 # HexIsles
 Help the hexes reach their goal without leaving anyone behind! A little puzzle game about the hexagons life in exile.
 
-This is the post-jam version of my submission to [Brackeys Game Jam 2021.1](https://itch.io/jam/brackeys-5). The original submission is attached [here](https://rakkoon.itch.io/hexisles/devlog/229212/post-jam-update)
+This is the post-jam version of my submission to [Brackeys Game Jam 2021.1](https://itch.io/jam/brackeys-5). The original submission is attached [here](https://rakkoon.itch.io/hexisles/devlog/229212/post-jam-update).
 
 You can visit the [Walkthrough (Partly outdated)](https://rakkoon.itch.io/hexisles/devlog/225563/walkthrough) if you get stuck.
 
