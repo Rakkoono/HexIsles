@@ -9,5 +9,7 @@ public class Sign : MouseSelectable
             HexGrid.GetFieldAt(HexGrid.WorldToGridPos(transform.position)).ToggleSelect();
             Manager.Dialogs.Show(dialog);
         }
+
+        Manager.Players.SelectedObject = null;
     }
 }

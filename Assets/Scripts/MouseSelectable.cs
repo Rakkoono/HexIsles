@@ -2,13 +2,16 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MouseSelectable : MonoBehaviour, IPointerClickHandler
+public class MouseSelectable
+    : MonoBehaviour
+    , IPointerClickHandler
 #if !UNITY_ANDROID && !UNITY_IOS
     // Exclude unused Interfaces on mobile
-    , IPointerEnterHandler, IPointerExitHandler
+    , IPointerEnterHandler
+    , IPointerExitHandler
 #endif
 {
-    public Renderer Renderer {get; private set; }
+    public Renderer Renderer { get; private set; }
     public Color InitialColor { get; private set; }
 
     private void Awake()
@@ -22,14 +25,14 @@ public class MouseSelectable : MonoBehaviour, IPointerClickHandler
     void IPointerEnterHandler.OnPointerEnter(PointerEventData data)
     {
         // highlight object
-        if (Manager.Players && Manager.Players.SelectedObject != this && !Manager.Players.possibleMoves.Contains(this))
+        if (Manager.Players.SelectedObject != this && !(Manager.Players.selected && Manager.Players.possibleMoves.Contains(this)))
             Renderer.material.color = InitialColor + Manager.Players.highlightTint;
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData data)
     {
         // de-highlight object
-        if (Manager.Players.SelectedObject != this && !Manager.Players.possibleMoves.Contains(this))
+        if (Manager.Players.SelectedObject != this && !(Manager.Players.selected && Manager.Players.possibleMoves.Contains(this)))
             ResetColor();
     }
 

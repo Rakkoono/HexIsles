@@ -14,7 +14,10 @@ public class InputHandler : MonoBehaviour
         input.Hotkeys.Menu.performed += _ => Manager.UI.ToggleMainMenu();
         input.Hotkeys.Restart.performed += _ => Manager.Levels.LoadCurrent();
         input.Hotkeys.Undo.performed += _ => Manager.Players.Undo();
-        input.Hotkeys.UnlockAllLevels.performed += _ => Manager.Levels.UnlockAll();
+        
+        // Cheat code only in debug builds
+        if (Debug.isDebugBuild)
+            input.Hotkeys.UnlockAllLevels.performed += _ => Manager.Levels.UnlockAll();
 
         input.Camera.Zoom.performed += ctx => Manager.Camera.zoomAmount = ctx.ReadValue<float>();
         input.Camera.Zoom.canceled += _ => Manager.Camera.zoomAmount = 0f;

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce7cbe278f54e7419402b1c9013a275, type: 3}
+  m_Name: LVL3-1Dialog
+  m_EditorClassIdentifier: 
+  pages:
+  - Although the Hexes are mighty happy in this habitat, there is one thing they
+    fear;
+  - Loneliness.
+  - It is said, that a Hexagon left alone will turn to stone.
+  - Apparently this was also how these islands were made...
+  - So we're walking on corpses, huh?

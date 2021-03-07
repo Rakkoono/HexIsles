@@ -34,6 +34,7 @@ public class Manager : MonoBehaviour
             obj.SetActive(false);
 
 #endif
+
         // Find sun transform
         sun = GetComponentInChildren<Light>().transform;
 
@@ -49,12 +50,15 @@ public class Manager : MonoBehaviour
         Players = GetComponent<PlayerHandler>();
         Levels = GetComponent<LevelHandler>();
 
+        // Initialize UI and dialogs
+        UI.Initialize();
+
         // Get saved data
         if (PlayerPrefs.HasKey("completedLevels"))
             Levels.completed = PlayerPrefs.GetInt("completedLevels");
 
         // Load next or latest level
-        if (Levels.completed >= Levels.count)
+        if (Levels.completed >= Config.Instance.Levels.Length)
             Levels.LoadNext();
         else
             Levels.LoadLatest();

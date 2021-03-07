@@ -15,7 +15,6 @@ public class Player : MouseSelectable
     [HideInInspector] public Color currentColor;
     [HideInInspector] public Vector2Int position;
     [HideInInspector] public Vector3 targetPosition;
-    [HideInInspector] public Vector2Int[] validMoves = { };
     private bool justMoved = false;
 
     private void Start()
@@ -28,9 +27,9 @@ public class Player : MouseSelectable
     [ContextMenu("Adjust Position")]
     public void AdjustPosition()
     {
-        FindObjectOfType<HexGrid>().Initialize();
         position = HexGrid.WorldToGridPos(transform.position);
         transform.position = HexGrid.GridToWorldPos(position) + (.5f * (HexGrid.GetFieldAt(position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
+        
         transform.localScale = new Vector3(transform.localScale.x, (float)height / 2, transform.localScale.z);
     }
 
@@ -63,11 +62,11 @@ public class Player : MouseSelectable
 
     public override void OnSelect()
     {
-        if (Manager.Players.selected && Manager.Players.possibleMoves.Contains(this) && position != Manager.Players.selected.position)
+        if (Manager.Players.lastSelected && Manager.Players.possibleMoves.Contains(this) && position != Manager.Players.lastSelected.position)
         {
             HexField field = HexGrid.GetFieldAt(position);
 
-            Manager.Players.SelectedObject = Manager.Players.selected;
+            Manager.Players.SelectedObject = Manager.Players.lastSelected;
             field.ToggleSelect();
             return;
         }
@@ -83,16 +82,16 @@ public class Player : MouseSelectable
                 jumpHeight = HexGrid.GetFieldAt(position).height + jump;
                 foreach (Player p in HexGrid.GetPlayersAt(position, true))
                     if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
-                (validMoves, Manager.Players.possibleMoves) = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
+                Manager.Players.possibleMoves = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
                 break;
         }
     }
     
-    private static (Vector2Int[], MouseSelectable[]) GetAndColorValidMoves(Vector2Int[] moves, int jumpHeight)
+    private static MouseSelectable[] GetAndColorValidMoves(Vector2Int[] moves, int jumpHeight)
     {
         List<Vector2Int> testedMoves = new List<Vector2Int>();
-        List<Vector2Int> validMoves = new List<Vector2Int>();
-        List<MouseSelectable> coloredObjects = new List<MouseSelectable>();
+        List<MouseSelectable> validMoves = new List<MouseSelectable>();
+
         foreach (Vector2Int move in moves)
         {
             if (testedMoves.Contains(move)) continue;
@@ -104,21 +103,20 @@ public class Player : MouseSelectable
                 height += p.height;
             if (!field || height > jumpHeight)
                 continue;
-            validMoves.Add(move);
-            coloredObjects.Add(field);
+            validMoves.Add(field);
             field.Renderer.material.color = field.InitialColor + Manager.Players.nextMoveTint;
 
             Player[] players = HexGrid.GetPlayersAt(move);
-            coloredObjects.AddRange(players);
+            validMoves.AddRange(players);
             foreach (Player p in players)
                 p.Renderer.material.color = p.InitialColor + Manager.Players.nextMoveTint;
         }
-        return (validMoves.ToArray(), coloredObjects.ToArray());
+        return validMoves.ToArray();
     }
 
     public override void OnDeselect()
     {
-        if (Manager.Players.selected == this) Manager.Players.selected = null;
+        if (Manager.Players.lastSelected == this) Manager.Players.lastSelected = null;
         foreach (MouseSelectable obj in Manager.Players.possibleMoves)
             obj.ResetColor();
     }

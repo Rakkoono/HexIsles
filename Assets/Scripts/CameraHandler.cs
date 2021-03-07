@@ -22,7 +22,7 @@ public class CameraHandler : MonoBehaviour
             return;
         }
         else if (zoomAfterMenu)
-            ZoomTo(5);
+            ZoomTo(4);
 
         if (zoomAmount != 0)
         {

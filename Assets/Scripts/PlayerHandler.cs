@@ -29,26 +29,34 @@ public class PlayerHandler : MonoBehaviour
 
     // Selected object and player
     [HideInInspector] public Player selected;
+    [HideInInspector] public Player lastSelected;
     private MouseSelectable selectedObject;
     public MouseSelectable SelectedObject
     {
         get => selectedObject;
         set
         {
+            // Deselect last object
             if (selectedObject)
             {
                 selectedObject.ResetColor();
                 selectedObject.OnDeselect();
-                selected = selectedObject.GetComponent<Player>();
             }
-            else selected = null;
+            lastSelected = selected;
 
+            // Update selectedObject
             selectedObject = value;
+
+            // Select new object
+            selectedObject?.OnSelect();
             if (selectedObject)
             {
-                selectedObject.OnSelect();
                 selectedObject.Renderer.material.color = selectedObject.InitialColor + Manager.Players.selectionTint;
+                selected = selectedObject.GetComponent<Player>();
             }
+            else
+                selected = null;
+
         }
     }
     public void PetrifyLonePlayers()
@@ -85,6 +93,8 @@ public class PlayerHandler : MonoBehaviour
             return;
 
         undoList.Remove(undo);
+
+        Manager.TurnsLeft++;
 
         if (Manager.Players.SelectedObject)
             Manager.Players.SelectedObject.ToggleSelect();

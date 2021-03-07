@@ -13,12 +13,6 @@ MonoBehaviour:
   m_Name: LVL5Dialog
   m_EditorClassIdentifier: 
   pages:
-  - 'It is incredible how much these
-
-    little creatures can carry, isn''t it?'
-  - 'It''s because of their vertices, you know?
-
-    Makes them very good workers.'
-  - 'They even jump around carrying stuff!
-
-    Can''t jump very high though.'
+  - It is incredible how much these little creatures can carry, isn't it?
+  - It's because of their vertices, you know? Makes them very good workers.
+  - They even jump around carrying stuff! Can't jump very high though.

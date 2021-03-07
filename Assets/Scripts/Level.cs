@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "Level", menuName = "HexIsles/Level", order = 0)]
 public class Level : ScriptableObject

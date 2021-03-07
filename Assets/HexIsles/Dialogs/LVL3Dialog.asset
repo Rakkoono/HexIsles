@@ -13,15 +13,9 @@ MonoBehaviour:
   m_Name: LVL3Dialog
   m_EditorClassIdentifier: 
   pages:
-  - 'Although the Hexes are mighty happy
-
-    in this habitat, there is one thing
-    they fear;'
-  - Loneliness.
-  - 'It is said, that a Hexagon left alone
-
-    will turn to stone.'
-  - 'Apparently this was also how these islands
-
-    were made...'
-  - So we're walking on corpses, huh?
+  - It's funny how complicated they make these myths, huh?
+  - For example are these hexes not supposed to petrify, as long as there is another
+    Hex next to them,
+  - but how high up the other Hex is doesn't matter apparently.
+  - Of course, I don't believe in this crap. What a stupid concept of loneliness
+    is that?

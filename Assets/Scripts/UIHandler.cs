@@ -6,51 +6,69 @@ public class UIHandler : MonoBehaviour
 {
     public enum Menu { None, GameOver, MainMenu, LevelSelect, Credits, Options }
 
-    [SerializeField] private Transform mainMenuScreen;
-    [SerializeField] private Transform gameOverScreen;
-    [SerializeField] private Transform creditsScreen;
-    [SerializeField] private Transform levelSelectScreen;
-
-    [SerializeField] private GameObject[] lvlDisplays = new GameObject[9];
-
+    [SerializeField] private GameObject[] levelDisplays = new GameObject[9];
     public TMP_Text turnDisplay;
+    [Space]
+    [SerializeField] private Transform overlay;
+    [SerializeField] private Transform mainMenu;
+    [SerializeField] private Transform gameOver;
+    [SerializeField] private Transform credits;
+    [SerializeField] private Transform levelSelect;
 
-    private readonly int[] displayedLvls = new int[9];
-
-    [SerializeField] private Animator overlayAnimator;
-    [SerializeField] private Animator gameOverScreenAnimator;
-    [SerializeField] private Animator mainMenuScreenAnimator;
-    [SerializeField] private Animator levelSelectScreenAnimator;
-    [SerializeField] private Animator creditsScreenAnimator;
-    public Animator dialogBoxAnimator;
+    private Animator overlayAnimator;
+    private Animator mainMenuAnimator;
+    private Animator gameOverAnimator;
+    private Animator creditsAnimator;
+    private Animator levelSelectAnimator;
 
     [HideInInspector] public Menu currentMenu = Menu.MainMenu;
     [HideInInspector] public bool inEscapeMenu;
-    public bool InMainOrSubMenu => currentMenu == Menu.MainMenu || currentMenu == Menu.Credits || currentMenu == Menu.LevelSelect || currentMenu == Menu.Options;
+    public bool InMainOrSubMenu
+        => currentMenu == Menu.MainMenu
+        || currentMenu == Menu.Credits
+        || currentMenu == Menu.LevelSelect
+        || currentMenu == Menu.Options;
 
-    [HideInInspector]
-    private int lvlSelectPage;
-    public int LvlSelectPage
+    private readonly int[] displayedLevels = new int[9];
+
+    [HideInInspector] private int levelSelectPage;
+    public int LevelSelectPage
     {
-        get => lvlSelectPage;
+        get => levelSelectPage;
         set
         {
-            lvlSelectPage = value;
-            for (int i = 0; i < lvlDisplays.Length; i++)
+            levelSelectPage = value;
+            for (int i = 0; i < levelDisplays.Length; i++)
             {
-                displayedLvls[i] = lvlSelectPage * lvlDisplays.Length + i + 1;
+                displayedLevels[i] = levelSelectPage * levelDisplays.Length + i + 1;
 
-                if (displayedLvls[i] > Manager.Levels.count)
-                    lvlDisplays[i].SetActive(false);
+                if (displayedLevels[i] > Config.Instance.Levels.Length)
+                    levelDisplays[i].SetActive(false);
                 else
                 {
-                    lvlDisplays[i].SetActive(true);
-                    lvlDisplays[i].GetComponentInChildren<TMP_Text>().text = (Manager.Levels.completed >= displayedLvls[i] - 1) ? displayedLvls[i] + " " + Config.Instance.Levels[displayedLvls[i] - 1].DisplayName : "???";
-                    lvlDisplays[i].transform.Find("Preview").GetComponent<Image>().sprite = (Manager.Levels.completed >= displayedLvls[i] - 1) ? Config.Instance.Levels[displayedLvls[i] - 1].PreviewImage : null;
-                    lvlDisplays[i].GetComponent<Button>().interactable = Manager.Levels.completed >= displayedLvls[i] - 1;
+                    levelDisplays[i].SetActive(true);
+                    levelDisplays[i].GetComponentInChildren<TMP_Text>().text = (Manager.Levels.completed >= displayedLevels[i] - 1) ? displayedLevels[i] + " " + Config.Instance.Levels[displayedLevels[i] - 1].DisplayName : "???";
+                    levelDisplays[i].transform.Find("Preview").GetComponent<Image>().sprite = (Manager.Levels.completed >= displayedLevels[i] - 1) ? Config.Instance.Levels[displayedLevels[i] - 1].PreviewImage : null;
+                    levelDisplays[i].GetComponent<Button>().interactable = Manager.Levels.completed >= displayedLevels[i] - 1;
                 }
             }
         }
+    }
+
+    public void Initialize() {
+        overlayAnimator = overlay.GetComponent<Animator>();
+        mainMenuAnimator = mainMenu.GetComponent<Animator>();
+        gameOverAnimator = gameOver.GetComponent<Animator>();
+        creditsAnimator = credits.GetComponent<Animator>();
+        levelSelectAnimator = levelSelect.GetComponent<Animator>();
+
+        overlay.gameObject.SetActive(false);
+        mainMenu.gameObject.SetActive(false);
+        gameOver.gameObject.SetActive(false);
+        credits.gameObject.SetActive(false);
+        levelSelect.gameObject.SetActive(false);
+
+        Manager.Dialogs.dialogBoxAnimator.gameObject.SetActive(false);
     }
 
     public void GameOver(GameOver gameOver)
@@ -63,12 +81,12 @@ public class UIHandler : MonoBehaviour
         if (gameOver.UnlockNextLevel && Manager.Levels.completed == Manager.Levels.CurrentIndex - 1)
             Manager.Levels.completed++;
 
-        gameOverScreen.Find("Continue").GetComponent<Button>().interactable = Manager.Levels.completed >= Manager.Levels.CurrentIndex;
+        this.gameOver.Find("Continue").GetComponent<Button>().interactable = Manager.Levels.completed >= Manager.Levels.CurrentIndex;
 
         currentMenu = Menu.GameOver;
         overlayAnimator.gameObject.SetActive(true);
-        gameOverScreen.gameObject.SetActive(true);
-        gameOverScreen.Find("GameOverMSG").GetComponent<TMP_Text>().text = gameOver.Messages[Random.Range(0, gameOver.Messages.Length)];
+        this.gameOver.gameObject.SetActive(true);
+        this.gameOver.Find("GameOverMSG").GetComponent<TMP_Text>().text = gameOver.Messages[Random.Range(0, gameOver.Messages.Length)];
 
         // Play sound effect
         Manager.Players.sfxSource.PlayOneShot(gameOver.UnlockNextLevel ? Manager.Players.levelCompleteSound : Manager.Players.gameOverSound, .7f);
@@ -91,28 +109,28 @@ public class UIHandler : MonoBehaviour
                 break;
 
             case Menu.LevelSelect:
-                levelSelectScreenAnimator.Play("LevelSelectOut");
+                levelSelectAnimator.Play("LevelSelectOut");
                 break;
 
             case Menu.Credits:
-                creditsScreenAnimator.Play("CreditsOut");
+                creditsAnimator.Play("CreditsOut");
                 break;
 
             case Menu.GameOver:
                 overlayAnimator.Play("OverlayOut");
-                gameOverScreenAnimator.Play("GameOverOut");
+                gameOverAnimator.Play("GameOverOut");
                 break;
         }
 
         currentMenu = Menu.MainMenu;
-        mainMenuScreen.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(true);
 
         if (Manager.Players.SelectedObject)
             Manager.Players.SelectedObject.ToggleSelect();
 
-        mainMenuScreen.Find("Start").GetComponentInChildren<TMP_Text>().text = (Manager.Levels.completed == 0 || Manager.Levels.completed >= Manager.Levels.count) && !inEscapeMenu ? "New Game" : "Continue";
-        mainMenuScreen.Find("Reset").GetComponent<Button>().interactable = inEscapeMenu;
-        mainMenuScreen.Find("ThxForPlaying").gameObject.SetActive(Manager.Levels.completed >= Manager.Levels.count);
+        mainMenu.Find("Start").GetComponentInChildren<TMP_Text>().text = (Manager.Levels.completed == 0 || Manager.Levels.completed >= Config.Instance.Levels.Length) && !inEscapeMenu ? "New Game" : "Continue";
+        mainMenu.Find("Reset").GetComponent<Button>().interactable = inEscapeMenu;
+        mainMenu.Find("ThxForPlaying").gameObject.SetActive(Manager.Levels.completed >= Config.Instance.Levels.Length);
     }
     public void MainMenu() => MainMenu(false);
 
@@ -121,15 +139,15 @@ public class UIHandler : MonoBehaviour
         if (currentMenu == Menu.Credits)
         {
             currentMenu = Menu.MainMenu;
-            creditsScreenAnimator.Play("CreditsOut");
+            creditsAnimator.Play("CreditsOut");
         }
         else
         {
             if (!InMainOrSubMenu) MainMenu();
-            else if (currentMenu == Menu.LevelSelect) levelSelectScreenAnimator.Play("LevelSelectOut");
+            else if (currentMenu == Menu.LevelSelect) levelSelectAnimator.Play("LevelSelectOut");
 
             currentMenu = Menu.Credits;
-            creditsScreen.gameObject.SetActive(true);
+            credits.gameObject.SetActive(true);
         }
     }
 
@@ -138,45 +156,45 @@ public class UIHandler : MonoBehaviour
         if (currentMenu == Menu.LevelSelect)
         {
             currentMenu = Menu.MainMenu;
-            levelSelectScreenAnimator.Play("LevelSelectOut");
+            levelSelectAnimator.Play("LevelSelectOut");
         }
         else
         {
             if (!InMainOrSubMenu) MainMenu();
-            else if (currentMenu == Menu.Credits) creditsScreenAnimator.Play("CreditsOut");
+            else if (currentMenu == Menu.Credits) creditsAnimator.Play("CreditsOut");
 
             currentMenu = Menu.LevelSelect;
-            levelSelectScreen.gameObject.SetActive(true);
-            if (Manager.UI.LvlSelectPage == 0)
-                Manager.UI.LvlSelectPage = 0;
+            levelSelect.gameObject.SetActive(true);
+            if (Manager.UI.LevelSelectPage == 0)
+                Manager.UI.LevelSelectPage = 0;
         }
     }
     public void NextLevelSelectPage()
     {
-        if ((LvlSelectPage + 1) * lvlDisplays.Length <= Manager.Levels.count) LvlSelectPage++;
+        if ((LevelSelectPage + 1) * levelDisplays.Length <= Config.Instance.Levels.Length) LevelSelectPage++;
     }
     public void BackLevelSelectPage()
     {
-        if (LvlSelectPage > 0) LvlSelectPage--;
+        if (LevelSelectPage > 0) LevelSelectPage--;
     }
-    public void SelectLevel(int display) => Manager.Levels.Load(displayedLvls[display]);
+    public void SelectLevel(int display) => Manager.Levels.Load(displayedLevels[display]);
 
     public void ExitMenu()
     {
         if (InMainOrSubMenu)
         {
-            mainMenuScreenAnimator.Play("MainMenuOut");
+            mainMenuAnimator.Play("MainMenuOut");
             if (currentMenu == Menu.LevelSelect)
-                levelSelectScreenAnimator.Play("LevelSelectOut");
+                levelSelectAnimator.Play("LevelSelectOut");
             else if (currentMenu == Menu.Credits)
-                creditsScreenAnimator.Play("CreditsOut");
+                creditsAnimator.Play("CreditsOut");
         }
         else if (currentMenu == Menu.GameOver)
-            gameOverScreenAnimator.Play("GameOverOut");
+            gameOverAnimator.Play("GameOverOut");
         
         currentMenu = Menu.None;
 
-        GameObject thx = mainMenuScreen.Find("ThxForPlaying").gameObject;
+        GameObject thx = mainMenu.Find("ThxForPlaying").gameObject;
         if (thx.activeSelf) thx.GetComponent<Animator>().Play("ThxForPlayingOut");
 
         if (Manager.Levels.CurrentIndex > 0)

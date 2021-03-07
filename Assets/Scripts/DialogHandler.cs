@@ -5,6 +5,7 @@ using UnityEngine;
 public class DialogHandler : MonoBehaviour
 {
     [SerializeField] private TMP_Text dialogBox;
+    public Animator dialogBoxAnimator;
     public Dialog startUpDialog;
 
     private Dialog currentDialog;
@@ -14,8 +15,8 @@ public class DialogHandler : MonoBehaviour
     public void Hide()
     {
         currentPage = 0;
-        if (dialogBox.transform.parent.gameObject.activeSelf)
-            Manager.UI.dialogBoxAnimator.Play("DialogBoxOut");
+        if (dialogBoxAnimator.gameObject.activeSelf)
+            dialogBoxAnimator.Play("DialogBoxOut");
     }
 
     public void Show(Dialog dialog)
@@ -40,12 +41,12 @@ public class DialogHandler : MonoBehaviour
 
     private IEnumerator ShowText(string text)
     {
-        dialogBox.transform.parent.gameObject.SetActive(true);
+        dialogBoxAnimator.gameObject.SetActive(true);
         dialogBox.text = "";
         foreach (char c in text.ToCharArray())
         {
             dialogBox.text += c;
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return new WaitForSeconds(Time.deltaTime * .1f);
         }
     }
 

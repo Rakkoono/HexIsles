@@ -3639,7 +3639,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.01, y: 0.02}
-  m_AnchorMax: {x: 0.99, y: 0.9}
+  m_AnchorMax: {x: 1, y: 0.9}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3699,8 +3699,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 105
-  m_fontSizeBase: 105
+  m_fontSize: 120
+  m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -5855,11 +5855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec59fca0bd5d2c64c8968e3c5567b679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuScreen: {fileID: 7558473764638287480}
-  gameOverScreen: {fileID: 6357361983536303055}
-  creditsScreen: {fileID: 5139597709218522162}
-  levelSelectScreen: {fileID: 3577067249173129457}
-  lvlDisplays:
+  levelDisplays:
   - {fileID: 3784402906144005394}
   - {fileID: 8747638601911286981}
   - {fileID: 7277849826252500356}
@@ -5870,12 +5866,11 @@ MonoBehaviour:
   - {fileID: 1900672018564982466}
   - {fileID: 1013085113217999011}
   turnDisplay: {fileID: 1570341765334720081}
-  overlayAnimator: {fileID: 7855144583240181073}
-  gameOverScreenAnimator: {fileID: 7024946070684367586}
-  mainMenuScreenAnimator: {fileID: 5768127590322854441}
-  levelSelectScreenAnimator: {fileID: 5473051329618086316}
-  creditsScreenAnimator: {fileID: 1166236510043447385}
-  dialogBoxAnimator: {fileID: 3779411763951494624}
+  overlay: {fileID: 5979946936338273943}
+  mainMenu: {fileID: 7558473764638287480}
+  gameOver: {fileID: 6357361983536303055}
+  credits: {fileID: 5139597709218522162}
+  levelSelect: {fileID: 3577067249173129457}
   currentMenu: 0
   inEscapeMenu: 0
 --- !u!114 &3199079532325595960
@@ -5891,6 +5886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 7110563469653605174}
+  dialogBoxAnimator: {fileID: 3779411763951494624}
   startUpDialog: {fileID: 11400000, guid: c8e658d2833a08e4d8293fa4c833e0b0, type: 2}
 --- !u!114 &2078198697608093522
 MonoBehaviour:
@@ -6984,7 +6980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6357361983536303055
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8140,7 +8136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7558473764638287480
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8527,7 +8523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5979946936338273943
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8747,7 +8743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6304034528188457914
 RectTransform:
   m_ObjectHideFlags: 0

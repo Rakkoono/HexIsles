@@ -13,14 +13,5 @@ MonoBehaviour:
   m_Name: LVL4Dialog
   m_EditorClassIdentifier: 
   pages:
-  - 'It''s funny how complicated they make these
-
-    myths, huh?'
-  - 'For example are these hexes not supposed
-
-    to petrify when, there is another
-    Hex next to them, but how high up the other Hex is doesn''t matter.'
-  - 'Of course, I don''t believe in this crap.
-
-    What a stupid concept of loneliness
-    is that?'
+  - Uff, this cliff seems really dangerous. I wouldn't bother climbing that together.
+  - I'd rather be the ground support, y'know?

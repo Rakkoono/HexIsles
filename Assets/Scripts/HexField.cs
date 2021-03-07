@@ -18,8 +18,8 @@ public class HexField : MouseSelectable
 
     public override void OnSelect()
     {
-        if (Manager.UI.currentMenu == UIHandler.Menu.None && Manager.Players.selected && Manager.Players.possibleMoves.Contains(this))
-                Manager.Players.selected.Move(this);
+        if (Manager.UI.currentMenu == UIHandler.Menu.None && Manager.Players.lastSelected && Manager.Players.possibleMoves.Contains(this))
+                Manager.Players.lastSelected.Move(this);
     }
 
     // Debugging Method
