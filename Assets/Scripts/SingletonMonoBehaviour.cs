@@ -2,15 +2,15 @@ using UnityEngine;
 
 public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance = null;
-    public static T Instance
+    private static T current = null;
+    public static T Current
     {
         get
         {
-            if (!instance)
-                instance = FindObjectOfType<T>();
+            if (!current)
+                current = FindObjectOfType<T>();
             
-            return instance;
+            return current;
         }
     }
 }

@@ -17,3 +17,4 @@ MonoBehaviour:
   - They died alone...
   - EVERYONE IS DEAD!
   unlockNextLevel: 0
+  sound: {fileID: 8300000, guid: 681acc7c1738d62439fc959596660da2, type: 3}

@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class HexGrid : SingletonMonoBehaviour<HexGrid>
 {
-    //Serialized variables
+    //Serialized fields
     [SerializeField] private Transform prefab;
     [Space]
     [SerializeField] private Vector2Int size = new Vector2Int(9, 9);
     [SerializeField] private float gap = 0f;
 
-    //Hidden variables
+    //Hidden fields
     private Vector2 calculatedSize;
     private Vector3 startPos;
 
@@ -105,31 +105,31 @@ public class HexGrid : SingletonMonoBehaviour<HexGrid>
 
     public static Vector3 GridToWorldPos(Vector2Int gridPos)
     {
-        Instance.Calculate();
+        Current.Calculate();
         Vector3 worldPos = Vector3.zero;
 
-        worldPos.z = gridPos.y * Instance.calculatedSize.y * .75f + Instance.startPos.z;
+        worldPos.z = gridPos.y * Current.calculatedSize.y * .75f + Current.startPos.z;
 
-        float offset = (gridPos.y % 2 == 1) ? Instance.calculatedSize.y / 2 - .066666f : 0;
-        worldPos.x = gridPos.x * Instance.calculatedSize.x + Instance.startPos.x + offset;
+        float offset = (gridPos.y % 2 == 1) ? Current.calculatedSize.y / 2 - .066666f : 0;
+        worldPos.x = gridPos.x * Current.calculatedSize.x + Current.startPos.x + offset;
 
         return worldPos;
     }
 
     public static Vector2Int WorldToGridPos(Vector3 worldPos)
     {
-        Instance.Calculate();
+        Current.Calculate();
         Vector2Int gridPos = Vector2Int.zero;
 
-        gridPos.y = Mathf.RoundToInt((worldPos.z - Instance.startPos.z) / .75f / Instance.calculatedSize.y);
+        gridPos.y = Mathf.RoundToInt((worldPos.z - Current.startPos.z) / .75f / Current.calculatedSize.y);
 
-        float offset = (gridPos.y % 2 == 1) ? Instance.calculatedSize.y / 2 - .066666f : 0;
-        gridPos.x = Mathf.RoundToInt((worldPos.x - offset - Instance.startPos.x) / Instance.calculatedSize.x);
+        float offset = (gridPos.y % 2 == 1) ? Current.calculatedSize.y / 2 - .066666f : 0;
+        gridPos.x = Mathf.RoundToInt((worldPos.x - offset - Current.startPos.x) / Current.calculatedSize.x);
 
         return gridPos;
     }
 
-    public static HexField GetFieldAt(Vector2Int pos) => Instance.GetComponentsInChildren<HexField>().FirstOrDefault(f => f.position == pos);
+    public static HexField GetFieldAt(Vector2Int pos) => Current.GetComponentsInChildren<HexField>().FirstOrDefault(f => f.position == pos);
 
     public static Player[] GetPlayersAt(Vector2Int pos, bool includePetrified = true)
     {
@@ -152,8 +152,8 @@ public class HexGrid : SingletonMonoBehaviour<HexGrid>
         foreach (Vector2Int offset in OFFSETS.Union(offsets))
         {
             if (!onlyExisting
-             || ((pos + offset).x < Instance.size.x
-             && (pos + offset).y < Instance.size.y
+             || ((pos + offset).x < Current.size.x
+             && (pos + offset).y < Current.size.y
              && (pos + offset).x >= 0
              && (pos + offset).y >= 0))
                 fields.Add(pos + offset);

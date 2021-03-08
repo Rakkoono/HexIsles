@@ -5,11 +5,11 @@ using UnityEngine;
 public class HexField : MouseSelectable
 {
 
-    // Serialized Variables
+    // Serialized fields
     [Range(1, 10)]
     public int height = 1;
 
-    // Hidden Variables
+    // Hidden fields
     [HideInInspector]
     public List<GameObject> objects = new List<GameObject>();
     [HideInInspector]

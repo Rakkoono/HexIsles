@@ -6,12 +6,12 @@ public class Player : MouseSelectable
 {
     public enum MoveSet { None, AdjacentFields }
 
-    // Serialized variables
+    // Serialized fields
     [SerializeField] MoveSet moveSet = MoveSet.AdjacentFields;
     [SerializeField, Range(1, 5)] int height = 1;
     [SerializeField, Range(1, 3)] int jump = 1;
 
-    // Hidden variables
+    // Hidden fields
     [HideInInspector] public Color currentColor;
     [HideInInspector] public Vector2Int position;
     [HideInInspector] public Vector3 targetPosition;
@@ -37,7 +37,7 @@ public class Player : MouseSelectable
     {
         // Move to target position
         if (transform.position != targetPosition)
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Manager.Players.playerAnimationSpeed * 10f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Config.Current.playerAnimationSpeed * 10f * Time.deltaTime);
         else if (justMoved)
             {
                 // When finished moving...
@@ -50,13 +50,13 @@ public class Player : MouseSelectable
 
                 // Check for game over
                 if (Manager.Players.players.All(p => !p.enabled))
-                    Manager.UI.GameOver(Config.Instance.AllPetrified);
+                    Manager.UI.ShowGameOver(Config.Current.AllPetrified);
 
-                else if (Manager.Levels.current.TargetPosition == position)
-                    Manager.UI.GameOver(Config.Instance.LevelComplete);
+                else if (Manager.Current.level.TargetPosition == position)
+                    Manager.UI.ShowGameOver(Config.Current.LevelComplete);
 
-                else if (Manager.TurnsLeft <= 0)
-                    Manager.UI.GameOver(Config.Instance.OutOfTurns);
+                else if (Manager.Current.TurnsLeft <= 0)
+                    Manager.UI.ShowGameOver(Config.Current.OutOfTurns);
             }
     }
 
@@ -104,12 +104,12 @@ public class Player : MouseSelectable
             if (!field || height > jumpHeight)
                 continue;
             validMoves.Add(field);
-            field.Renderer.material.color = field.InitialColor + Manager.Players.nextMoveTint;
+            field.Renderer.material.color = field.InitialColor + Config.Current.MovePreviewTint;
 
             Player[] players = HexGrid.GetPlayersAt(move);
             validMoves.AddRange(players);
             foreach (Player p in players)
-                p.Renderer.material.color = p.InitialColor + Manager.Players.nextMoveTint;
+                p.Renderer.material.color = p.InitialColor + Config.Current.MovePreviewTint;
         }
         return validMoves.ToArray();
     }
@@ -143,12 +143,12 @@ public class Player : MouseSelectable
 
         position = target.position;
 
-        if (Manager.Levels.current.Petrify)
+        if (Manager.Current.level.Petrify)
             Manager.Players.PetrifyLonePlayers();
 
-        Manager.TurnsLeft--;
+        Manager.Current.TurnsLeft--;
         justMoved = true;
-        Manager.Players.sfxSource.PlayOneShot(Manager.Players.moveSounds[Random.Range(0, Manager.Players.moveSounds.Length)]);
+        Manager.Current.SfxSource.PlayOneShot(Config.Current.MoveSounds[Random.Range(0, Config.Current.MoveSounds.Length)]);
         // Player automatically gets selected after every move // ToggleSelect();
     }
 }

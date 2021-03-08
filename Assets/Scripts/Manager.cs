@@ -2,15 +2,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Manager : MonoBehaviour
+public class Manager : SingletonMonoBehaviour<Manager>
 {
+    // Serialized fields
     [SerializeField] private Config config;
 
-    private bool onStartup = true;
-    private Transform sun;
+    [Space(2), Header("Audio")]
 
-    private static int turnsLeft = 0;
-    public static int TurnsLeft
+    [SerializeField] private AudioSource musicSource;
+    public AudioSource MusicSource => musicSource;
+
+    [SerializeField] private AudioSource sfxSource;
+    public AudioSource SfxSource => sfxSource;
+
+    // Hidden fields
+    private bool onStartup = true;
+    
+    private MainInput input;
+
+    private int turnsLeft = 0;
+    public int TurnsLeft
     {
         get => turnsLeft;
         set
@@ -19,12 +30,16 @@ public class Manager : MonoBehaviour
             UI.turnDisplay.text = turnsLeft + (turnsLeft == 1 ? " Turn" : " Turns");
         }
     }
-    public static CameraHandler Camera { get; private set; }
+
+    [HideInInspector] public CameraController cameraController;
+
     public static UIHandler UI { get; private set; }
     public static DialogHandler Dialogs { get; private set; }
     public static PlayerHandler Players { get; private set; }
-    public static LevelHandler Levels { get; private set; }
 
+    [HideInInspector] public Level level;
+    [HideInInspector] public int levelIndex;
+    [HideInInspector] public int completedLevels = 0;
 
     void Awake()
     {
@@ -34,65 +49,129 @@ public class Manager : MonoBehaviour
             obj.SetActive(false);
 
 #endif
+        // start playing music
+        musicSource.clip = Config.Current.Music;
+        musicSource.Play();
 
-        // Find sun transform
-        sun = GetComponentInChildren<Light>().transform;
-
-        // Keep manager loaded during scene change
+        // Keep manager loaded during scene change, execute OnLoadCallback instead;
         DontDestroyOnLoad(gameObject);
-        // Execute OnLoadCallback() on scene change
         SceneManager.sceneLoaded += OnLoadCallback;
 
+        cameraController = GetComponentInChildren<CameraController>();
+
         // Get Handlers
-        Camera = GetComponent<CameraHandler>();
         UI = GetComponent<UIHandler>();
         Dialogs = GetComponent<DialogHandler>();
         Players = GetComponent<PlayerHandler>();
-        Levels = GetComponent<LevelHandler>();
 
+        InitializeInputActions();
         // Initialize UI and dialogs
         UI.Initialize();
 
-        // Get saved data
+        // Load saved data
         if (PlayerPrefs.HasKey("completedLevels"))
-            Levels.completed = PlayerPrefs.GetInt("completedLevels");
+            completedLevels = PlayerPrefs.GetInt("completedLevels");
 
         // Load next or latest level
-        if (Levels.completed >= Config.Instance.Levels.Length)
-            Levels.LoadNext();
+        if (completedLevels >= Config.Current.Levels.Length)
+            LoadNextLevel();
         else
-            Levels.LoadLatest();
+            LoadLatestLevel();
     }
 
     private void OnLoadCallback(Scene scene, LoadSceneMode sceneMode)
     {
-        Levels.CurrentIndex = scene.buildIndex;
-        if (Levels.CurrentIndex != 0)
+        // Save current build index
+        levelIndex = scene.buildIndex;
+        if (levelIndex > 0)
         {
-            Levels.current = Config.Instance.Levels[Levels.CurrentIndex - 1];
-            TurnsLeft = Levels.current.Turns;
+            level = Config.Current.Levels[levelIndex - 1];
+            TurnsLeft = level.Turns;
         }
 
+        // Reset players and undo list
         Players.players = FindObjectsOfType<Player>();
         Players.undoList = new List<PlayerInfo[]>();
 
-        if (Levels.CurrentIndex > 0 && onStartup)
+        // Open main menu on startup
+        if (levelIndex > 0 && onStartup)
         {
-            UI.MainMenu();
+            UI.ShowMainMenu();
             onStartup = false;
         }
-        else UI.ExitMenu();
-
+        else
+            UI.ExitMenus();
     }
 
-    [ContextMenu("Reset Player Prefs")]
-    public void ResetPlayerPrefs() => PlayerPrefs.DeleteAll();
+    private void OnEnable() => input.Enable();
+    private void OnDisable() => input.Disable();
 
-    private void Update() => sun.RotateAround(transform.position, Vector3.up, 8 * Time.deltaTime);
+    private void InitializeInputActions()
+    {
+        input = new MainInput();
+
+        input.Hotkeys.Menu.performed += _ => Manager.UI.ToggleMainMenu();
+        input.Hotkeys.Restart.performed += _ => LoadCurrentLevel();
+        input.Hotkeys.Undo.performed += _ => Manager.Players.Undo();
+        
+        // Cheat code only in debug builds
+        if (Debug.isDebugBuild)
+            input.Hotkeys.UnlockAllLevels.performed += _ => UnlockAllLevels();
+
+        input.Camera.Zoom.performed += ctx => cameraController.zoomAmount = ctx.ReadValue<float>();
+        input.Camera.Zoom.canceled += _ => cameraController.zoomAmount = 0f;
+
+        input.Camera.Pan.performed += ctx => cameraController.panAmount = ctx.ReadValue<float>();
+        input.Camera.Pan.canceled += _ => cameraController.panAmount = 0f;
+
+        input.Camera.Pinch.started += _ => cameraController.startPinch = true;
+        input.Camera.Pinch.canceled += _ => cameraController.pinch = false;
+    }
+
+    public void OnPressContinue()
+    {
+        if (Manager.UI.inEscapeMenu)
+            Manager.UI.ExitMenus();
+        else if (completedLevels >= Config.Current.Levels.Length)
+            RestartGame();
+        else
+            LoadLatestLevel();
+    }
+
+    //
+    // Level Loading
+    //
+
+    public void UnlockAllLevels()
+    {
+            completedLevels = Config.Current.Levels.Length;
+            if (Manager.UI.currentMenu != UIHandler.Menu.LevelSelect)
+                Manager.UI.ShowLevelSelect();
+    }
+
+    public void LoadLevel(int index)
+    {
+        if (index <= Config.Current.Levels.Length)
+            SceneManager.LoadScene(index);
+        else
+            Manager.UI.ShowCredits();
+    }
+
+    public void LoadCurrentLevel() => LoadLevel(levelIndex);
+    public void LoadNextLevel() => LoadLevel(levelIndex + 1);
+    public void LoadLatestLevel() => LoadLevel(completedLevels + 1);
+
+    public void RestartGame()
+    {
+        completedLevels = 0;
+        LoadLatestLevel();
+    }
+    public void QuitGame() => Application.Quit();
 
     private void OnApplicationQuit()
     {
-        PlayerPrefs.SetInt("completedLevels", Levels.completed);
+        // Save data on quit
+        PlayerPrefs.SetInt("completedLevels", completedLevels);
         PlayerPrefs.Save();
     }
 }

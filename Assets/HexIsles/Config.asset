@@ -37,3 +37,16 @@ MonoBehaviour:
   panSpeed: 100
   zoomRangeMin: 1
   zoomRangeMax: 8
+  playerAnimationSpeed: 1
+  highlightTint: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0.039215688}
+  movePreviewTint: {r: 0.39215687, g: 0.39215687, b: 0.15686275, a: 0.039215688}
+  selectionTint: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 0.019607844}
+  petrifiedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
+  music: {fileID: 8300000, guid: 30cdf9b49a8c0214a85100f1945f2188, type: 3}
+  moveSounds:
+  - {fileID: 8300000, guid: beb2cac6972b580458434b68cee9cf0a, type: 3}
+  - {fileID: 8300000, guid: 8e4fbf0654531ed40bd93bd4a8c6b21e, type: 3}
+  - {fileID: 8300000, guid: dd51ac4f4734ace46acade9ff52f1dfb, type: 3}
+  - {fileID: 8300000, guid: 56b5bd136fd34d645a3e561721e3bdf8, type: 3}
+  letterAnimationTime: 0.1
+  startUpDialog: {fileID: 11400000, guid: c8e658d2833a08e4d8293fa4c833e0b0, type: 2}

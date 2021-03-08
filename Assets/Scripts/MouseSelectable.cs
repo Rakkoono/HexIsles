@@ -26,7 +26,7 @@ public class MouseSelectable
     {
         // highlight object
         if (Manager.Players.SelectedObject != this && !(Manager.Players.selected && Manager.Players.possibleMoves.Contains(this)))
-            Renderer.material.color = InitialColor + Manager.Players.highlightTint;
+            Renderer.material.color = InitialColor + Config.Current.HighlightTint;
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData data)

@@ -8,4 +8,7 @@ public class GameOver : ScriptableObject
 
     [SerializeField] private bool unlockNextLevel;
     public bool UnlockNextLevel => unlockNextLevel;
+
+    [SerializeField] private AudioClip sound;
+    public AudioClip Sound => sound;
 }

@@ -4,32 +4,15 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
-    // Serialized variables
-    [Space(2), Header("Animation")]
-    [Range(.1f, 10)] public float playerAnimationSpeed = 1;
-
-    [Space(2), Header("Colors")]
-    public Color highlightTint = new Color(40, 40, 40, 10);
-    public Color nextMoveTint = new Color(100, 100, 40, 10);
-    [SerializeField] private Color selectionTint = new Color(80, 80, 80, 10);
-    [SerializeField] private Color petrifiedColor = new Color(120, 120, 120);
-
-    [Space(2), Header("Audio")]
-    public AudioSource sfxSource;
-    public AudioClip[] moveSounds;
-    public AudioClip levelCompleteSound;
-    public AudioClip gameOverSound;
-
-    // Hidden variables
     [HideInInspector] public MouseSelectable[] possibleMoves;
     [HideInInspector] public Player[] players;
 
-    // Undo list
     [HideInInspector] public List<PlayerInfo[]> undoList = new List<PlayerInfo[]>();
 
     // Selected object and player
     [HideInInspector] public Player selected;
     [HideInInspector] public Player lastSelected;
+
     private MouseSelectable selectedObject;
     public MouseSelectable SelectedObject
     {
@@ -51,7 +34,7 @@ public class PlayerHandler : MonoBehaviour
             selectedObject?.OnSelect();
             if (selectedObject)
             {
-                selectedObject.Renderer.material.color = selectedObject.InitialColor + Manager.Players.selectionTint;
+                selectedObject.Renderer.material.color = selectedObject.InitialColor + Config.Current.SelectionTint;
                 selected = selectedObject.GetComponent<Player>();
             }
             else
@@ -78,14 +61,14 @@ public class PlayerHandler : MonoBehaviour
 
     private void Petrify(Player p)
     {
-        p.currentColor = p.Renderer.material.color = petrifiedColor;
+        p.currentColor = p.Renderer.material.color = Config.Current.PetrifiedColor;
         p.tag = "Petrified";
     }
 
     public void Undo()
     {
         if (Manager.UI.currentMenu == UIHandler.Menu.GameOver)
-            Manager.UI.ExitMenu();
+            Manager.UI.ExitMenus();
         else if (Manager.UI.currentMenu != UIHandler.Menu.None)
             return;
         PlayerInfo[] undo = undoList.LastOrDefault();
@@ -94,12 +77,12 @@ public class PlayerHandler : MonoBehaviour
 
         undoList.Remove(undo);
 
-        Manager.TurnsLeft++;
+        Manager.Current.TurnsLeft++;
 
         if (Manager.Players.SelectedObject)
             Manager.Players.SelectedObject.ToggleSelect();
 
-        sfxSource.PlayOneShot(moveSounds[Random.Range(0, moveSounds.Length)]);
+        Manager.Current.SfxSource.PlayOneShot(Config.Current.MoveSounds[Random.Range(0, Config.Current.MoveSounds.Length)]);
 
         foreach (PlayerInfo p in undo)
         {

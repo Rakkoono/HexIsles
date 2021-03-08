@@ -3,15 +3,15 @@ using UnityEngine;
 
 public abstract class SingletonScriptableObject<T> : ScriptableObject where T : ScriptableObject
 {
-    private static T instance = null;
-    public static T Instance
+    private static T current = null;
+    public static T Current
     {
         get
         {
-            if (!instance)
-                instance = Resources.FindObjectsOfTypeAll<T>().FirstOrDefault();
+            if (!current)
+                current = Resources.FindObjectsOfTypeAll<T>().FirstOrDefault();
             
-            return instance;
+            return current;
         }
     }
 }

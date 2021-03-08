@@ -6,7 +6,6 @@ public class DialogHandler : MonoBehaviour
 {
     [SerializeField] private TMP_Text dialogBox;
     public Animator dialogBoxAnimator;
-    public Dialog startUpDialog;
 
     private Dialog currentDialog;
     private int currentPage = 0;
@@ -46,7 +45,7 @@ public class DialogHandler : MonoBehaviour
         foreach (char c in text.ToCharArray())
         {
             dialogBox.text += c;
-            yield return null;
+            yield return new WaitForSeconds(Time.deltaTime * Config.Current.LetterAnimationTime);
         }
     }
 

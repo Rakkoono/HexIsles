@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraHandler : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
+    [SerializeField] private Transform rotationCenter;
+
     [HideInInspector] public bool zoomAfterMenu = false;
     [HideInInspector] public bool startPinch = false;
     [HideInInspector] public bool pinch = false;
@@ -13,11 +15,15 @@ public class CameraHandler : MonoBehaviour
     private Vector2 SecondaryTouchPosition => Touchscreen.current.touches[1].position.ReadValue();
     float previousPinchDistance = 0f;
 
+    private Camera cam;
+
+    private void Start() => cam = GetComponent<Camera>();
+
     private void Update()
     {
         if (Manager.UI.currentMenu != UIHandler.Menu.None)
         {
-            Camera.main.transform.RotateAround(transform.position, Vector3.up, .1f * Time.deltaTime * Config.Instance.panSpeed);
+            transform.RotateAround(rotationCenter.position, Vector3.up, .1f * Time.deltaTime * Config.Current.panSpeed);
             ZoomTo(6);
             return;
         }
@@ -27,20 +33,21 @@ public class CameraHandler : MonoBehaviour
         if (zoomAmount != 0)
         {
             zoomAfterMenu = false;
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - zoomAmount * Time.deltaTime * Config.Instance.zoomSpeed, Config.Instance.ZoomRangeMin, Config.Instance.ZoomRangeMax);
+            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - zoomAmount * Time.deltaTime * Config.Current.zoomSpeed, Config.Current.ZoomRangeMin, Config.Current.ZoomRangeMax);
         }
+
         if (pinch || startPinch)
         {
             float pinchDistance = Vector2.Distance(PrimaryTouchPosition, SecondaryTouchPosition);
             if (startPinch)
                 previousPinchDistance = pinchDistance;
             
-            ZoomTo(Camera.main.orthographicSize + (previousPinchDistance - pinchDistance) * .1f * Config.Instance.zoomSpeed);
+            ZoomTo(cam.orthographicSize + (previousPinchDistance - pinchDistance) * .1f * Config.Current.zoomSpeed);
 
             previousPinchDistance = pinchDistance;
         }
         else if (panAmount > .5f || panAmount < -.5f)
-            Camera.main.transform.RotateAround(transform.position, Vector3.up, -panAmount * Time.deltaTime * Config.Instance.panSpeed);
+            transform.RotateAround(rotationCenter.position, Vector3.up, -panAmount * Time.deltaTime * Config.Current.panSpeed);
         
         if (startPinch) 
         {
@@ -49,5 +56,5 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
-    private void ZoomTo(float size, float speed = 1) => Camera.main.orthographicSize = Mathf.Clamp(Mathf.Lerp(Camera.main.orthographicSize, size, Time.deltaTime * speed), Config.Instance.ZoomRangeMin, Config.Instance.ZoomRangeMax);    
+    private void ZoomTo(float size, float speed = 1) => cam.orthographicSize = Mathf.Clamp(Mathf.Lerp(cam.orthographicSize, size, Time.deltaTime * speed), Config.Current.ZoomRangeMin, Config.Current.ZoomRangeMax);    
 }

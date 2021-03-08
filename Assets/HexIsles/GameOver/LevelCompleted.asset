@@ -17,3 +17,4 @@ MonoBehaviour:
   - Flag Aquired!
   - You've made it!
   unlockNextLevel: 1
+  sound: {fileID: 8300000, guid: 3eea75ce7120c2047a086df8264a4b5c, type: 3}
