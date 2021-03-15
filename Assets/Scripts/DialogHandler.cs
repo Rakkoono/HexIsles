@@ -42,7 +42,7 @@ public class DialogHandler : MonoBehaviour
     {
         dialogBoxAnimator.gameObject.SetActive(true);
         dialogBox.text = "";
-        foreach (char c in text.ToCharArray())
+        foreach (var c in text.ToCharArray())
         {
             dialogBox.text += c;
             yield return new WaitForSeconds(Time.deltaTime * Config.Current.LetterAnimationTime);

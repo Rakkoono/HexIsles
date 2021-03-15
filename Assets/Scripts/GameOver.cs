@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Game Over Type", menuName = "HexIsles/GameOver", order = 0)]
+[CreateAssetMenu(fileName = "Game Over Type", menuName = "HexIsles/Game Over", order = 0)]
 public class GameOver : ScriptableObject
 {
     [SerializeField] private string[] messages;

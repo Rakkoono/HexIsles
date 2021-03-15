@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5652371558793138384}
   - component: {fileID: 8875029579962361124}
   - component: {fileID: 5190235767305262702}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 6103326133077776866}
   - component: {fileID: 293308091798384198}
   - component: {fileID: 5452621925565671505}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c1f5668105641954684ae1d5ff67b228, type: 2}
+  - {fileID: 2100000, guid: 9a7ad8c6cb3a2a340965eeceb611acb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

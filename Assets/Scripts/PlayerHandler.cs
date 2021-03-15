@@ -7,7 +7,7 @@ public class PlayerHandler : MonoBehaviour
     [HideInInspector] public MouseSelectable[] possibleMoves;
     [HideInInspector] public Player[] players;
 
-    [HideInInspector] public List<PlayerInfo[]> undoList = new List<PlayerInfo[]>();
+    [HideInInspector] public Stack<PlayerState[]> undoStack = new Stack<PlayerState[]>();
 
     // Selected object and player
     [HideInInspector] public Player selected;
@@ -44,12 +44,12 @@ public class PlayerHandler : MonoBehaviour
     }
     public void PetrifyLonePlayers()
     {
-        foreach (Player p in players)
+        foreach (var p in players)
         {
-            if (HexGrid.GetPlayersAt(p.position, false).Length > 1) continue;
+            if (GridUtility.GetPlayersAt(p.position, false).Length > 1) continue;
             bool playersNearby = false;
-            foreach (Vector2Int f in HexGrid.GetAdjacentFields(p.position))
-                if (HexGrid.GetPlayersAt(f, false).Length > 0)
+            foreach (var f in GridUtility.GetAdjacentFields(p.position))
+                if (GridUtility.GetPlayersAt(f, false).Length > 0)
                 {
                     playersNearby = true;
                     break;
@@ -71,11 +71,14 @@ public class PlayerHandler : MonoBehaviour
             Manager.UI.ExitMenus();
         else if (Manager.UI.currentMenu != UIHandler.Menu.None)
             return;
-        PlayerInfo[] undo = undoList.LastOrDefault();
-        if (undo == default(PlayerInfo[]))
+
+        if (undoStack.Count == 0)
             return;
 
-        undoList.Remove(undo);
+        PlayerState[] undo = undoStack.Pop();
+        if (undo == default(PlayerState[]))
+            return;
+
 
         Manager.Current.TurnsLeft++;
 
@@ -84,7 +87,7 @@ public class PlayerHandler : MonoBehaviour
 
         Manager.Current.SfxSource.PlayOneShot(Config.Current.MoveSounds[Random.Range(0, Config.Current.MoveSounds.Length)]);
 
-        foreach (PlayerInfo p in undo)
+        foreach (var p in undo)
         {
             if (!p.IsPetrified)
             {
@@ -96,14 +99,14 @@ public class PlayerHandler : MonoBehaviour
 
             if (p.Position == p.Player.transform.position)
                     continue;
-            p.Player.position = HexGrid.WorldToGridPos(p.Position);
+            p.Player.position = GridUtility.WorldToGridPos(p.Position);
             p.Player.targetPosition = p.Position;
         }
     }
 }
-public struct PlayerInfo
+public struct PlayerState
 {
-    public PlayerInfo(Player player, Vector3 position, bool isPetrified)
+    public PlayerState(Player player, Vector3 position, bool isPetrified)
     {
         Player = player;
         Position = position;

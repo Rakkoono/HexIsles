@@ -64,4 +64,9 @@ public class Config : SingletonScriptableObject<Config>
 
     [SerializeField] private Dialog startUpDialog;
     public Dialog StartUpDialog => startUpDialog;
+
+    [Space(2), Header("Editor")]
+
+    [SerializeField, Range(0f, 1f)] private float gapBetweenFields = 0.05f;
+    public float GapBetweenFields => gapBetweenFields;
 }

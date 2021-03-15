@@ -6,7 +6,7 @@ public class Sign : MouseSelectable
     {
         if (Manager.UI.currentMenu == UIHandler.Menu.None)
         {
-            HexGrid.GetFieldAt(HexGrid.WorldToGridPos(transform.position)).ToggleSelect();
+            GridUtility.GetFieldAt(GridUtility.WorldToGridPos(transform.position)).ToggleSelect();
             Manager.Dialogs.Show(dialog);
         }
 

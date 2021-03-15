@@ -91,7 +91,9 @@ public class Manager : SingletonMonoBehaviour<Manager>
 
         // Reset players and undo list
         Players.players = FindObjectsOfType<Player>();
-        Players.undoList = new List<PlayerInfo[]>();
+        foreach (var player in Players.players)
+            player.position = GridUtility.WorldToGridPos(player.transform.position);
+        Players.undoStack = new Stack<PlayerState[]>();
 
         // Open main menu on startup
         if (levelIndex > 0 && onStartup)
@@ -101,6 +103,7 @@ public class Manager : SingletonMonoBehaviour<Manager>
         }
         else
             UI.ExitMenus();
+            
     }
 
     private void OnEnable() => input.Enable();

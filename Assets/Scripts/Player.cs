@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEngine.SceneManagement;
+#endif
 
 public class Player : MouseSelectable
 {
@@ -19,19 +22,28 @@ public class Player : MouseSelectable
 
     private void Start()
     {
+#if UNITY_EDITOR
+        if (!FindObjectOfType<Manager>())
+        {
+            SceneManager.LoadScene(0);
+            return;
+        }
+
+#endif
         targetPosition = transform.position;
         currentColor = InitialColor;
     }
 
-    // Debugging Method
+#if UNITY_EDITOR
     [ContextMenu("Adjust Position")]
     public void AdjustPosition()
     {
-        position = HexGrid.WorldToGridPos(transform.position);
-        transform.position = HexGrid.GridToWorldPos(position) + (.5f * (HexGrid.GetFieldAt(position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
+        position = GridUtility.WorldToGridPos(transform.position);
+        transform.position = GridUtility.GridToWorldPos(position) + (.5f * (GridUtility.GetFieldAt(position).Height + height / 2) - (height % 2 != 0 ? 0 : .25f)) * Vector3.up;
         
         transform.localScale = new Vector3(transform.localScale.x, (float)height / 2, transform.localScale.z);
     }
+#endif
 
     private void Update()
     {
@@ -44,7 +56,7 @@ public class Player : MouseSelectable
                 justMoved = false;
                 
                 // Check if petrified
-                foreach(Player player in Manager.Players.players)
+                foreach(var player in Manager.Players.players)
                     if (player.CompareTag("Petrified") && player.enabled)
                     player.enabled = false;
 
@@ -64,7 +76,7 @@ public class Player : MouseSelectable
     {
         if (Manager.Players.lastSelected && Manager.Players.possibleMoves.Contains(this) && position != Manager.Players.lastSelected.position)
         {
-            HexField field = HexGrid.GetFieldAt(position);
+            HexField field = GridUtility.GetFieldAt(position);
 
             Manager.Players.SelectedObject = Manager.Players.lastSelected;
             field.ToggleSelect();
@@ -79,36 +91,36 @@ public class Player : MouseSelectable
         switch (moveSet)
         {
             case MoveSet.AdjacentFields:
-                jumpHeight = HexGrid.GetFieldAt(position).height + jump;
-                foreach (Player p in HexGrid.GetPlayersAt(position, true))
+                jumpHeight = GridUtility.GetFieldAt(position).Height + jump;
+                foreach (var p in GridUtility.GetPlayersAt(position, true))
                     if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
-                Manager.Players.possibleMoves = GetAndColorValidMoves(HexGrid.GetAdjacentFields(position), jumpHeight);
+                Manager.Players.possibleMoves = GetAndColorValidMoves(GridUtility.GetAdjacentFields(position), jumpHeight);
                 break;
         }
     }
     
     private static MouseSelectable[] GetAndColorValidMoves(Vector2Int[] moves, int jumpHeight)
     {
-        List<Vector2Int> testedMoves = new List<Vector2Int>();
-        List<MouseSelectable> validMoves = new List<MouseSelectable>();
+        var testedMoves = new List<Vector2Int>();
+        var validMoves = new List<MouseSelectable>();
 
-        foreach (Vector2Int move in moves)
+        foreach (var move in moves)
         {
             if (testedMoves.Contains(move)) continue;
             testedMoves.Add(move);
 
-            HexField field = HexGrid.GetFieldAt(move);
-            int height = field ? field.height : 0;
-            foreach (Player p in HexGrid.GetPlayersAt(move, true))
+            HexField field = GridUtility.GetFieldAt(move);
+            int height = field ? field.Height : 0;
+            foreach (var p in GridUtility.GetPlayersAt(move, true))
                 height += p.height;
             if (!field || height > jumpHeight)
                 continue;
             validMoves.Add(field);
             field.Renderer.material.color = field.InitialColor + Config.Current.MovePreviewTint;
 
-            Player[] players = HexGrid.GetPlayersAt(move);
+            Player[] players = GridUtility.GetPlayersAt(move);
             validMoves.AddRange(players);
-            foreach (Player p in players)
+            foreach (var p in players)
                 p.Renderer.material.color = p.InitialColor + Config.Current.MovePreviewTint;
         }
         return validMoves.ToArray();
@@ -117,7 +129,7 @@ public class Player : MouseSelectable
     public override void OnDeselect()
     {
         if (Manager.Players.lastSelected == this) Manager.Players.lastSelected = null;
-        foreach (MouseSelectable obj in Manager.Players.possibleMoves)
+        foreach (var obj in Manager.Players.possibleMoves)
             obj.ResetColor();
     }
 
@@ -125,23 +137,23 @@ public class Player : MouseSelectable
     {
         if (!enabled) return;
 
-        List<PlayerInfo> undo = new List<PlayerInfo>();
-        foreach (Player player in Manager.Players.players)
-            undo.Add(new PlayerInfo(player, player.transform.position, player.CompareTag("Petrified")));
-        Manager.Players.undoList.Add(undo.ToArray());
+        var undo = new List<PlayerState>();
+        foreach (var player in Manager.Players.players)
+            undo.Add(new PlayerState(player, player.transform.position, player.CompareTag("Petrified")));
+        Manager.Players.undoStack.Push(undo.ToArray());
 
-        targetPosition = HexGrid.GridToWorldPos(target.position) + (.5f * (HexGrid.GetFieldAt(target.position).height + height / 2) - (height % 2 == 1 ? 0 : .25f)) * Vector3.up;
-        foreach (Player p in HexGrid.GetPlayersAt(target.position))
+        targetPosition = GridUtility.GridToWorldPos(target.Position) + (.5f * (GridUtility.GetFieldAt(target.Position).Height + height / 2) - (height % 2 != 0 ? 0 : .25f)) * Vector3.up;
+        foreach (var p in GridUtility.GetPlayersAt(target.Position))
             targetPosition.y += p.height * .5f;
-        foreach (Player p in HexGrid.GetPlayersAt(position))
+        foreach (var p in GridUtility.GetPlayersAt(position))
             if (p != this && p.transform.position.y > transform.position.y)
             {
                 p.targetPosition = targetPosition + p.transform.position - transform.position;
-                p.position = target.position;
+                p.position = target.Position;
             }
 
 
-        position = target.position;
+        position = target.Position;
 
         if (Manager.Current.level.Petrify)
             Manager.Players.PetrifyLonePlayers();
