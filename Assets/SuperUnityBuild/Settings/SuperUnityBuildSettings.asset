@@ -98,12 +98,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _basicSettings:
     baseBuildFolder: Builds
-    buildPath: $VERSION/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE/$DISTRIBUTION
+    buildPath: $RELEASE_TYPE $VERSION/$PLATFORM/$ARCHITECTURE/$DISTRIBUTION
     openFolderPostBuild: 1
   _productParameters:
-    buildCounter: 1
-    lastGeneratedVersion: Release $NOUN 1.2.1
-    version: Release $NOUN 1.2.$BUILD
+    buildCounter: 2
+    lastGeneratedVersion: 1.2
+    version: 1.$BUILD
     autoGenerate: 0
     syncWithPlayerSettings: 0
   _releaseTypeList:
