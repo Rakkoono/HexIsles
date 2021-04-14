@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Petrified
   - MobileOnly
+  - Flag
   layers:
   - Default
   - TransparentFX
@@ -18,7 +18,7 @@ TagManager:
   - Terrain
   - GameElements
   - Players
-  - 
+  - Container
   - 
   - 
   - 

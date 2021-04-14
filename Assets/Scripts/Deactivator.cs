@@ -8,7 +8,7 @@ public class Deactivator : MonoBehaviour
         gameObject.SetActive(false);
         
         // Show sign tutorial on first level load
-        if (Manager.Current.completedLevels == 0 && Manager.Current.levelIndex == 1 && gameObject.name == "MainMenuScreen")
-            Manager.Dialogs.Show(Config.Current.StartUpDialog);
+        if (Manager.Current.CompletedLevels == 0 && Manager.Current.LevelIndex == 1 && gameObject.name == "MainMenuScreen")
+            Manager.Current.DialogBox.ShowDialog(Config.Current.StartUpDialog);
     }
 }

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: LVL11Dialog
   m_EditorClassIdentifier: 
   pages:
-  - I've been seeing more and more of these orange and yellow hexagons over here.
-  - I don't like them.
-  - Not only are they constantly showing off how high they can jump, but their bright
-    colors make me feel uneasy.
+  - Some Islands here are hard to navigate, took me some time till I got here.
+  - And the hexes have it even harder, because they believe in this petrify-thingy.
+  - Look at this bridge for example. How would you cross that without leaving someone
+    behind?
+  - Hm, I guess you would have to stack up... Isn't very comfortable though.

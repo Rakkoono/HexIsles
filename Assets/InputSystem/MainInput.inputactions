@@ -298,17 +298,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "42471c12-a690-4dcf-a683-b91f05f22147",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch;KeyboardMouse",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "da8348cc-81b0-4254-b6e2-b5abae1c4022",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",

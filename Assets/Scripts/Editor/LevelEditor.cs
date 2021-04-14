@@ -5,11 +5,25 @@ using System.Linq;
 
 public class LevelEditor : EditorWindow
 {
-    public enum DrawingLayer { Decoration = 2, Terrain = 8, GameElements = 9, Players = 10 }
-    private int layerMask = ~0;
+    public enum DrawingLayer
+    {
+        Other = 1 << 1,
+        Decoration = 1 << 2,
+        Terrain = 1 << 8,
+        GameElements = 1 << 9,
+        Players = 1 << 10
+    }
 
+    #region GUI layout fields
     private Vector2 windowScrollPos = Vector2.zero;
     private Vector2 paletteScrollPos = Vector2.zero;
+
+    private bool editScene = false;
+    private DrawingLayer layerMask = (DrawingLayer)~0;
+
+    private int currentHeight = 1;
+    private int lastHeight = 1;
+    #endregion
 
     private GameObject hexPrefab;
     private GameObject HexPrefab
@@ -24,48 +38,31 @@ public class LevelEditor : EditorWindow
 
     private List<Object> palette;
 
-    private Object currentMaterialOrPrefab = null;
+    private Object currentMaterialOrObject = null;
 
-    private int currentHeight = 1;
-    private int lastHeight = 1;
-    private bool editScene = false;
-
-    private const float floorHeight = -.25f;
 
 
     [MenuItem("Window/HexIsles/Level Editor")]
     private static void ShowWindow()
     {
         LevelEditor window = GetWindow<LevelEditor>("Level Editor");
-        window.Show();
-
         window.minSize = new Vector2(300, 300);
-
-        window.palette = new List<Object>(Resources.LoadAll<Material>("Terrain"));
-        window.palette.AddRange(Resources.LoadAll<GameObject>("Game Elements"));
+        window.Show();
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         SceneView.duringSceneGui += OnSceneGUI;
+        palette = new List<Object>(Resources.LoadAll<Material>("Terrain"));
+        palette.AddRange(Resources.LoadAll<GameObject>("Objects"));
     }
 
+    #region GUI
     private void OnGUI()
     {
         windowScrollPos = GUILayout.BeginScrollView(windowScrollPos, false, false, GUIStyle.none, GUIStyle.none);
         GUILayout.Space(10);
 
-        OnTerrainSectionGUI();
-
-        GUILayout.Space(10);
-
-        if (GUILayout.Button("Delete all"))
-            ClearLevel();
-
-        GUILayout.EndScrollView();
-    }
-
-    private void OnTerrainSectionGUI()
-    {
         GUIStyle assetPreviewStyle = new GUIStyle
         {
             margin = new RectOffset(5, 5, 0, 0),
@@ -79,14 +76,16 @@ public class LevelEditor : EditorWindow
         };
 
         editScene = EditorGUILayout.BeginToggleGroup(new GUIContent("Edit Scene"), editScene);
-        EditorGUILayout.HelpBox("Right click in scene view to draw, hold shift to erase, hold alt to replace, hold control to move camera", MessageType.Info);
 
         GUILayout.BeginHorizontal();
-        layerMask = EditorGUILayout.MaskField(layerMask, System.Enum.GetNames(typeof(DrawingLayer)));
 
+        layerMask = (DrawingLayer)EditorGUILayout.EnumFlagsField("Layer Mask", layerMask);
 
-        GUILayout.FlexibleSpace();
+        GUILayout.Space(400);
+        if (GUILayout.Button("Delete all"))
+            ClearLevel();
         GUILayout.EndHorizontal();
+        EditorGUILayout.HelpBox("Right click in scene view to draw, hold shift to erase, hold alt to replace, hold control to move camera", MessageType.Info);
 
         GUILayout.Label("Apply materials to selected fields or select them or other game elements for drawing", EditorStyles.wordWrappedLabel);
 
@@ -94,6 +93,23 @@ public class LevelEditor : EditorWindow
 
         GUILayout.BeginVertical(EditorStyles.helpBox);
         GUILayout.BeginHorizontal();
+
+        var selection = Selection.GetFiltered<GameObject>(SelectionMode.ExcludePrefab);
+        var fields = new List<HexField>();
+        var players = new List<Player>();
+        foreach (var obj in selection)
+        {
+            var field = obj.GetComponentInChildren<HexField>();
+            if (field)
+            {
+                fields.Add(field);
+                continue;
+            }
+
+            var player = obj.GetComponentInChildren<Player>();
+            if (player)
+                players.Add(player);
+        }
 
         int maxElementsPerRow = Mathf.Max(1, (int)(position.width - 20) / (int)assetContainerStyle.fixedWidth);
         for (int i = 0; i < palette.Count; i++)
@@ -104,7 +120,7 @@ public class LevelEditor : EditorWindow
                 GUILayout.BeginHorizontal();
             }
 
-            if (currentMaterialOrPrefab == palette[i])
+            if (currentMaterialOrObject == palette[i])
                 GUI.color = new Color(1.75f, 1.75f, 1.75f);
 
             GUILayout.BeginVertical(assetContainerStyle);
@@ -114,14 +130,13 @@ public class LevelEditor : EditorWindow
             var tex = AssetPreview.GetAssetPreview(palette[i]);
             if (GUILayout.Button(tex, assetPreviewStyle))
             {
-                currentMaterialOrPrefab = palette[i];
+                currentMaterialOrObject = palette[i];
 
-                var fields = Selection.GetFiltered<HexField>(SelectionMode.ExcludePrefab);
-                if (fields.Length == 0)
+                if (fields.Count == 0)
                     continue;
 
                 int group = 0;
-                if (currentMaterialOrPrefab is Material)
+                if (currentMaterialOrObject is Material)
                 {
                     Undo.SetCurrentGroupName("Change material");
                     group = Undo.GetCurrentGroup();
@@ -131,16 +146,16 @@ public class LevelEditor : EditorWindow
                         var renderer = field.GetComponent<Renderer>();
 
                         Undo.RecordObject(renderer, "Change material");
-                        renderer.material = currentMaterialOrPrefab as Material;
+                        renderer.material = currentMaterialOrObject as Material;
                     }
                 }
                 else
                 {
-                    Undo.SetCurrentGroupName("Change game element");
+                    Undo.SetCurrentGroupName("Change element");
                     group = Undo.GetCurrentGroup();
 
                     foreach (var field in fields)
-                        AddGameElement(field, overridePrevious: true);
+                        AddObject(field, overridePrevious: true);
 
                     Undo.CollapseUndoOperations(group);
                 }
@@ -157,48 +172,53 @@ public class LevelEditor : EditorWindow
         if (removed)
         {
             palette.Remove(removed);
-            if (removed == currentMaterialOrPrefab)
-                currentMaterialOrPrefab = null;
+            if (removed == currentMaterialOrObject)
+                currentMaterialOrObject = null;
         }
 
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
 
-        GUILayout.BeginHorizontal();
-
-        GUILayout.Space(5);
-        GUILayout.Label("Height", EditorStyles.boldLabel);
-        EditorGUILayout.EndFoldoutHeaderGroup();
-
-        GUILayout.FlexibleSpace();
-
-        currentHeight = EditorGUILayout.IntSlider(currentHeight, 1, 10);
-
-        if (currentHeight != lastHeight)
+        if (currentMaterialOrObject is Material || 1 << (currentMaterialOrObject as GameObject)?.layer == (int)DrawingLayer.Players || fields.Count > 0 || players.Count > 0)
         {
-            var fields = Selection.GetFiltered<HexField>(SelectionMode.ExcludePrefab);
-            if (fields.Length > 0)
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Space(5);
+            GUILayout.Label("Height", EditorStyles.boldLabel);
+
+            GUILayout.FlexibleSpace();
+            currentHeight = EditorGUILayout.IntSlider(currentHeight, 1, 10);
+            if (currentHeight != lastHeight)
             {
-                Undo.SetCurrentGroupName("Change height");
-                int group = Undo.GetCurrentGroup();
-
-                foreach (var field in fields)
+                if (fields.Count > 0 || players.Count > 0)
                 {
-                    Undo.RecordObject(field, "Change height");
-                    Undo.RecordObject(field.transform, "Change height");
+                    Undo.SetCurrentGroupName("Change height");
+                    int group = Undo.GetCurrentGroup();
 
-                    field.Height = currentHeight;
+                    foreach (var field in fields)
+                    {
+                        Undo.RecordObject(field, "Change height");
+                        Undo.RecordObject(field.transform, "Change height");
+
+                        field.Height = currentHeight;
+                    }
+                    foreach (var player in players)
+                    {
+                        Undo.RecordObject(player, "Change height");
+                        Undo.RecordObject(player.transform, "Change height");
+
+                        player.Height = currentHeight;
+                    }
+
+                    Undo.CollapseUndoOperations(group);
                 }
 
-                Undo.CollapseUndoOperations(group);
+                lastHeight = currentHeight;
             }
 
-            lastHeight = currentHeight;
+            GUILayout.EndHorizontal();
+            GUILayout.Label("Change the brush height / the height of selected objects", EditorStyles.wordWrappedLabel);
         }
-
-        GUILayout.EndHorizontal();
-
-        GUILayout.Label("Change the brush height / the height of selected objects", EditorStyles.wordWrappedLabel);
 
         EditorGUILayout.EndToggleGroup();
 
@@ -224,25 +244,31 @@ public class LevelEditor : EditorWindow
                 DragAndDrop.AcceptDrag();
             }
         }
-    }
 
+        GUILayout.EndScrollView();
+    }
+    #endregion
+
+    #region Edit Map
     private void OnSceneGUI(SceneView sceneView)
     {
         if (focusedWindow != sceneView || !editScene || Event.current.control)
             return;
 
-        if (currentMaterialOrPrefab != null)
+        if (currentMaterialOrObject != null)
         {
             Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
             Vector3 worldPos;
 
-            if (Physics.Raycast(mouseRay, out RaycastHit hit, 100, layerMask))
+            var raycast = Physics.Raycast(mouseRay, out RaycastHit hit, 100, Event.current.shift ? (int)layerMask : (int)DrawingLayer.Terrain);
+
+            if (raycast)
             {
                 worldPos = hit.transform.position;
             }
             else
             {
-                float dstToFloor = (floorHeight - mouseRay.origin.y) / mouseRay.direction.y;
+                float dstToFloor = (-.25f - mouseRay.origin.y) / mouseRay.direction.y;
                 worldPos = mouseRay.GetPoint(dstToFloor);
             }
 
@@ -251,17 +277,23 @@ public class LevelEditor : EditorWindow
             if (Event.current.button == 1)
                 if (Event.current.shift)
                 {
-                    if (LayerIsActive(DrawingLayer.Terrain))
-                        DeleteField(gridPos);
-                    else if (LayerIsActive(DrawingLayer.GameElements))
-                        DeleteGameElement(gridPos);
+                    if (raycast)
+                    {
+                        // Delete on shift
+                        var layer = (DrawingLayer)(1 << hit.transform.gameObject.layer);
+                        if (layer == DrawingLayer.Terrain)
+                            DeleteField(gridPos);
+                        else
+                            DeleteObject(gridPos, layer);
+                    }
                 }
                 else
                 {
-                    if (currentMaterialOrPrefab is Material)
+                    // Else draw and replace with alt
+                    if (currentMaterialOrObject is Material)
                         AddField(gridPos, Event.current.alt);
-                    else if (currentMaterialOrPrefab is GameObject)
-                        AddGameElement(gridPos, Event.current.alt);
+                    else if (currentMaterialOrObject is GameObject)
+                        AddObject(gridPos, Event.current.alt);
                 }
         }
 
@@ -269,18 +301,21 @@ public class LevelEditor : EditorWindow
             Event.current.Use();
     }
 
+    #endregion
+
     public void ClearLevel()
     {
         // Delete all fields and game elements
         Undo.SetCurrentGroupName("Clear level");
         int group = Undo.GetCurrentGroup();
 
-        foreach (var field in GridUtility.Map.GetComponentsInChildren<HexField>())
+        foreach (var field in GridUtility.Fields)
             Undo.DestroyObjectImmediate(field.transform.parent.gameObject);
 
         Undo.CollapseUndoOperations(group);
     }
 
+    #region Delete / Add Fields
     public void DeleteField(Vector2Int pos)
     {
         HexField field = GridUtility.GetFieldAt(pos);
@@ -289,15 +324,6 @@ public class LevelEditor : EditorWindow
     }
 
     public void DeleteField(int x, int y) => DeleteField(new Vector2Int(x, y));
-
-    public void DeleteGameElement(Vector2Int pos)
-    {
-        GameObject gameElement = GetObjectInLayerAt(pos, DrawingLayer.GameElements);
-        if (gameElement)
-            Undo.DestroyObjectImmediate(gameElement.transform.parent.gameObject);
-    }
-
-    public void DeleteGameElement(int x, int y) => DeleteGameElement(new Vector2Int(x, y));
 
     private void AddField(Vector2Int pos, bool overridePrevious = false)
     {
@@ -308,25 +334,38 @@ public class LevelEditor : EditorWindow
             else
                 return;
 
-        var obj = (PrefabUtility.InstantiatePrefab(HexPrefab) as Transform).gameObject;
-        obj.transform.position = GridUtility.GridToWorldPos(pos);
-        obj.transform.SetParent(GridUtility.Map);
+        // Instantiate container
+        var container = new GameObject(pos.ToString());
+        container.transform.position = GridUtility.GridToWorldPos(pos);
+        container.transform.SetParent(GridUtility.Map);
+        container.layer = 11;
 
-        obj.name = pos.ToString();
-
-        field = obj.GetComponentInChildren<HexField>();
+        // Instantiate field
+        GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(HexPrefab, container.transform);
+        obj.name += " " + pos.ToString();
+        field = obj.GetComponent<HexField>();
         field.Position = pos;
         field.Height = currentHeight;
-        field.GetComponent<Renderer>().material = currentMaterialOrPrefab as Material;
-        Undo.RegisterCreatedObjectUndo(obj.gameObject, "Generate level");
+        field.GetComponent<Renderer>().material = currentMaterialOrObject as Material;
+
+        Undo.RegisterCreatedObjectUndo(container.gameObject, "Add field");
     }
 
     private void AddField(int x, int y, bool overridePrevious = false) => AddField(new Vector2Int(x, y), overridePrevious);
+    #endregion
 
-    private void AddGameElement(HexField field, bool overridePrevious = false)
+    #region Delete / Add Objects
+    public void DeleteObject(Vector2Int pos, DrawingLayer layer)
     {
-        var prefab = (GameObject)currentMaterialOrPrefab;
-        var layer = (DrawingLayer)prefab.layer;
+        var obj = GetObjectInLayerAt(pos, layer);
+        if (obj)
+            Undo.DestroyObjectImmediate(obj);
+    }
+
+    private void AddObject(HexField field, bool overridePrevious = false)
+    {
+        var prefab = (GameObject)currentMaterialOrObject;
+        var layer = (DrawingLayer)(1 << prefab.layer);
         var obj = GetObjectInLayerAt(field, layer);
         if (obj)
             if (overridePrevious)
@@ -334,25 +373,38 @@ public class LevelEditor : EditorWindow
             else
                 return;
 
-        obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        obj = PrefabUtility.InstantiatePrefab(prefab, field.transform.parent) as GameObject;
         obj.transform.position = GridUtility.GridToWorldPos(field.Position) + (Vector3.up * field.Height * .5f);
-        obj.transform.SetParent(field.transform.parent);
 
-        if (layer == DrawingLayer.Decoration)
-            obj.transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 3600) / 10, Vector3.up);
+        switch (layer)
+        {
+            case DrawingLayer.Players:
+                var player = obj.GetComponentInChildren<Player>();
+                player.position = GridUtility.WorldToGridPos(obj.transform.position);
+                player.Height = currentHeight;
+                break;
 
-        obj.name = currentMaterialOrPrefab.name;
+            case DrawingLayer.GameElements:
+                break;
+
+            default:
+                obj.transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 3600) / 10, Vector3.up);
+                break;
+        }
+
+        obj.name = currentMaterialOrObject.name;
         Undo.RegisterCreatedObjectUndo(obj.gameObject, "Add game element");
     }
 
-    private void AddGameElement(Vector2Int pos, bool overridePrevious = false)
+    private void AddObject(Vector2Int pos, bool overridePrevious = false)
     {
         var field = GridUtility.GetFieldAt(pos);
         if (field)
-            AddGameElement(field, overridePrevious);
+            AddObject(field, overridePrevious);
     }
+    #endregion
 
-    private static GameObject GetObjectInLayerAt(HexField field, DrawingLayer layer) => field.transform.parent.GetComponentsInChildren<Transform>().FirstOrDefault(obj => obj.gameObject.layer == (int)layer)?.gameObject;
+    private static GameObject GetObjectInLayerAt(HexField field, DrawingLayer layer) => field.transform.parent.GetComponentsInChildren<Transform>().FirstOrDefault(obj => 1 << obj.gameObject.layer == (int)layer)?.gameObject;
 
     private static GameObject GetObjectInLayerAt(Vector2Int pos, DrawingLayer layer)
     {
@@ -361,6 +413,4 @@ public class LevelEditor : EditorWindow
             return null;
         return GetObjectInLayerAt(field, layer);
     }
-
-    private bool LayerIsActive(DrawingLayer layer) => (layerMask & 1 << (int)layer) != 0;
 }

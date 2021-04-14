@@ -13,7 +13,7 @@ public abstract class SingletonScriptableObject<T> : ScriptableObject where T : 
 #if UNITY_EDITOR
                 current = Resources.LoadAll<T>("").FirstOrDefault();
 #else
-                current = Resources.FindObjectsOfTypeAll<T>("").FirstOrDefault();
+                current = Resources.FindObjectsOfTypeAll<T>().FirstOrDefault();
 #endif
             }
 

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: LVL5Dialog
   m_EditorClassIdentifier: 
   pages:
-  - It is incredible how much these little creatures can carry, isn't it?
-  - It's because of their vertices, you know? Makes them very good workers.
-  - They even jump around carrying stuff! Can't jump very high though.
+  - It's funny how complicated they make these myths, huh?
+  - For example are these hexes not supposed to petrify, as long as there is another
+    Hex next to them,
+  - but how high up the other Hex is doesn't matter apparently.
+  - Of course, I don't believe in this crap. What a stupid concept of loneliness
+    is that?

@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (Manager.UI.currentMenu != UIHandler.Menu.None)
+        if (Manager.Current.menu != Menu.None)
         {
             transform.RotateAround(rotationCenter.position, Vector3.up, .1f * Time.deltaTime * Config.Current.panSpeed);
             ZoomTo(6);

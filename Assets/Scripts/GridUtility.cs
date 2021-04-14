@@ -32,18 +32,33 @@ public static class GridUtility
     {
         get
         {
-            if (!map)
-            {
-                var obj = GameObject.Find("Map");
-                map = obj ? obj.transform : new GameObject("Map").transform;
-            }
+#if !UNITY_EDITOR
+            if (map == null)
+#endif
+            FindOrCreateMap();
             return map;
         }
     }
 
+    public static void FindOrCreateMap()
+    {
+        map = (GameObject.Find("Map") ?? new GameObject("Map")).transform;
+#if !UNITY_EDITOR
+        fields = null;
+#endif
+    }
+
+#if UNITY_EDITOR
+    // Check for changes if in editor
+    public static HexField[] Fields => Map.GetComponentsInChildren<HexField>();
+#else
+    private static HexField[] fields;
+    public static HexField[] Fields => fields = fields ?? Map.GetComponentsInChildren<HexField>();
+#endif
+
     public static Vector3 GridToWorldPos(Vector2Int gridPos)
     {
-        Vector3 worldPos = Vector3.zero;
+        var worldPos = Vector3.zero;
 
         worldPos.z = gridPos.y * HexSize.y * .75f;
 
@@ -55,7 +70,7 @@ public static class GridUtility
 
     public static Vector2Int WorldToGridPos(Vector3 worldPos)
     {
-        Vector2Int gridPos = Vector2Int.zero;
+        var gridPos = Vector2Int.zero;
 
         gridPos.y = Mathf.RoundToInt((worldPos.z) / .75f / HexSize.y);
 
@@ -65,14 +80,15 @@ public static class GridUtility
         return gridPos;
     }
 
-    public static HexField GetFieldAt(Vector2Int pos) => Map.GetComponentsInChildren<HexField>().FirstOrDefault(field => field.Position == pos);
+    public static HexField GetFieldAt(Vector2Int pos) => Fields.FirstOrDefault(field => field.Position == pos);
 
     public static Player[] GetPlayersAt(Vector2Int pos, bool includePetrified = true)
     {
-        if (Manager.Players)
-            return Manager.Players.players.Where(player => player.position == pos && (includePetrified || player.enabled)).ToArray();
-        else
-            return GameObject.FindObjectsOfType<Player>().Where(p => p.position == pos && (includePetrified || p.enabled)).ToArray();
+#if UNITY_EDITOR
+        return GameObject.FindObjectsOfType<Player>().Where(player => player.position == pos && (includePetrified || player.enabled)).ToArray();
+#else
+        return Manager.Current.Players.Where(player => player.position == pos && (includePetrified || player.enabled)).ToArray();
+#endif
     }
 
     public static Vector2Int[] GetAdjacentFields(Vector2Int pos, bool onlyExisting = true)
@@ -84,10 +100,8 @@ public static class GridUtility
             offsets.Add(offsetPair[(pos.y % 2 != 0) ? 0 : 1]);
 
         foreach (var offset in OFFSETS.Union(offsets))
-        {
-            if (!onlyExisting || ((pos + offset).x >= 0 && (pos + offset).y >= 0))
+            if (!onlyExisting || GetFieldAt(pos + offset) != null)
                 fields.Add(pos + offset);
-        }
 
         return fields.ToArray();
     }

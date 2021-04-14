@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce7cbe278f54e7419402b1c9013a275, type: 3}
+  m_Name: LVL6Dialog
+  m_EditorClassIdentifier: 
+  pages:
+  - It is incredible how much these little creatures can carry, isn't it?
+  - It's because of their vertices, you know? Makes them very good workers.
+  - They even jump around carrying stuff! Can't jump very high though.

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 697895104}
   - component: {fileID: 697895103}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Zoom, Move Camera'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 1242029053}
   - component: {fileID: 1242029052}
   m_Layer: 5
-  m_Name: Controls
+  m_Name: ControlsSection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,7 +170,7 @@ RectTransform:
   - {fileID: 7998458602897137204}
   - {fileID: 4004469443008143068}
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.11}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 1993522653}
   - component: {fileID: 1993522652}
   m_Layer: 5
-  m_Name: Stuff
+  m_Name: Prompts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,7 +244,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5139597709218522162}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.01, y: 0}
   m_AnchorMax: {x: 0.395, y: 0.95}
@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 7414423377418093086}
   - component: {fileID: 8250739627317821013}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 8 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -524,7 +524,7 @@ GameObject:
   - component: {fileID: 8393425167353151001}
   - component: {fileID: 5575034790694433935}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 2 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: 983365875927955190}
   - component: {fileID: 2764587281342623567}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 5777917945500940537}
   - component: {fileID: 7689210627317777997}
   m_Layer: 5
-  m_Name: Credits
+  m_Name: CreditsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -752,7 +752,7 @@ RectTransform:
   m_Children:
   - {fileID: 6618462383192078432}
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 0.25, y: 0.34}
@@ -839,8 +839,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
-        m_MethodName: Credits
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: ShowCredits
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -885,7 +885,7 @@ GameObject:
   - component: {fileID: 8103026460114446941}
   - component: {fileID: 5475803412775035464}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Select Level'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1019,7 +1019,7 @@ GameObject:
   - component: {fileID: 3993389010259406010}
   - component: {fileID: 6948649287682557258}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: ResetLevel'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1261,7 +1261,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -1307,7 +1307,7 @@ GameObject:
   - component: {fileID: 5963780822072849814}
   - component: {fileID: 8583714344602717182}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: >'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1441,7 +1441,7 @@ GameObject:
   - component: {fileID: 1194179820181135530}
   - component: {fileID: 2259799787207602412}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1516,7 +1516,7 @@ GameObject:
   - component: {fileID: 4879551038311230520}
   - component: {fileID: 1351844577757212568}
   m_Layer: 5
-  m_Name: Next
+  m_Name: NextButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1535,7 +1535,7 @@ RectTransform:
   m_Children:
   - {fileID: 4883786792645322937}
   m_Father: {fileID: 3577067249173129457}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7, y: -0.025}
   m_AnchorMax: {x: 0.9, y: 0.075}
@@ -1622,8 +1622,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
-        m_MethodName: LevelSelectNext
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: OnLevelSelectNext
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1668,7 +1668,7 @@ GameObject:
   - component: {fileID: 1507153499548123648}
   - component: {fileID: 918356171475677135}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: 'Text: Select, Menu'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1804,7 +1804,7 @@ GameObject:
   - component: {fileID: 2123566164979814692}
   - component: {fileID: 4156588534768929544}
   m_Layer: 5
-  m_Name: GameTitle
+  m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1938,7 +1938,7 @@ GameObject:
   - component: {fileID: 1545775749583372223}
   - component: {fileID: 1916189582662971785}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2216,7 +2216,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -2262,7 +2262,7 @@ GameObject:
   - component: {fileID: 3280436450021217068}
   - component: {fileID: 6016051796980959325}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2336,7 +2336,7 @@ GameObject:
   - component: {fileID: 6720494282402242135}
   - component: {fileID: 1644255268904424876}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Undo'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2470,7 +2470,7 @@ GameObject:
   - component: {fileID: 2030999191528619473}
   - component: {fileID: 7481862400187950698}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 1 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2522,7 +2522,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level Name Here here here
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fb47dc24f9fa2a4eb4b8cf8fcc21f34, type: 2}
   m_sharedMaterial: {fileID: -7571778674299607091, guid: 0fb47dc24f9fa2a4eb4b8cf8fcc21f34,
@@ -2604,7 +2604,7 @@ GameObject:
   - component: {fileID: 2375230248869147285}
   - component: {fileID: 4918145245469408512}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2679,7 +2679,7 @@ GameObject:
   - component: {fileID: 6464988669495790692}
   - component: {fileID: 1621713025426933736}
   m_Layer: 5
-  m_Name: OK
+  m_Name: NextButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2785,7 +2785,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3199079532325595960}
+      - m_Target: {fileID: 4594489487108983363}
         m_MethodName: NextPage
         m_Mode: 1
         m_Arguments:
@@ -2808,7 +2808,7 @@ GameObject:
   - component: {fileID: 2929877578548068781}
   - component: {fileID: 7489720938355458276}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Credits'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2945,7 +2945,7 @@ GameObject:
   - component: {fileID: 9163010000898292717}
   - component: {fileID: 3395839480865846473}
   m_Layer: 5
-  m_Name: Undo
+  m_Name: UndoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3052,8 +3052,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7249283619649473598}
-        m_MethodName: Undo
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: UndoMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3095,7 +3095,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5754432088303825480}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 31.69, y: -129.302, z: -3.722}
 --- !u!20 &4032134733536930129
 Camera:
@@ -3162,7 +3162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 51
+    m_Bits: 1843
   m_MaxRayIntersections: 0
 --- !u!114 &5219833435069217126
 MonoBehaviour:
@@ -3195,7 +3195,7 @@ GameObject:
   - component: {fileID: 4392301819899401223}
   - component: {fileID: 899838379445559652}
   m_Layer: 5
-  m_Name: Reset
+  m_Name: ResetButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3214,7 +3214,7 @@ RectTransform:
   m_Children:
   - {fileID: 544703933640518211}
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.47}
   m_AnchorMax: {x: 0.25, y: 0.56}
@@ -3348,7 +3348,7 @@ GameObject:
   - component: {fileID: 4427788552432047382}
   - component: {fileID: 7748677239468078073}
   m_Layer: 5
-  m_Name: LevelSelect
+  m_Name: LevelSelectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3367,7 +3367,7 @@ RectTransform:
   m_Children:
   - {fileID: 207486840285492848}
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.36}
   m_AnchorMax: {x: 0.25, y: 0.45}
@@ -3454,8 +3454,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
-        m_MethodName: LevelSelect
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: ShowLevelSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3500,7 +3500,7 @@ GameObject:
   - component: {fileID: 7801778098902240682}
   - component: {fileID: 662104010553723410}
   m_Layer: 5
-  m_Name: Names
+  m_Name: Credits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3518,7 +3518,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5139597709218522162}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.41, y: 0}
   m_AnchorMax: {x: 1, y: 0.95}
@@ -3637,7 +3637,7 @@ GameObject:
   - component: {fileID: 3238181011868678602}
   - component: {fileID: 7110563469653605174}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: DialogBoxText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3773,7 +3773,7 @@ GameObject:
   - component: {fileID: 2267116546549484465}
   - component: {fileID: 1670829478499202518}
   m_Layer: 5
-  m_Name: Back
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3792,7 +3792,7 @@ RectTransform:
   m_Children:
   - {fileID: 1999124288675338966}
   m_Father: {fileID: 3577067249173129457}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: -0.025}
   m_AnchorMax: {x: 0.3, y: 0.075}
@@ -3879,8 +3879,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
-        m_MethodName: LevelSelectBack
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: OnLevelSelectBack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4033,7 +4033,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -4153,7 +4153,7 @@ GameObject:
   - component: {fileID: 8474354086570543726}
   - component: {fileID: 8814394953431382916}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Quit'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4287,7 +4287,7 @@ GameObject:
   - component: {fileID: 4014870876687080895}
   - component: {fileID: 5594111702682526452}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 9 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4421,7 +4421,7 @@ GameObject:
   - component: {fileID: 3807945529774386466}
   - component: {fileID: 6978690478789073735}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 5 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4555,7 +4555,7 @@ GameObject:
   - component: {fileID: 9148970652010642386}
   - component: {fileID: 8584166200028707036}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Menu'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4689,7 +4689,7 @@ GameObject:
   - component: {fileID: 8293913503104791853}
   - component: {fileID: 1570341765334720081}
   m_Layer: 5
-  m_Name: TurnsDisplay
+  m_Name: TurnDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4707,7 +4707,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5979946936338273943}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.75, y: 0.89}
   m_AnchorMax: {x: 0.99, y: 0.99}
@@ -4842,8 +4842,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8458527533951616479}
   - {fileID: 1993522651}
+  - {fileID: 8458527533951616479}
   m_Father: {fileID: 7558473764638287480}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4932,7 +4932,7 @@ GameObject:
   - component: {fileID: 4093573876334054211}
   - component: {fileID: 291739907224283524}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: 'Controls: Zoom, Move Camera'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5068,7 +5068,7 @@ GameObject:
   - component: {fileID: 7173431437660973627}
   - component: {fileID: 2196898288128434759}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 6 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5444,7 +5444,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -5518,8 +5518,8 @@ RectTransform:
   - {fileID: 5368629160835008115}
   - {fileID: 5509066360688544487}
   - {fileID: 4749600587304684690}
-  - {fileID: 4964726954823085483}
   - {fileID: 1996090606896691203}
+  - {fileID: 4964726954823085483}
   m_Father: {fileID: 7558473764638287480}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5605,12 +5605,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5754432088303825480}
-  - component: {fileID: 2949334682334279588}
   - component: {fileID: 2116320179066388257}
   - component: {fileID: 5063821235067384913}
-  - component: {fileID: 2901275240708891584}
-  - component: {fileID: 3199079532325595960}
-  - component: {fileID: 7249283619649473598}
+  - component: {fileID: 2949334682334279588}
   m_Layer: 0
   m_Name: Manager
   m_TagString: GameController
@@ -5629,33 +5626,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6357361984174282626}
-  - {fileID: 3509793210133602594}
-  - {fileID: 6770573698314202535}
   - {fileID: 7106646782129928542}
   - {fileID: 6717570449840801974}
+  - {fileID: 6770573698314202535}
+  - {fileID: 3509793210133602594}
+  - {fileID: 6357361984174282626}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2949334682334279588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5441220689279335963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 703a6b43fa4bb9b43a456f2efb15fca7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: 7c0cd5c694627d44880251d20401520b, type: 2}
-  musicSource: {fileID: 2116320179066388257}
-  sfxSource: {fileID: 5063821235067384913}
-  cameraController: {fileID: 0}
-  level: {fileID: 0}
-  levelIndex: 0
-  completedLevels: 0
 --- !u!82 &2116320179066388257
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5848,7 +5826,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2901275240708891584
+--- !u!114 &2949334682334279588
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5857,9 +5835,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5441220689279335963}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec59fca0bd5d2c64c8968e3c5567b679, type: 3}
+  m_Script: {fileID: 11500000, guid: 703a6b43fa4bb9b43a456f2efb15fca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 7c0cd5c694627d44880251d20401520b, type: 2}
+  musicSource: {fileID: 2116320179066388257}
+  sfxSource: {fileID: 5063821235067384913}
   levelDisplays:
   - {fileID: 3784402906144005394}
   - {fileID: 8747638601911286981}
@@ -5872,42 +5853,15 @@ MonoBehaviour:
   - {fileID: 1013085113217999011}
   turnDisplay: {fileID: 1570341765334720081}
   overlay: {fileID: 5979946936338273943}
-  mainMenu: {fileID: 7558473764638287480}
-  gameOver: {fileID: 6357361983536303055}
-  credits: {fileID: 5139597709218522162}
-  levelSelect: {fileID: 3577067249173129457}
-  currentMenu: 0
+  gameOverScreen: {fileID: 6357361983536303055}
+  mainMenuScreen: {fileID: 7558473764638287480}
+  creditsScreen: {fileID: 5139597709218522162}
+  levelSelectScreen: {fileID: 3577067249173129457}
+  thxForPlayingMessage: {fileID: 3297498174260707708}
+  validTargets: []
+  menu: 2
   inEscapeMenu: 0
---- !u!114 &3199079532325595960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5441220689279335963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98a12bf71d21e04c956458abbf1c062, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogBox: {fileID: 7110563469653605174}
-  dialogBoxAnimator: {fileID: 3779411763951494624}
---- !u!114 &7249283619649473598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5441220689279335963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 657cc4b0a72e96c40838c9969f0801e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  possibleMoves: []
-  players: []
-  selected: {fileID: 0}
-  lastSelected: {fileID: 0}
+  LastSelectedPlayer: {fileID: 0}
 --- !u!1 &5710319341780051613
 GameObject:
   m_ObjectHideFlags: 0
@@ -5922,7 +5876,7 @@ GameObject:
   - component: {fileID: 2270354545218033899}
   - component: {fileID: 3261959620383079470}
   m_Layer: 5
-  m_Name: ThxForPlaying
+  m_Name: ThxForPlayingMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5940,7 +5894,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 7
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.3, y: 0.78}
   m_AnchorMax: {x: 0.7, y: 0.83}
@@ -6088,7 +6042,7 @@ GameObject:
   - component: {fileID: 1806483036980598397}
   - component: {fileID: 6705457298894484345}
   m_Layer: 5
-  m_Name: Start
+  m_Name: ContinueButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6107,7 +6061,7 @@ RectTransform:
   m_Children:
   - {fileID: 2294488242133744734}
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.58}
   m_AnchorMax: {x: 0.25, y: 0.67}
@@ -6258,7 +6212,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5754432088303825480}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
 --- !u!108 &3385258412703535092
 Light:
@@ -6346,7 +6300,7 @@ GameObject:
   - component: {fileID: 8057306678659865109}
   - component: {fileID: 9018548714725285165}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 4 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6480,7 +6434,7 @@ GameObject:
   - component: {fileID: 8377824421604834316}
   - component: {fileID: 3377911159343780832}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6555,7 +6509,7 @@ GameObject:
   - component: {fileID: 6116151269410636366}
   - component: {fileID: 7558168932663420738}
   m_Layer: 5
-  m_Name: Menu
+  m_Name: MenuButton (Only on mobile)
   m_TagString: MobileOnly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6574,7 +6528,7 @@ RectTransform:
   m_Children:
   - {fileID: 9071641480067934421}
   m_Father: {fileID: 5979946936338273943}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.01, y: 0.88}
   m_AnchorMax: {x: 0.15, y: 0.99}
@@ -6661,8 +6615,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
-        m_MethodName: MainMenu
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: ShowMainMenu
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6818,7 +6772,7 @@ GameObject:
   - component: {fileID: 6357361983324512392}
   - component: {fileID: 6357361983324512393}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Menu'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6972,11 +6926,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6357361984486407309}
-  - {fileID: 6357361984361486202}
   - {fileID: 6357361983750368296}
   - {fileID: 6357361984454880764}
+  - {fileID: 6357361984361486202}
   m_Father: {fileID: 6357361984174282626}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7064,7 +7018,7 @@ GameObject:
   - component: {fileID: 6357361983750368294}
   - component: {fileID: 6357361983750368295}
   m_Layer: 5
-  m_Name: Menu
+  m_Name: MenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7083,7 +7037,7 @@ RectTransform:
   m_Children:
   - {fileID: 6357361983324512394}
   m_Father: {fileID: 6357361983536303055}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.28, y: 0.14}
   m_AnchorMax: {x: 0.38, y: 0.32}
@@ -7170,8 +7124,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
-        m_MethodName: MainMenu
+      - m_Target: {fileID: 2949334682334279588}
+        m_MethodName: ShowMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7216,7 +7170,7 @@ GameObject:
   - component: {fileID: 6357361984119363545}
   - component: {fileID: 6357361984119363546}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Next'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7368,11 +7322,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 7558473764638287480}
   - {fileID: 6357361983536303055}
   - {fileID: 5979946936338273943}
-  - {fileID: 7558473764638287480}
   m_Father: {fileID: 5754432088303825480}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7389,7 +7343,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 4032134733536930129}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -7451,7 +7405,7 @@ GameObject:
   - component: {fileID: 6357361984193659291}
   - component: {fileID: 6357361984193659292}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: Retry'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7586,7 +7540,7 @@ GameObject:
   - component: {fileID: 6357361984361486200}
   - component: {fileID: 6357361984361486201}
   m_Layer: 5
-  m_Name: Retry
+  m_Name: RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7605,7 +7559,7 @@ RectTransform:
   m_Children:
   - {fileID: 6357361984193659293}
   m_Father: {fileID: 6357361983536303055}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.62, y: 0.14}
   m_AnchorMax: {x: 0.72, y: 0.32}
@@ -7739,7 +7693,7 @@ GameObject:
   - component: {fileID: 6357361984454880762}
   - component: {fileID: 6357361984454880763}
   m_Layer: 5
-  m_Name: Continue
+  m_Name: NextButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7758,7 +7712,7 @@ RectTransform:
   m_Children:
   - {fileID: 6357361984119363547}
   m_Father: {fileID: 6357361983536303055}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.43, y: 0.12}
   m_AnchorMax: {x: 0.57, y: 0.34}
@@ -7891,7 +7845,7 @@ GameObject:
   - component: {fileID: 6357361984486407307}
   - component: {fileID: 6357361984486407308}
   m_Layer: 5
-  m_Name: GameOverMSG
+  m_Name: GameOverMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8043,7 +7997,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5754432088303825480}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3008258853351685788
 MonoBehaviour:
@@ -8128,17 +8082,17 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 709066262113667098}
+  - {fileID: 3297498174260707708}
   - {fileID: 9054604227190663032}
   - {fileID: 7663075207546057360}
   - {fileID: 3047868631361093461}
   - {fileID: 9046869198210486000}
   - {fileID: 2625508945274292510}
   - {fileID: 1242029051}
-  - {fileID: 3297498174260707708}
   - {fileID: 5139597709218522162}
   - {fileID: 3577067249173129457}
   m_Father: {fileID: 6357361984174282626}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -8296,7 +8250,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -8450,7 +8404,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -8514,12 +8468,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5463155576261018711}
-  - {fileID: 4619155788990673679}
   - {fileID: 1469312044842420422}
+  - {fileID: 4619155788990673679}
+  - {fileID: 5463155576261018711}
   - {fileID: 6304034528188457914}
   m_Father: {fileID: 6357361984174282626}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -8581,7 +8535,7 @@ GameObject:
   - component: {fileID: 3797487811036259760}
   - component: {fileID: 48572624328205774}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 7 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8716,6 +8670,7 @@ GameObject:
   - component: {fileID: 3054722922470071573}
   - component: {fileID: 3779411763951494624}
   - component: {fileID: 6192140964046325314}
+  - component: {fileID: 4594489487108983363}
   m_Layer: 5
   m_Name: DialogBox
   m_TagString: Untagged
@@ -8812,6 +8767,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 113ef31e7faef00499bb5898a45794d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4594489487108983363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8007104125044873215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98a12bf71d21e04c956458abbf1c062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8291378199641168950
 GameObject:
   m_ObjectHideFlags: 0
@@ -8825,7 +8792,7 @@ GameObject:
   - component: {fileID: 3778627849893194283}
   - component: {fileID: 4946168362699426841}
   m_Layer: 5
-  m_Name: Quit
+  m_Name: QuitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8844,7 +8811,7 @@ RectTransform:
   m_Children:
   - {fileID: 8813758511390658748}
   m_Father: {fileID: 7558473764638287480}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.14}
   m_AnchorMax: {x: 0.25, y: 0.23}
@@ -8977,7 +8944,7 @@ GameObject:
   - component: {fileID: 329237649344126035}
   - component: {fileID: 7882792309165314025}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: New Game/Continue'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9029,7 +8996,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: Continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fb47dc24f9fa2a4eb4b8cf8fcc21f34, type: 2}
   m_sharedMaterial: {fileID: -7571778674299607091, guid: 0fb47dc24f9fa2a4eb4b8cf8fcc21f34,
@@ -9219,7 +9186,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -9265,7 +9232,7 @@ GameObject:
   - component: {fileID: 6416689829394385943}
   - component: {fileID: 923288990684859135}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9339,7 +9306,7 @@ GameObject:
   - component: {fileID: 6267242321444761360}
   - component: {fileID: 1603085323969437183}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9413,7 +9380,7 @@ GameObject:
   - component: {fileID: 5357238534070476311}
   - component: {fileID: 4986535554650529426}
   m_Layer: 5
-  m_Name: Preview
+  m_Name: PreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9487,7 +9454,7 @@ GameObject:
   - component: {fileID: 2399596433718890463}
   - component: {fileID: 2671509699138560949}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: 'Text: 3 [Level Name]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9729,7 +9696,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:
@@ -9775,7 +9742,7 @@ GameObject:
   - component: {fileID: 3430327649817558014}
   - component: {fileID: 359852298048373631}
   m_Layer: 5
-  m_Name: Text (TMP) (3)
+  m_Name: 'Controls: Select, Menu'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10019,7 +9986,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2901275240708891584}
+      - m_Target: {fileID: 2949334682334279588}
         m_MethodName: SelectLevel
         m_Mode: 3
         m_Arguments:

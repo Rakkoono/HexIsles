@@ -7,43 +7,67 @@ using UnityEngine.SceneManagement;
 
 public class Player : MouseSelectable
 {
-    public enum MoveSet { None, AdjacentFields }
-
-    // Serialized fields
-    [SerializeField] MoveSet moveSet = MoveSet.AdjacentFields;
-    [SerializeField, Range(1, 5)] int height = 1;
-    [SerializeField, Range(1, 3)] int jump = 1;
-
-    // Hidden fields
-    [HideInInspector] public Color currentColor;
+    #region Hidden fields
     [HideInInspector] public Vector2Int position;
     [HideInInspector] public Vector3 targetPosition;
     private bool justMoved = false;
 
+    [SerializeField, Range(0, 3)] private int jump = 1;
+    public int JumpHeight => jump;
+
+    [SerializeField] private int height = 1;
+    public int Height
+    {
+        get => height;
+        set
+        {
+            height = value;
+            transform.localPosition = new Vector3(0, .5f * GridUtility.GetFieldAt(position).Height + .25f * height - .25f, 0);
+            transform.localScale = new Vector3(transform.localScale.x, .5f * height, transform.localScale.x);
+        }
+    }
+
+    // Is this object a possible target for the last selected player?
+    public bool IsTarget => Manager.Current.LastSelectedPlayer && Manager.Current.validTargets.Contains(this);
+
+    public int TotalJumpHeight
+    {
+        get
+        {
+            int jumpHeight = GridUtility.GetFieldAt(position).Height + jump;
+            foreach (var player in GridUtility.GetPlayersAt(position, true))
+                if (player.transform.position.y < transform.position.y)
+                    jumpHeight += player.height;
+
+            return jumpHeight;
+        }
+    }
+
+    private Color initialColor;
+    private bool isPetrified = false;
+    public bool IsPetrified
+    {
+        get => isPetrified;
+        set
+        {
+            isPetrified = value;
+            Color = Renderer.material.color = value ? Config.Current.PetrifiedColor : initialColor;
+        }
+    }
+    #endregion
+
     private void Start()
     {
 #if UNITY_EDITOR
-        if (!FindObjectOfType<Manager>())
+        if (!FindObjectOfType<Manager>() && FindObjectOfType<Player>() == this)
         {
             SceneManager.LoadScene(0);
             return;
         }
-
 #endif
         targetPosition = transform.position;
-        currentColor = InitialColor;
+        initialColor = Color;
     }
-
-#if UNITY_EDITOR
-    [ContextMenu("Adjust Position")]
-    public void AdjustPosition()
-    {
-        position = GridUtility.WorldToGridPos(transform.position);
-        transform.position = GridUtility.GridToWorldPos(position) + (.5f * (GridUtility.GetFieldAt(position).Height + height / 2) - (height % 2 != 0 ? 0 : .25f)) * Vector3.up;
-        
-        transform.localScale = new Vector3(transform.localScale.x, (float)height / 2, transform.localScale.z);
-    }
-#endif
 
     private void Update()
     {
@@ -51,116 +75,117 @@ public class Player : MouseSelectable
         if (transform.position != targetPosition)
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Config.Current.playerAnimationSpeed * 10f * Time.deltaTime);
         else if (justMoved)
-            {
-                // When finished moving...
-                justMoved = false;
-                
-                // Check if petrified
-                foreach(var player in Manager.Players.players)
-                    if (player.CompareTag("Petrified") && player.enabled)
-                    player.enabled = false;
+        {
+            // When finished moving...
+            justMoved = false;
 
-                // Check for game over
-                if (Manager.Players.players.All(p => !p.enabled))
-                    Manager.UI.ShowGameOver(Config.Current.AllPetrified);
+            // Check for game over
+            if (Manager.Current.Players.All(player => player.IsPetrified))
+                Manager.Current.ShowGameOver(Config.Current.AllPetrified);
 
-                else if (Manager.Current.level.TargetPosition == position)
-                    Manager.UI.ShowGameOver(Config.Current.LevelComplete);
+            else if (Manager.Current.Flags.All(flag => flag.IsReached))
+                Manager.Current.ShowGameOver(Config.Current.LevelComplete);
 
-                else if (Manager.Current.TurnsLeft <= 0)
-                    Manager.UI.ShowGameOver(Config.Current.OutOfTurns);
-            }
+            else if (Manager.Current.TurnsLeft <= 0)
+                Manager.Current.ShowGameOver(Config.Current.OutOfTurns);
+        }
     }
 
+    #region Select / Deselect
     public override void OnSelect()
     {
-        if (Manager.Players.lastSelected && Manager.Players.possibleMoves.Contains(this) && position != Manager.Players.lastSelected.position)
-        {
-            HexField field = GridUtility.GetFieldAt(position);
+        if (Manager.Current.menu != Menu.None)
+            return;
 
-            Manager.Players.SelectedObject = Manager.Players.lastSelected;
-            field.ToggleSelect();
+        // if this player is a target for the last selected player move last selected to this field
+        if (IsTarget)
+        {
+            Manager.Current.LastSelectedPlayer.MoveTo(this);
             return;
         }
 
-        if (!enabled || Manager.UI.currentMenu != UIHandler.Menu.None)
+        if (IsPetrified)
             return;
-        
+
         // find and highlight possible moves
-        int jumpHeight;
-        switch (moveSet)
-        {
-            case MoveSet.AdjacentFields:
-                jumpHeight = GridUtility.GetFieldAt(position).Height + jump;
-                foreach (var p in GridUtility.GetPlayersAt(position, true))
-                    if (p.transform.position.y < transform.position.y) jumpHeight += p.height;
-                Manager.Players.possibleMoves = GetAndColorValidMoves(GridUtility.GetAdjacentFields(position), jumpHeight);
-                break;
-        }
+        var moves = GridUtility.GetAdjacentFields(position);
+        Manager.Current.validTargets = GetAndColorValidTargets(moves, TotalJumpHeight);
     }
-    
-    private static MouseSelectable[] GetAndColorValidMoves(Vector2Int[] moves, int jumpHeight)
+
+    private static MouseSelectable[] GetAndColorValidTargets(Vector2Int[] positions, int jumpHeight)
     {
-        var testedMoves = new List<Vector2Int>();
-        var validMoves = new List<MouseSelectable>();
-
-        foreach (var move in moves)
+        var valid = new List<MouseSelectable>();
+        foreach (var pos in positions)
         {
-            if (testedMoves.Contains(move)) continue;
-            testedMoves.Add(move);
+            HexField field = GridUtility.GetFieldAt(pos);
 
-            HexField field = GridUtility.GetFieldAt(move);
-            int height = field ? field.Height : 0;
-            foreach (var p in GridUtility.GetPlayersAt(move, true))
-                height += p.height;
-            if (!field || height > jumpHeight)
+            if (field == null)
                 continue;
-            validMoves.Add(field);
-            field.Renderer.material.color = field.InitialColor + Config.Current.MovePreviewTint;
 
-            Player[] players = GridUtility.GetPlayersAt(move);
-            validMoves.AddRange(players);
-            foreach (var p in players)
-                p.Renderer.material.color = p.InitialColor + Config.Current.MovePreviewTint;
+            int height = field.Height;
+            var players = GridUtility.GetPlayersAt(pos);
+            foreach (var player in players)
+                height += player.height;
+
+            if (height > jumpHeight)
+                continue;
+
+            valid.Add(field);
+            field.Renderer.material.color = field.Color + Config.Current.MovePreviewTint;
+
+            valid.AddRange(players);
+            foreach (var player in players)
+                player.Renderer.material.color = player.Color + Config.Current.MovePreviewTint;
         }
-        return validMoves.ToArray();
+
+        return valid.ToArray();
     }
 
     public override void OnDeselect()
     {
-        if (Manager.Players.lastSelected == this) Manager.Players.lastSelected = null;
-        foreach (var obj in Manager.Players.possibleMoves)
+        if (Manager.Current.LastSelectedPlayer == this) Manager.Current.LastSelectedPlayer = null;
+        foreach (var obj in Manager.Current.validTargets)
             obj.ResetColor();
     }
+    #endregion
 
-    public void Move(HexField target)
+    #region Move
+    public void MoveTo(HexField field)
     {
         if (!enabled) return;
 
         var undo = new List<PlayerState>();
-        foreach (var player in Manager.Players.players)
-            undo.Add(new PlayerState(player, player.transform.position, player.CompareTag("Petrified")));
-        Manager.Players.undoStack.Push(undo.ToArray());
-
-        targetPosition = GridUtility.GridToWorldPos(target.Position) + (.5f * (GridUtility.GetFieldAt(target.Position).Height + height / 2) - (height % 2 != 0 ? 0 : .25f)) * Vector3.up;
-        foreach (var p in GridUtility.GetPlayersAt(target.Position))
-            targetPosition.y += p.height * .5f;
-        foreach (var p in GridUtility.GetPlayersAt(position))
-            if (p != this && p.transform.position.y > transform.position.y)
+        foreach (var player in Manager.Current.Players)
+            undo.Add(new PlayerState(player, player.transform.position, player.IsPetrified));
+        Manager.Current.UndoStack.Push(undo.ToArray());
+        targetPosition = GridUtility.GridToWorldPos(field.Position) + (.5f * field.Height + .25f * Height - .25f) * Vector3.up;
+        foreach (var player in GridUtility.GetPlayersAt(field.Position))
+            if (player != this)
+                targetPosition.y += player.height * .5f;
+        foreach (var player in GridUtility.GetPlayersAt(position))
+            if (player != this && player.transform.position.y > transform.position.y)
             {
-                p.targetPosition = targetPosition + p.transform.position - transform.position;
-                p.position = target.Position;
+                player.targetPosition = targetPosition + player.transform.position - transform.position;
+                player.position = field.Position;
             }
 
+        position = field.Position;
 
-        position = target.Position;
-
-        if (Manager.Current.level.Petrify)
-            Manager.Players.PetrifyLonePlayers();
+        if (Manager.Current.Level.Petrify)
+            Manager.Current.PetrifyLonePlayers();
 
         Manager.Current.TurnsLeft--;
         justMoved = true;
         Manager.Current.SfxSource.PlayOneShot(Config.Current.MoveSounds[Random.Range(0, Config.Current.MoveSounds.Length)]);
-        // Player automatically gets selected after every move // ToggleSelect();
+        Manager.Current.SelectedObject = null;
+        // Player automatically gets selected after every move: 
+        //// ToggleSelect();
     }
+
+    public void MoveTo(Player player)
+    {
+        Manager.Current.SelectedObject = Manager.Current.SelectedPlayer;
+        MoveTo(GridUtility.GetFieldAt(player.position));
+    }
+    #endregion
 }

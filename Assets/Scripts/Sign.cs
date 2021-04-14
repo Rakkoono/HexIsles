@@ -1,15 +1,20 @@
+using UnityEngine;
+
 public class Sign : MouseSelectable
 {
     public Dialog dialog;
 
+    private Vector2Int? position = null;
+    private Vector2Int Position => (Vector2Int)(position = position ?? GridUtility.WorldToGridPos(transform.position));
+
     public override void OnSelect()
     {
-        if (Manager.UI.currentMenu == UIHandler.Menu.None)
+        if (Manager.Current.menu == Menu.None)
         {
-            GridUtility.GetFieldAt(GridUtility.WorldToGridPos(transform.position)).ToggleSelect();
-            Manager.Dialogs.Show(dialog);
+            GridUtility.GetFieldAt(Position).ToggleSelect();
+            Manager.Current.DialogBox.ShowDialog(dialog);
         }
 
-        Manager.Players.SelectedObject = null;
+        Manager.Current.SelectedObject = null;
     }
 }
