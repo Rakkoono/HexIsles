@@ -13,6 +13,7 @@ namespace SuperUnityBuild.BuildActions
         private const string OSX = "osx";
         private const string LINUX = "linux";
         private const string ANDROID = "android";
+        private const string WEBGL = "webgl";
 
         [BuildTool.FilePath(false, true, "Path to butler.exe")]
         public string pathToButlerExe = "";
@@ -179,6 +180,10 @@ namespace SuperUnityBuild.BuildActions
                 // Android
                 case BuildTarget.Android:
                     return ANDROID;
+
+                // WebGL
+                case BuildTarget.WebGL:
+                    return WEBGL;
 
                 default:
                     return null;

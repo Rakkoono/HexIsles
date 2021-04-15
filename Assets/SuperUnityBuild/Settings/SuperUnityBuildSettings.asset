@@ -26,7 +26,7 @@ MonoBehaviour:
   nameOfItchUser: rakkoon
   nameOfItchGame: hexisles
   useGeneratedBuildVersion: 1
-  showUploadProgress: 1
+  showUploadProgress: 0
   itchChannelOverride: 
 --- !u!114 &-7167702838981823107
 MonoBehaviour:
@@ -262,7 +262,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Release/WebGL/WebGL
-      - enabled: 1
+      - enabled: 0
         childKeys:
         - Release/Android
         - Release/Linux
@@ -274,7 +274,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)/Itch.io
-      - enabled: 0
+      - enabled: 1
         childKeys:
         - Debug/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)
       - enabled: 1
@@ -282,7 +282,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/Linux/Linux x64/Itch.io
-      - enabled: 0
+      - enabled: 1
         childKeys:
         - Debug/Linux/Linux x64
       - enabled: 1
@@ -290,12 +290,12 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/macOS/macOS/Itch.io
-      - enabled: 0
+      - enabled: 1
         childKeys:
         - Debug/macOS/macOS
       - enabled: 1
         childKeys: []
-      - enabled: 0
+      - enabled: 1
         childKeys:
         - Debug/PC/Windows x86/Itch.io
       - enabled: 1
@@ -315,7 +315,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/WebGL/WebGL
-      - enabled: 0
+      - enabled: 1
         childKeys:
         - Debug/Android
         - Debug/Linux
@@ -329,12 +329,14 @@ MonoBehaviour:
     showBuildInfo: 0
     hideDisabled: 0
     treeView: 1
-    selectedKeyChain: Release/PC/Windows x64/Itch.io
+    selectedKeyChain: Release/WebGL/WebGL/Itch.io
   _preBuildActions:
     buildActions: []
   _postBuildActions:
     buildActions:
     - {fileID: -9060523166688412199}
+    - {fileID: 2086324320990310916}
+    - {fileID: 0}
 --- !u!114 &1769172940118693458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +406,37 @@ MonoBehaviour:
   platformName: Android
   dataDirNameFormat: '{0}_Data'
   targetGroup: 7
+--- !u!114 &2086324320990310916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d88f7d353534a4fbdeb11196057db7, type: 3}
+  m_Name: UploadItch
+  m_EditorClassIdentifier: 
+  actionType: 1
+  actionName: UploadItch
+  note: 
+  actionEnabled: 1
+  filter:
+    condition: 2
+    clauses:
+    - type: 0
+      comparison: 0
+      test: DEBUG
+    - type: 1
+      comparison: 0
+      test: WEBGL
+  pathToButlerExe: C:\Users\samue\AppData\Roaming\itch\apps\butler\butler.exe
+  nameOfItchUser: rakkoon
+  nameOfItchGame: hexisles-debug
+  useGeneratedBuildVersion: 1
+  showUploadProgress: 0
+  itchChannelOverride: 
 --- !u!114 &5336405423492708110
 MonoBehaviour:
   m_ObjectHideFlags: 0
