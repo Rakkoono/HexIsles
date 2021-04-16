@@ -50,3 +50,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 56b5bd136fd34d645a3e561721e3bdf8, type: 3}
   letterAnimationTime: 0.1
   startUpDialog: {fileID: 11400000, guid: c8e658d2833a08e4d8293fa4c833e0b0, type: 2}
+  gapBetweenFields: 0.05

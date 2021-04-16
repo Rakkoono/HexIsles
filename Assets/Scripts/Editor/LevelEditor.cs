@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 public class LevelEditor : EditorWindow
 {
@@ -40,8 +40,6 @@ public class LevelEditor : EditorWindow
 
     private Object currentMaterialOrObject = null;
 
-
-
     [MenuItem("Window/HexIsles/Level Editor")]
     private static void ShowWindow()
     {
@@ -55,6 +53,7 @@ public class LevelEditor : EditorWindow
         SceneView.duringSceneGui += OnSceneGUI;
         palette = new List<Object>(Resources.LoadAll<Material>("Terrain"));
         palette.AddRange(Resources.LoadAll<GameObject>("Objects"));
+        currentMaterialOrObject = null;
     }
 
     #region GUI
