@@ -274,7 +274,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)/Itch.io
-      - enabled: 1
+      - enabled: 0
         childKeys:
         - Debug/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)
       - enabled: 1
@@ -282,7 +282,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/Linux/Linux x64/Itch.io
-      - enabled: 1
+      - enabled: 0
         childKeys:
         - Debug/Linux/Linux x64
       - enabled: 1
@@ -290,12 +290,12 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/macOS/macOS/Itch.io
-      - enabled: 1
+      - enabled: 0
         childKeys:
         - Debug/macOS/macOS
       - enabled: 1
         childKeys: []
-      - enabled: 1
+      - enabled: 0
         childKeys:
         - Debug/PC/Windows x86/Itch.io
       - enabled: 1
@@ -336,7 +336,6 @@ MonoBehaviour:
     buildActions:
     - {fileID: -9060523166688412199}
     - {fileID: 2086324320990310916}
-    - {fileID: 0}
 --- !u!114 &1769172940118693458
 MonoBehaviour:
   m_ObjectHideFlags: 0
