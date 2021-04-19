@@ -9,7 +9,7 @@ public class Flag : MonoBehaviour
     public int RequiredJumpHeight => requiredJumpHeight;
 
     private Vector2Int? position = null;
-    public Vector2Int Position => (Vector2Int)(position = position ?? GridUtility.WorldToGridPos(transform.position));
+    public Vector2Int Position => position ??= GridUtility.WorldToGridPos(transform.position);
 
     // Returns true if there is a player with the required jump height at the flag position
     public bool IsReached => GridUtility.GetPlayersAt(Position).Any(player => requiredJumpHeight == 0 || requiredJumpHeight == player.JumpHeight);

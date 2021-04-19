@@ -18,25 +18,54 @@ public class LevelEditor : EditorWindow
     private Vector2 windowScrollPos = Vector2.zero;
     private Vector2 paletteScrollPos = Vector2.zero;
 
-    private bool editScene = false;
+    private bool editMap = false;
     private DrawingLayer layerMask = (DrawingLayer)~0;
 
     private int currentHeight = 1;
     private int lastHeight = 1;
-    #endregion
 
-    private GameObject hexPrefab;
-    private GameObject HexPrefab
+    private float sunAngleVertical = 45;
+    private float SunAngleVertical
     {
-        get
+        get => sunAngleVertical;
+        set
         {
-            if (!hexPrefab)
-                hexPrefab = Resources.LoadAll<GameObject>("Terrain")[0];
-            return hexPrefab;
+            sunAngleVertical = value;
+            if (sun != null)
+                sun.transform.rotation = Quaternion.Euler(sunAngleVertical, sunAngleHorizontal, 0);
+        }
+    }
+    private float sunAngleHorizontal = 0;
+    private float SunAngleHorizontal
+    {
+        get => sunAngleHorizontal;
+        set
+        {
+            sunAngleHorizontal = value;
+            if (sun != null)
+                sun.transform.rotation = Quaternion.Euler(sunAngleVertical, sunAngleHorizontal, 0);
         }
     }
 
+    private Color sunLightColor = new Color();
+    public Color SunLightColor
+    {
+        get => sunLightColor;
+        set
+        {
+            sunLightColor = value;
+            if (sun != null)
+                sun.color = value;
+        }
+    }
+
+    LightingSettings lightingSettings;
     private List<Object> palette;
+    #endregion
+
+    private GameObject hexPrefab;
+    private GameObject sunPrefab;
+    private Light sun;
 
     private Object currentMaterialOrObject = null;
 
@@ -51,9 +80,20 @@ public class LevelEditor : EditorWindow
     private void OnEnable()
     {
         SceneView.duringSceneGui += OnSceneGUI;
-        palette = new List<Object>(Resources.LoadAll<Material>("Terrain"));
-        palette.AddRange(Resources.LoadAll<GameObject>("Objects"));
+
         currentMaterialOrObject = null;
+
+        // Find terrain materials and props
+        palette = new List<Object>();
+        palette.AddRange(Resources.LoadAll<Material>("Materials/Terrain"));
+        palette.AddRange(Resources.LoadAll<GameObject>("Prefabs/Props"));
+
+        // Find prefabs
+        hexPrefab = Resources.Load<GameObject>("Prefabs/Hexagon Field");
+        sunPrefab = Resources.Load<GameObject>("Prefabs/Sun");
+
+        // Find Settings.lighting
+        lightingSettings = Resources.Load<LightingSettings>(("Settings"));
     }
 
     #region GUI
@@ -74,7 +114,8 @@ public class LevelEditor : EditorWindow
             fixedWidth = 90
         };
 
-        editScene = EditorGUILayout.BeginToggleGroup(new GUIContent("Edit Scene"), editScene);
+        #region Edit Map
+        editMap = EditorGUILayout.BeginToggleGroup(new GUIContent("Edit Map"), editMap);
 
         GUILayout.BeginHorizontal();
 
@@ -220,7 +261,71 @@ public class LevelEditor : EditorWindow
         }
 
         EditorGUILayout.EndToggleGroup();
+        #endregion
 
+        bool mapExists = GameObject.Find("Map");
+        // find or create sun
+        if (mapExists && sun == null)
+        {
+            sun = (GameObject.Find("Sun") ?? (GameObject)PrefabUtility.InstantiatePrefab(sunPrefab)).GetComponent<Light>();
+            var euler = sun.transform.rotation.eulerAngles;
+            sunAngleHorizontal = euler.y;
+            sunAngleVertical = euler.x;
+            sunLightColor = sun.color;
+            RenderSettings.sun = sun;
+
+            Lightmapping.lightingSettings = lightingSettings;
+        }
+
+        EditorGUI.BeginDisabledGroup(!mapExists);
+
+        GUILayout.Space(10);
+
+        #region Lighting Settings
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(10);
+        GUILayout.Label("Lighting", EditorStyles.boldLabel);
+        GUILayout.FlexibleSpace();
+        lightingSettings = (LightingSettings)EditorGUILayout.ObjectField(lightingSettings, typeof(LightingSettings), false);
+        GUILayout.Space(5);
+        if (GUILayout.Button("Bake Current"))
+            Lightmapping.BakeAsync();
+        if (GUILayout.Button("Bake All"))
+        {
+            var guids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets/Scenes" });
+            var paths = new string[guids.Length];
+
+            for (int i = 0; i < guids.Length; i++)
+                paths[i] = AssetDatabase.GUIDToAssetPath(guids[i]);
+
+            Lightmapping.BakeMultipleScenes(paths);
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Sun: Vertical Angle", GUILayout.Width(150));
+        SunAngleVertical = GUILayout.HorizontalSlider(SunAngleVertical, 0, 180, GUILayout.MinWidth(350));
+        SunAngleVertical = Mathf.Clamp(EditorGUILayout.FloatField(SunAngleVertical), 0, 180);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Sun: Horizontal Angle", GUILayout.Width(150));
+        SunAngleHorizontal = GUILayout.HorizontalSlider(SunAngleHorizontal, 0, 360, GUILayout.MinWidth(350));
+        SunAngleHorizontal = Mathf.Clamp(EditorGUILayout.FloatField(SunAngleHorizontal), 0, 360);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Light Color", GUILayout.Width(150));
+        GUILayout.FlexibleSpace();
+        SunLightColor = EditorGUILayout.ColorField(SunLightColor);
+        GUILayout.EndHorizontal();
+
+        EditorGUI.EndDisabledGroup();
+
+        GUILayout.EndScrollView();
+        #endregion
+
+        #region Drag & Drop
         DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
         if (Event.current.type == EventType.DragExited)
         {
@@ -243,15 +348,14 @@ public class LevelEditor : EditorWindow
                 DragAndDrop.AcceptDrag();
             }
         }
-
-        GUILayout.EndScrollView();
+        #endregion
     }
     #endregion
 
     #region Edit Map
     private void OnSceneGUI(SceneView sceneView)
     {
-        if (focusedWindow != sceneView || !editScene || Event.current.control)
+        if (focusedWindow != sceneView || !editMap || Event.current.control)
             return;
 
         if (currentMaterialOrObject != null)
@@ -340,7 +444,7 @@ public class LevelEditor : EditorWindow
         container.layer = 11;
 
         // Instantiate field
-        GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(HexPrefab, container.transform);
+        GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(hexPrefab, container.transform);
         obj.name += " " + pos.ToString();
         field = obj.GetComponent<HexField>();
         field.Position = pos;

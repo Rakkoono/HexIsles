@@ -53,7 +53,7 @@ public static class GridUtility
     public static HexField[] Fields => Map.GetComponentsInChildren<HexField>();
 #else
     private static HexField[] fields;
-    public static HexField[] Fields => fields = fields ?? Map.GetComponentsInChildren<HexField>();
+    public static HexField[] Fields => fields ??= Map.GetComponentsInChildren<HexField>();
 #endif
 
     public static Vector3 GridToWorldPos(Vector2Int gridPos)
