@@ -36,11 +36,11 @@ public static class BuildConstants
         Itch_io,
     }
 
-    public static readonly System.DateTime buildDate = new System.DateTime(637540741022136069);
+    public static readonly System.DateTime buildDate = new System.DateTime(637544484452478437);
     public const string version = "1.2";
-    public const ReleaseType releaseType = ReleaseType.Release;
-    public const Platform platform = Platform.Linux;
-    public const Architecture architecture = Architecture.Linux_x64;
+    public const ReleaseType releaseType = ReleaseType.Debug;
+    public const Platform platform = Platform.Android;
+    public const Architecture architecture = Architecture.Android;
     public const Distribution distribution = Distribution.Itch_io;
 }
 

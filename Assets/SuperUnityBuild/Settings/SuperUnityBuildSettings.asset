@@ -274,7 +274,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - Debug/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)/Itch.io
-      - enabled: 0
+      - enabled: 1
         childKeys:
         - Debug/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)
       - enabled: 1
@@ -427,9 +427,6 @@ MonoBehaviour:
     - type: 0
       comparison: 0
       test: DEBUG
-    - type: 1
-      comparison: 0
-      test: WEBGL
   pathToButlerExe: C:\Users\samue\AppData\Roaming\itch\apps\butler\butler.exe
   nameOfItchUser: rakkoon
   nameOfItchGame: hexisles-debug

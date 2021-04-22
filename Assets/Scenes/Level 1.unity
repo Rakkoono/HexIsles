@@ -1752,6 +1752,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sun
       objectReference: {fileID: 0}
+    - target: {fileID: 5599100672500767432, guid: 6436dfbee479db543b3276a4e8f33b79,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8795001585069010708, guid: 6436dfbee479db543b3276a4e8f33b79,
         type: 3}
       propertyPath: m_Color.a
@@ -1774,8 +1779,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8795001585069010708, guid: 6436dfbee479db543b3276a4e8f33b79,
         type: 3}
+      propertyPath: m_DrawHalo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8795001585069010708, guid: 6436dfbee479db543b3276a4e8f33b79,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8795001585069010708, guid: 6436dfbee479db543b3276a4e8f33b79,
+        type: 3}
       propertyPath: m_Shadows.m_Type
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8795001585069010708, guid: 6436dfbee479db543b3276a4e8f33b79,
+        type: 3}
+      propertyPath: m_Shadows.m_NormalBias
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8795001585069010708, guid: 6436dfbee479db543b3276a4e8f33b79,
         type: 3}
