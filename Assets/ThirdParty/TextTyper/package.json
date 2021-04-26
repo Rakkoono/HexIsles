@@ -1,0 +1,10 @@
+{
+  "author": "Laicasaane <https://github.com/laicasaane/> (https://github.com/laicasaane/)",
+  "description": "Text typing effect for Unity uGUI Text components",
+  "displayName": "TextTyper",
+  "license": "MIT",
+  "name": "com.laicasaane.texttyper",
+  "version": "3.0.2",
+  "type": "library",
+  "unity": "2018.3"
+}

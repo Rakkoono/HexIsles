@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96b31cf6d89d61408b29c6eaddc0ab5, type: 3}
+  m_Name: Config
+  m_EditorClassIdentifier: 
+  levels:
+  - {fileID: 11400000, guid: 0f33ec0f9c1c91342b02f035a616db7a, type: 2}
+  - {fileID: 11400000, guid: f2b0a466d22da5f41b2d4b75bf668584, type: 2}
+  - {fileID: 11400000, guid: 1a7d5e8601a829340a1b870ecbf1cad9, type: 2}
+  - {fileID: 11400000, guid: a25c57b2892de754b98cb345065b6454, type: 2}
+  - {fileID: 11400000, guid: 0b8ce7b034d34ea4b8e92f0fe046130d, type: 2}
+  - {fileID: 11400000, guid: 7a2162213443e2c40b9a2328ead57c98, type: 2}
+  - {fileID: 11400000, guid: 0c25409f6f4363f47ab0e5f4885bdfd5, type: 2}
+  - {fileID: 11400000, guid: 359ea586c5a6d2347b3f382d9237dc70, type: 2}
+  - {fileID: 11400000, guid: 51afc20f2479bf740a53770f09902861, type: 2}
+  - {fileID: 11400000, guid: bdaf32c009fc91940ad4cb7346e4eb0f, type: 2}
+  - {fileID: 11400000, guid: 6b536606687883b47916d00b1a1cdad0, type: 2}
+  - {fileID: 11400000, guid: b876b432238669a48b9bc4bf03d1ff13, type: 2}
+  - {fileID: 11400000, guid: fab41a0f935301f4abd620f2a7e7d146, type: 2}
+  - {fileID: 11400000, guid: 504a389d0662eba4a8fe43e4f69944a6, type: 2}
+  - {fileID: 11400000, guid: a066acc41fdbbef48881cef781877972, type: 2}
+  - {fileID: 11400000, guid: 1e6e77d5633d48b4aaefac677c066acd, type: 2}
+  - {fileID: 11400000, guid: 3783b734ea3133246883b1c73edcd03a, type: 2}
+  levelComplete: {fileID: 11400000, guid: 5c6c2709993a71a4e81dcd7fc9ac9210, type: 2}
+  outOfTurns: {fileID: 11400000, guid: 94825ecdd9fe2d44bae437d53091ff1c, type: 2}
+  allPetrified: {fileID: 11400000, guid: eec97b25e4c774641b4d5d55cc9813e3, type: 2}
+  zoomSpeed: 5
+  panSpeed: 100
+  zoomRangeMin: 1
+  zoomRangeMax: 8
+  highlightTint: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0.039215688}
+  movePreviewTint: {r: 0.39215687, g: 0.39215687, b: 0.15686275, a: 0.039215688}
+  selectionTint: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 0.019607844}
+  petrifiedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
+  audioMixer: {fileID: 0}
+  music: {fileID: 8300000, guid: 30cdf9b49a8c0214a85100f1945f2188, type: 3}
+  moveSounds:
+  - {fileID: 8300000, guid: beb2cac6972b580458434b68cee9cf0a, type: 3}
+  - {fileID: 8300000, guid: 8e4fbf0654531ed40bd93bd4a8c6b21e, type: 3}
+  - {fileID: 8300000, guid: dd51ac4f4734ace46acade9ff52f1dfb, type: 3}
+  - {fileID: 8300000, guid: 56b5bd136fd34d645a3e561721e3bdf8, type: 3}
+  menuSounds:
+  - {fileID: 8300000, guid: 3e194e41785b63d4c9804f33b1f33e8a, type: 3}
+  startUpDialog: {fileID: 11400000, guid: c8e658d2833a08e4d8293fa4c833e0b0, type: 2}
+  gapBetweenFields: 0.05
+  palette:
+  - {fileID: 2100000, guid: 05c79b728cf6341449a0ca4f8be79264, type: 2}
+  - {fileID: 2100000, guid: 875f6e2903724a14bb24267569c3edf0, type: 2}
+  - {fileID: 2100000, guid: b5c6fcf3b745fb14c9b4b40095451b54, type: 2}
+  - {fileID: 2100000, guid: 37642ef90a8d4fe45a08e36fbd17f61a, type: 2}
+  - {fileID: 2100000, guid: 92af5259b1c6a9c4b9edc7ca8dfb0ac4, type: 2}
+  - {fileID: 2100000, guid: b94beb2112bdcc84fadae4ca0dbf082e, type: 2}
+  - {fileID: 2100000, guid: b36d54185acc386469745b526d44d906, type: 2}
+  - {fileID: 4566142219713637559, guid: 94083fc544154084cb8e786f932f97fa, type: 3}
+  - {fileID: 4820018454990104853, guid: 961f8041a740514449794ed7aab9d6e2, type: 3}
+  - {fileID: 7602511109071778054, guid: a837af0478f0f35408e5f8f4b2ac2877, type: 3}
+  - {fileID: 5650348015215049118, guid: e802ed8090992c54785deee2206d1c25, type: 3}
+  - {fileID: 1792560774795558927, guid: b1c5e5f859c4cbc4f822fb5d24677517, type: 3}
+  - {fileID: 1792560774795558927, guid: ba91d01a8a8816a4ab4a9753bca9fc46, type: 3}
+  - {fileID: 1792560774795558927, guid: abef57acba4771e47b0000a4a28d3517, type: 3}
+  hexFieldPrefab: {fileID: 3251713489978916682, guid: 47753ffc6e17ecf4c95848e4e1d1a1bc,
+    type: 3}
+  sunPrefab: {fileID: 5599100672500767432, guid: 6436dfbee479db543b3276a4e8f33b79,
+    type: 3}
+  lightingSettings: {fileID: 0}

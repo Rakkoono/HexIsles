@@ -24,6 +24,9 @@ public class LevelEditor : EditorWindow
     private int currentHeight = 1;
     private int lastHeight = 1;
 
+    private List<Object> palette;
+
+    #region Lighting Settings
     private float sunAngleVertical = 45;
     private float SunAngleVertical
     {
@@ -58,13 +61,9 @@ public class LevelEditor : EditorWindow
                 sun.color = value;
         }
     }
-
-    LightingSettings lightingSettings;
-    private List<Object> palette;
+    #endregion
     #endregion
 
-    private GameObject hexPrefab;
-    private GameObject sunPrefab;
     private Light sun;
 
     private Object currentMaterialOrObject = null;
@@ -81,19 +80,7 @@ public class LevelEditor : EditorWindow
     {
         SceneView.duringSceneGui += OnSceneGUI;
 
-        currentMaterialOrObject = null;
-
-        // Find terrain materials and props
-        palette = new List<Object>();
-        palette.AddRange(Resources.LoadAll<Material>("Materials/Terrain"));
-        palette.AddRange(Resources.LoadAll<GameObject>("Prefabs/Props"));
-
-        // Find prefabs
-        hexPrefab = Resources.Load<GameObject>("Prefabs/Hexagon Field");
-        sunPrefab = Resources.Load<GameObject>("Prefabs/Sun");
-
-        // Find Settings.lighting
-        lightingSettings = Resources.Load<LightingSettings>(("Settings"));
+        palette = new List<Object>(Config.Palette);
     }
 
     #region GUI
@@ -267,14 +254,14 @@ public class LevelEditor : EditorWindow
         // find or create sun
         if (mapExists && sun == null)
         {
-            sun = (GameObject.Find("Sun") ?? (GameObject)PrefabUtility.InstantiatePrefab(sunPrefab)).GetComponent<Light>();
+            sun = (GameObject.Find("Sun") ?? (GameObject)PrefabUtility.InstantiatePrefab(Config.SunPrefab)).GetComponent<Light>();
             var euler = sun.transform.rotation.eulerAngles;
             sunAngleHorizontal = euler.y;
             sunAngleVertical = euler.x;
             sunLightColor = sun.color;
             RenderSettings.sun = sun;
 
-            Lightmapping.lightingSettings = lightingSettings;
+            Lightmapping.lightingSettings = Config.LightingSettings;
         }
 
         EditorGUI.BeginDisabledGroup(!mapExists);
@@ -286,7 +273,6 @@ public class LevelEditor : EditorWindow
         GUILayout.Space(10);
         GUILayout.Label("Lighting", EditorStyles.boldLabel);
         GUILayout.FlexibleSpace();
-        lightingSettings = (LightingSettings)EditorGUILayout.ObjectField(lightingSettings, typeof(LightingSettings), false);
         GUILayout.Space(5);
         if (GUILayout.Button("Bake Current"))
             Lightmapping.BakeAsync();
@@ -444,7 +430,7 @@ public class LevelEditor : EditorWindow
         container.layer = 11;
 
         // Instantiate field
-        GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(hexPrefab, container.transform);
+        GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(Config.HexFieldPrefab, container.transform);
         obj.name += " " + pos.ToString();
         field = obj.GetComponent<HexField>();
         field.Position = pos;
