@@ -1,3 +1,11 @@
+[![Itch.io](https://img.shields.io/badge/-Itch.io-red.svg?style=for-the-badge&logo=itch.io&logoColor=white)](https://rakkoon.itch.io/hexisles)
+[![Trello](https://img.shields.io/badge/-Trello-blue.svg?style=for-the-badge&logo=trello&logoColor=white)](https://trello.com/b/9QsKWOfz/hexisles)
+[![Github](https://img.shields.io/badge/-Github-282828.svg?style=for-the-badge&logo=github&logoColor=white)](https://rakkoon.itch.io/hexisles)
+
+[![Latest Version](https://img.shields.io/github/release/Rakkoono/HexIsles/all.svg?style=for-the-badge&color=yellow)](https://github.com/Rakkoono/HexIsles/releases/latest)
+[![Project License](https://img.shields.io/github/license/Rakkoono/HexIsles.svg?style=for-the-badge)](https://github.com/Rakkoono/HexIsles/blob/main/LICENSE)
+[![Project Stars](https://img.shields.io/github/stars/Rakkoono/HexIsles.svg?style=for-the-badge&color=orange)](https://github.com/Rakkoono/HexIsles/stargazers)
+
 # HexIsles
 Help the hexes reach their goal without leaving anyone behind! A little puzzle game about the hexagons life in exile.
 
@@ -31,6 +39,3 @@ Made in 7 days for Brackeys Game Jam 2021.1 to the theme "Stronger Together" in 
 | Graphics | #140 | 4.000 |
 
 Ranked from 77 ratings.
-
-[Play on Itch.io](https://rakkoon.itch.io/hexisles)<br/>
-[View Trello board](https://trello.com/b/9QsKWOfz)
